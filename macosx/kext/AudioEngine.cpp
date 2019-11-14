@@ -1,7 +1,7 @@
 //  kX Project audio driver for Mac OS X
 //  Created by Eugene Gavrilov.
-//	Copyright 2008-2014 Eugene Gavrilov. All rights reserved.
-//  www.kxproject.com
+//    Copyright 2008-2014 Eugene Gavrilov. All rights reserved.
+//  https://github.com/kxproject/ (previously www.kxproject.com)
 
 /*
  *   This program is free software; you can redistribute it and/or modify
@@ -19,10 +19,9 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-
 #include "AudioDevice.h"
 #include "AudioEngine.h"
-
+#include "emu.h"
 
 #define DBGCLASS "kXAudioEngine"
 
@@ -37,16 +36,33 @@ OSDefineMetaClassAndStructors(kXAudioEngine, IOAudioEngine)
 bool kXAudioEngine::init(kx_hw *hw_)
 {
     bool result = false;
+    bool def    = false;
     
     dump_addr();
     
-    debug("kXAudioEngine[%p]::init, new istance created\n", this);
+    debug("kXAudioEngine[%p]::init\n", this);
     
     hw = hw_;
+
+    
+    UInt8 customMapping[MAPPING_NUM_CHANNELS * 2];
+   
+    for (int i = 0; i < MAPPING_NUM_CHANNELS * 2; i++) {
+        customMapping[i] = 0;
+    }
+    
+    UInt8 customSampleRate[16];
+    
+    UInt32 pow = 1;
+    
+    for (int i = 0; i < 16; i++){
+        customSampleRate[i] = 0;
+    }
+    
+    int num = 0;
     
     if (!super::init(NULL))
     {
-        
         goto Done;
     }
     
@@ -54,39 +70,99 @@ bool kXAudioEngine::init(kx_hw *hw_)
     
     result = true;
     
-    if(hw->is_10k2){
-        bps=32;
+    sampling_rate=48000;
+    
+    if (PE_parse_boot_argn("_kxcl", customMapping, KXBootArgValueLength)) {
+        debug(DBGCLASS"[%p]::init: custom output layout enabled with -kx_custom_layout or -kxcuslay \n",this);
+        
+        for (int i=0; i<MAPPING_NUM_CHANNELS; i++){
+            
+            num = customMapping[i] - '0';
+            
+            if ((num < 2) || (num > 9)){
+                
+                debug("kXAudioEngine[%p]::init: !!! remapping channel [%d] using illegal value [%d] !!!\n",this,i, num);
+                
+                def = true;
+                
+                break;
+            }else{
+                mapping[i] = num;
+                debug("kXAudioEngine[%p]::init: remapping channel [%d] using custom mapping [%d]\n",this,i, mapping[i]);
+            }
+        }
     }else{
-        bps=16;
+        def = true;
     }
     
-    if (hw->disableFixes == false) {
-    //sets correctly the bits for each card
-        if(hw->is_10k2){
-            frame_multiplier = 16;
-        }else{
-            frame_multiplier = 8;
+    if (def) {
+        debug("kXAudioEngine[%p]::init: Using default mapping value\n",this);
+        for (int j=0; j<MAPPING_NUM_CHANNELS; j++){
+            mapping[j] = defMapping[j];
+        }
+    }
+    
+    custom_sampling_rate = sampling_rate;
+    
+    if (PE_parse_boot_argn("_kxcsr", customSampleRate, KXBootArgValueLength)){
+        
+        custom_sampling_rate = 0;
+        
+        for (int  i=0; i < MAX_SAMPLE_RATE_DIGITS; i++){
+            num = customSampleRate[i] - '0';
+            
+            if (num >= 0 && num <= 9){
+                
+                if (num > 0) {
+                    pow = 1;
+                
+                    for (int j = 1; j <  MAX_SAMPLE_RATE_DIGITS - i; j++){
+                        pow *= 10;
+                    }
+                
+                    custom_sampling_rate += num * pow; //(custom_sampling_rate * 10) + num;
+                }
+                
+            }else{
+                
+                debug("kXAudioEngine[%p]::init: !!! custom sample rate digit using illegal value [%d] !!! fallback to default value\n",this, num);
+                
+                custom_sampling_rate = sampling_rate;
+                break;
+            }
         }
         
-    }else{
-        frame_multiplier = 1;
+        
+        if (custom_sampling_rate < 1000 || custom_sampling_rate > 176400){
+            
+            debug("kXAudioEngine[%p]::init: new sampling rate %u is out of the supported range [1000, 176400], using default value %u\n",this, custom_sampling_rate, sampling_rate);
+            
+            custom_sampling_rate = sampling_rate;
+            
+        }else if (custom_sampling_rate == sampling_rate){
+            
+            debug("kXAudioEngine[%p]::init: custom sampling rate is default value: %u\n",this, custom_sampling_rate);
+            
+        }else{
+        
+            debug("kXAudioEngine[%p]::init: new custom sampling rate: %u\n",this, custom_sampling_rate);
+            
+        }
+        
     }
     
-    sampling_rate=hw->defaultSampleRate;
-
-    if (hw->is_10k3){
-        //sampling_rate=192000;
-        //frame_multiplier = 32;
-    }
+    if(hw->is_10k2)
+        bps=32;
+    else
+        bps=16;
     
     n_channels=8; // should be <= MAX_CHANNELS_
     
-    
-    
-    // Use a multiplied buffer size to prevent some sort of underrun on
-    // Mavericks and newer (related to Timer Coalescing?) causing playback crackle
+    // Use 4 times the buffer size to prevent some sort of underrun on
+    // Mavericks (related to Timer Coalescing?) causing playback crackle
     // until streams are restart (e.g. stop/start playback)
-    n_frames = (int)(frame_multiplier * (hw->mtr_buffer.size * 8 / bps / n_channels));
+    //    n_frames = (int)(4 * (hw->mtr_buffer.size * 8 / bps / n_channels));
+    n_frames = (int)(hw->mtr_buffer.size * 8 / bps / n_channels);
     
     debug("kXAudioEngine[%p]::init - n_frames=%d\n", this, n_frames);
     
@@ -112,6 +188,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
     }
     
 Done:
+    
     return result;
 }
 
@@ -133,43 +210,33 @@ bool kXAudioEngine::initHardware(IOService *provider)
     
     char device_name[KX_MAX_STRING];
     //strncpy(device_name,"kX ",KX_MAX_STRING);
-    strncpy(device_name,hw->card_name,KX_MAX_STRING);
+    strncat(device_name,hw->card_name,KX_MAX_STRING);
     
-    //setDescription(device_name);
+    setDescription(device_name);
     
     setSampleRate(&initialSampleRate);
-
-    setDescription(device_name);
     
     setClockDomain(); // =kIOAudioNewClockDomain
     
-    setNumSampleFramesPerBuffer(n_frames);
-    
-    if(n_channels == 0){
-        n_channels = 8;
-        debug("kXAudioEngine[%p]::init hardware: more chennels needed", this);
-    }
     // calculate kx_sample_offset
     
     if(hw->is_10k2)
     {
-        // setSampleOffset(28); // 28 samples
-        setSampleLatency(28+1);
-        setInputSampleLatency(28+1);
-        setOutputSampleLatency(28+1);
-        setOutputSampleOffset(28+1);
+        
+        setSampleOffset(40);
+        
+        //setSampleLatency(40+1);
+        
+        //setSampleOffset(28); // 28 samples
+        //setSampleLatency(28+1);
+        
     }
     else
     {
-        // setSampleOffset(32); // 32 samples
-        setSampleLatency(32+1);
-        setInputSampleLatency(32+1);
-        setOutputSampleLatency(32 +1);
-        setOutputSampleOffset(32+1);
+        setSampleOffset(32); // 32 samples
+        //setSampleLatency(32+1);
     }
     
-    //outputStreams->initWithCapacity(MAX_CHANNELS_);
-
     // Allocate our input and output buffers
     for(int i=0;i<n_channels;i++)
     {
@@ -181,62 +248,27 @@ bool kXAudioEngine::initHardware(IOService *provider)
         
         addAudioStream(audioStream);
         out_streams[i]=audioStream;
-        
-        //outputStreams->setObject(audioStream);
-        
-        /*audioStream = createNewAudioStream(i,kIOAudioStreamDirectionInput, n_channels*n_frames*bps/8);
-         if (!audioStream) {
-         goto Done;
-         }
-         addAudioStream(audioStream);
-         in_streams[i]=audioStream;*/
     }
     
     // recording
-    
-    
-    if (hw->testImputs == true){
-    
-        //inputStreams->initWithCapacity(MAX_CHANNELS_);
-        audioStream = createNewAudioStream(0,kIOAudioStreamDirectionInput, n_channels * n_frames * bps / 8);
-        if (!audioStream) {
-            goto Done;
-        }
-        addAudioStream(audioStream);
-        in_streams[0]=audioStream;
-        //inputStreams->setObject(audioStream);
+    audioStream = createNewAudioStream(0,kIOAudioStreamDirectionInput, n_channels*n_frames*bps/8);
+    if (!audioStream) {
+        goto Done;
     }
     
-    /*if (hw->is_10k3){
-     audioStream = createNewAudioStream(1,kIOAudioStreamDirectionInput, n_channels*n_frames*bps/8);
-     if (!audioStream) {
-     goto Done;
-     }
-     addAudioStream(audioStream);
-     in_streams[1]=audioStream;
-     }*/
+    addAudioStream(audioStream);
+    in_streams[0]=audioStream;
     
     dump_addr();
     
     // Set the number of sample frames in each buffer
     setNumSampleFramesPerBuffer(n_frames);
     
-    debug("kXAudioEngine[%p]::init hardware completed\n",this);
-    debug("kXAudioEngine[%p]::init hardware: total audio streams created: %p",this, this);
-    
-    if (hw->nameDebug){
-        debug("kXAudioEngine[%p]::post initialization info:\n", this);
-        debug("     AC97 Found: %s\n",hw->ac97_codec_name);
-        debug("     device pci info: 0x%d 0x%d\n", hw->pci_device, hw->pci_subsys);
-    }
-        
     result = true;
     
 Done:
-    if(result==false){
-        debug("kXAudioEngine[%p]:: !! error in hardware initaliaztion, stopping driver\n",this);
+    if(result==false)
         free_all();
-    }
     
     return result;
 }
@@ -280,8 +312,6 @@ void kXAudioEngine::free_all()
             out_streams[i]->release();
             out_streams[i]=NULL;
         }
-        
-        
         if(in_streams[i])
         {
             in_streams[i]->setSampleBuffer (NULL, 0);
@@ -343,8 +373,6 @@ IOBufferMemoryDescriptor *kXAudioEngine::my_alloc_contiguous(mach_vm_size_t size
         if (pa & ~mask)
             debug("kXAudioEngine[%p]::my_alloc_contiguous() - memory misaligned or beyond 2GB limit (%p)\n", this, (void *)pa);
         
-        
-        
         *phys = (dword)pa;
         *addr = desc->getBytesNoCopy();
         
@@ -368,7 +396,7 @@ void kXAudioEngine::my_free_contiguous(IOBufferMemoryDescriptor *desc, mach_vm_s
     if(size<PAGE_SIZE)
         size=PAGE_SIZE;
     
-    //	addr=((UInt8 *)addr)-PAGE_SIZE;
+    //    addr=((UInt8 *)addr)-PAGE_SIZE;
     UInt8 *buff = (UInt8 *)desc->getBytesNoCopy();
     
     // check
@@ -430,9 +458,9 @@ void kXAudioEngine::freeAudioStream(int chn,IOAudioStreamDirection direction)
 
 IOAudioStream *kXAudioEngine::createNewAudioStream(int chn,IOAudioStreamDirection direction, UInt32 sampleBufferSize)
 {
-    //debug("createNewAudioStream started\n");
-    
     IOAudioStream *audioStream = new IOAudioStream;
+    
+    UInt8 depth, width;
     
     if (audioStream)
     {
@@ -440,20 +468,20 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn,IOAudioStreamDirectio
         {
             audioStream->release();
         } else {
-            //IOAudioSampleRate rate;
+            IOAudioSampleRate rate;
             
             void *sampleBuffer=NULL;
             
             IOAudioStreamFormat format = {
-                1,												// num channels
-                kIOAudioStreamSampleFormatLinearPCM,			// sample format
-                kIOAudioStreamNumericRepresentationSignedInt,	// numeric format
-                bps,											// bit depth
-                bps,											// bit width
-                kIOAudioStreamAlignmentHighByte,				// high byte aligned - unused because bit depth == bit width
-                kIOAudioStreamByteOrderLittleEndian,			// little endian
-                true,											// format is mixable
-                0												// driver-defined tag - unused by this driver
+                1,                                                // num channels
+                kIOAudioStreamSampleFormatLinearPCM,            // sample format
+                kIOAudioStreamNumericRepresentationSignedInt,    // numeric format
+                bps,                                            // bit depth
+                bps,                                            // bit width
+                kIOAudioStreamAlignmentHighByte,                // high byte aligned - unused because bit depth == bit width
+                kIOAudioStreamByteOrderLittleEndian,            // little endian
+                true,                                            // format is mixable
+                0                                                // driver-defined tag - unused by this driver
             };
             
             kx_voice_buffer buffer;
@@ -467,7 +495,6 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn,IOAudioStreamDirectio
             buffer.size=sampleBufferSize;
             buffer.that=this;
             buffer.notify=-n_frames;
-            
             sampleBuffer=buffer.addr;
             
             // allocate memory:
@@ -477,7 +504,8 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn,IOAudioStreamDirectio
                 if(chn==0) // first voice?
                     need_notifier|=VOICE_OPEN_NOTIFY; // half/full buffer
                 
-                int mapping[]=
+                //This mapping has been replaced by a more flexible system which allows for customization using boot args
+                /*int mapping[]=
                 { //2,3,4,5,6,7,8,9 - kX:  front, rear, center+lfe, back
                     //1,2,3,4,5,6,7,8 - OSX: front, center+lfe, rear, back
                     2,3,6,7,4,5,8,9 };
@@ -485,7 +513,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn,IOAudioStreamDirectio
                 // wave 6/7 - center+lfe
                 // wave 4/5 - rear
                 // 8/9 - rear center/etc.
-                
+                */
                 int i=kx_allocate_multichannel(hw,bps,sampling_rate,need_notifier,&buffer,DEF_ASIO_ROUTING+mapping[chn]); // start with 2/3
                 
                 if(i>=0)
@@ -513,17 +541,14 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn,IOAudioStreamDirectio
                     hw->mtr_buffer.size = buffer.size;
                     hw->mtr_buffer.dma_handle = buffer.physical;
                     
-                    kx_writeptr(hw,FXIDX,0,0);
+                    //kx_writeptr(hw,FXIDX,0,0);
                     
                     //debug("createNewAudioStream FXBA:\n");
                     //kx_writeptr_prof(hw, FXBA, 0, hw->mtr_buffer.dma_handle);
                     kx_writeptr(hw, FXBA, 0, hw->mtr_buffer.dma_handle);
                     
-                    
-                    dword ch = (1 << (format.fNumChannels * 2)) - 1;	// 24bit needs 2 physical channels
-                    debug("createNewAudioStream (input) FXWCH/FXWC_K1: %x\n", ch);
-                    
-                    
+                    dword ch = (1 << (format.fNumChannels * 2)) - 1;    // 24bit needs 2 physical channels
+                    debug("createNewAudioStream FXWCH/FXWC_K1: %x\n", ch);
                     
                     if(hw->is_10k2)
                     {
@@ -532,62 +557,48 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn,IOAudioStreamDirectio
                     }
                     else
                         kx_writeptr(hw,FXWC_K1, 0, ch << 16);
-                    
-                    
-                    //kx_mtrec_select(hw, ch, 0);
                 }
+            
+            debug("kXAudioEngine[%p] Initializing sampling rates\n",this);
             
             // As part of creating a new IOAudioStream, its sample buffer needs to be set
             // It will automatically create a mix buffer should it be needed
             if(sampleBuffer && sampleBufferSize)
                 audioStream->setSampleBuffer(sampleBuffer, sampleBufferSize);
             
-            // This device only allows a single format and a choice of 2 different sample rates
-            //rate.fraction = 0;
-            //rate.whole = sampling_rate;
-            //audioStream->addAvailableFormat(&format, &rate, &rate);
-            
-#define N_FREQUNCYES 18
-            
-            //frequencyes higher than 48khz must be added at the beginning of the array and then the N_FREQUENCYES macro must be changed to make the new size of the array to be working, also the order is not important for mac since it does reorder the sample rates for us
-            if (!hw->disableFixes){
-                int supportedRates[N_FREQUNCYES] = { 64000, 88200, 96000, 176400, 192000, 8000, 9600, 11025, 12000, 16000, 18900, 22050, 24000, 32000, 37800, 44056, 44100, 48000};
-                
-                if (!hw->testImputs){
-                    supportedRates[4] = 0;
-                }
-                
-                if (!hw->is_10k2){
-                    supportedRates[0] = 0;
-                    supportedRates[1] =  0;
-                    supportedRates[2] =  0;
-                    supportedRates[3] =  0;
-                    supportedRates[4] =  0;
-                }
-                
-                for (int i=0; i<N_FREQUNCYES; i++){
-                    if (supportedRates[i] > 100){
-                        IOAudioSampleRate optRate;
-                    
-                        optRate.fraction = 0;
-                        optRate.whole = supportedRates[i];
-                    
-                        audioStream->addAvailableFormat(&format, &optRate, &optRate);
-                    }
-                }
+            if (hw->is_10k2){
+                depth = 24;
+                width = 32;
             }else{
-                IOAudioSampleRate optRate;
+                depth = 16;
+                width = 16;
+            }
+            
+            rate.fraction = 0;
+            
+            UInt32 supportedFreqs[] = {44100, 48000, 7000, 8000, 9600, 11025, 12000, 16000, 18900, 22050, 24000, 32000, 37800, 44056, 49716, 64000, 88200, 96000, 176400, custom_sampling_rate, sampling_rate};
+            
+            if (hw->is_edsp){
+                debug("kXAudioEngine[%p] The current sound card in an E-MU EDSP or similar, supported sampling rates are limited\n",this);
+            }
                 
-                optRate.fraction = 0;
-                optRate.whole = hw->defaultSampleRate;
+            unsigned int end = (hw->is_edsp) ? 2 : (sizeof(supportedFreqs) / sizeof(supportedFreqs[0]));
                 
-                audioStream->addAvailableFormat(&format, &optRate, &optRate);
+            for (unsigned int i = 0; i < end; i++){
+                rate.whole = supportedFreqs[i];
+                format.fBitDepth = depth;
+                format.fBitWidth = width;
+                audioStream->addAvailableFormat(&format, &rate, &rate);
+                
+                debug("kXAudioEngine[%p] Added sampling rate: %u\n",this, rate.whole);
+            }
+            
+            if ((custom_sampling_rate != sampling_rate) && !(hw->is_edsp)){
+                debug("kXAudioEngine[%p] Custom sampling rate: %u\n",this, custom_sampling_rate);
             }
             
             // Finally, the IOAudioStream's current format needs to be indicated
             audioStream->setFormat(&format);
-            
-            //debug("createNewAudioStream finished\n");
         }
     }
     
@@ -596,7 +607,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn,IOAudioStreamDirectio
 
 IOReturn kXAudioEngine::performAudioEngineStart()
 {
-    debug("kXAudioEngine[%p]::performAudioEngineStart() - %d\n", this,is_running);
+    // debug("kXAudioEngine[%p]::performAudioEngineStart() - %d\n", this,is_running);
     
     // When performAudioEngineStart() gets called, the audio engine should be started from the beginning
     // of the sample buffer.  Because it is starting on the first sample, a new timestamp is needed
@@ -633,53 +644,51 @@ IOReturn kXAudioEngine::performAudioEngineStart()
                 kx_wave_set_position(hw,i+32,0);
         }
         
-        debug("kXAudioEngine[%p]::performAudioEngineStart: start audio [%d; %x %x]\n",this,first,(unsigned)low,(unsigned)high);
+        // debug("kXAudioEngine[%p]::performAudioEngineStart: start audio [%d; %x %x]\n",this,first,(unsigned)low,(unsigned)high);
         kx_wave_start_multiple(hw,first,low,high);
     }
     
     // recording
-    if (hw->testImputs == true){
-        dword sz;
-        switch(hw->mtr_buffer.size)
-        {
-            case 384: sz=ADCBS_BUFSIZE_384; break;
-            case 448: sz=ADCBS_BUFSIZE_448; break;
-            case 512: sz=ADCBS_BUFSIZE_512; break;
-            case 640: sz=ADCBS_BUFSIZE_640; break;
-            case 768: sz=ADCBS_BUFSIZE_768; break;
-            case 896: sz=ADCBS_BUFSIZE_896; break;
-            case 1024: sz=ADCBS_BUFSIZE_1024; break;
-            case 1280: sz=ADCBS_BUFSIZE_1280; break;
-            case 1536: sz=ADCBS_BUFSIZE_1536; break;
-            case 1792: sz=ADCBS_BUFSIZE_1792; break;
-            case 2048: sz=ADCBS_BUFSIZE_2048; break;
-            case 2560: sz=ADCBS_BUFSIZE_2560; break;
-            case 3072: sz=ADCBS_BUFSIZE_3072; break;
-            case 3584: sz=ADCBS_BUFSIZE_3584; break;
-            case 4096: sz=ADCBS_BUFSIZE_4096; break;
-            case 5120: sz=ADCBS_BUFSIZE_5120; break;
-            case 6144: sz=ADCBS_BUFSIZE_6144; break;
-            case 7168: sz=ADCBS_BUFSIZE_7168; break;
-            case 8192: sz=ADCBS_BUFSIZE_8192; break;
-            case 10240: sz=ADCBS_BUFSIZE_10240; break;
-            case 12288: sz=ADCBS_BUFSIZE_12288; break;
-            case 14366: sz=ADCBS_BUFSIZE_14366; break;
-            case 16384: sz=ADCBS_BUFSIZE_16384; break;
-            case 20480: sz=ADCBS_BUFSIZE_20480; break;
-            case 24576: sz=ADCBS_BUFSIZE_24576; break;
-            case 28672: sz=ADCBS_BUFSIZE_28672; break;
-            case 32768: sz=ADCBS_BUFSIZE_32768; break;
-            case 40960: sz=ADCBS_BUFSIZE_40960; break;
-            case 49152: sz=ADCBS_BUFSIZE_49152; break;
-            case 57344: sz=ADCBS_BUFSIZE_57344; break;
-            default:
-            case 65536: sz=ADCBS_BUFSIZE_65536; break;
-        }
-        
-        //debug("performAudioEngineStart FXBS:\n");
-        //kx_writeptr_prof(hw, FXBS, 0, sz);
-        kx_writeptr(hw, FXBS, 0, sz);
+    dword sz;
+    switch(hw->mtr_buffer.size)
+    {
+        case 384: sz=ADCBS_BUFSIZE_384; break;
+        case 448: sz=ADCBS_BUFSIZE_448; break;
+        case 512: sz=ADCBS_BUFSIZE_512; break;
+        case 640: sz=ADCBS_BUFSIZE_640; break;
+        case 768: sz=ADCBS_BUFSIZE_768; break;
+        case 896: sz=ADCBS_BUFSIZE_896; break;
+        case 1024: sz=ADCBS_BUFSIZE_1024; break;
+        case 1280: sz=ADCBS_BUFSIZE_1280; break;
+        case 1536: sz=ADCBS_BUFSIZE_1536; break;
+        case 1792: sz=ADCBS_BUFSIZE_1792; break;
+        case 2048: sz=ADCBS_BUFSIZE_2048; break;
+        case 2560: sz=ADCBS_BUFSIZE_2560; break;
+        case 3072: sz=ADCBS_BUFSIZE_3072; break;
+        case 3584: sz=ADCBS_BUFSIZE_3584; break;
+        case 4096: sz=ADCBS_BUFSIZE_4096; break;
+        case 5120: sz=ADCBS_BUFSIZE_5120; break;
+        case 6144: sz=ADCBS_BUFSIZE_6144; break;
+        case 7168: sz=ADCBS_BUFSIZE_7168; break;
+        case 8192: sz=ADCBS_BUFSIZE_8192; break;
+        case 10240: sz=ADCBS_BUFSIZE_10240; break;
+        case 12288: sz=ADCBS_BUFSIZE_12288; break;
+        case 14366: sz=ADCBS_BUFSIZE_14366; break;
+        case 16384: sz=ADCBS_BUFSIZE_16384; break;
+        case 20480: sz=ADCBS_BUFSIZE_20480; break;
+        case 24576: sz=ADCBS_BUFSIZE_24576; break;
+        case 28672: sz=ADCBS_BUFSIZE_28672; break;
+        case 32768: sz=ADCBS_BUFSIZE_32768; break;
+        case 40960: sz=ADCBS_BUFSIZE_40960; break;
+        case 49152: sz=ADCBS_BUFSIZE_49152; break;
+        case 57344: sz=ADCBS_BUFSIZE_57344; break;
+        default:
+        case 65536: sz=ADCBS_BUFSIZE_65536; break;
     }
+    
+    //debug("performAudioEngineStart FXBS:\n");
+    //kx_writeptr_prof(hw, FXBS, 0, sz);
+    kx_writeptr(hw, FXBS, 0, sz);
     
     hw->asio_notification_krnl.active=1;
     
@@ -732,16 +741,12 @@ IOReturn kXAudioEngine::performAudioEngineStop()
     // recording
     //debug("performAudioEngineStop FXBS:\n");
     //kx_writeptr_prof(hw, FXBS, 0, 0);
-    
     kx_writeptr(hw, FXBS, 0, 0);
     
     is_running=0;
     
-    //kx_irq_disable(hw,INTE_EFXBUFENABLE);
-    
     return kIOReturnSuccess;
 }
-
 
 UInt32 kXAudioEngine::getCurrentSampleFrame()
 {
@@ -774,60 +779,45 @@ UInt32 kXAudioEngine::getCurrentSampleFrame()
 
 IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IOAudioStreamFormat *newFormat, const IOAudioSampleRate *newSampleRate)
 {
-    if (hw->disableFixes){
-        debug("kXAudioEngine[%p]::peformFormatChange(%p, %p, %p)\n", this, audioStream, newFormat, newSampleRate);
-    
-        dump_addr();
-        
-        return kIOReturnSuccess;
-    }
+    debug("kXAudioEngine[%p]::peformFormatChange(%p, %p, %p)\n", this, audioStream, newFormat, newSampleRate);
     
     if (newSampleRate)
     {
-        int sm = newSampleRate->whole;
-        debug("kXAudioEngine[%p]::peformFormatChange(%p, %p, %i)\n", this, audioStream->sampleBuffer, newFormat, sm);
-        
-        
-        for (int chn = 0; chn<n_channels; chn++){
+        if(!hw->is_edsp){
             
-            /*int smi = sm;
-            
-            
-            if (sm > 176400 && chn < 2){
-                    smi = 176400;
+            for(int i=0; i<n_channels;i++)
+            {
+                hw->voicetable[i].param.initial_pitch =  (word) kx_srToPitch(kx_sr_coeff(hw,newSampleRate->whole) >> 8);
+                hw->voicetable[i].param.pitch_target  =         kx_samplerate_to_linearpitch(kx_sr_coeff(hw,newSampleRate->whole));
+                hw->voicetable[i].sampling_rate       =         newSampleRate->whole;
             }
-            */
             
-            for (int v = 0; v<KX_NUMBER_OF_VOICES; v++){
-                
-                kx_wave_set_parameter(hw, v, chn, KX_VOICE_PITCH, (dword)sm); //smi);
-                
-                kx_wave_set_parameter(hw, v, chn, KX_VOICE_PITCH + KX_VOICE_UPDATE, (dword)sm); //smi);
-                
+            
+        }else{
+            switch (newSampleRate->whole) {
+                case 44100:
+                    kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
+                    kx_writefpga(hw,EMU_HANA_DEFCLOCK,EMU_HANA_DEFCLOCK_44_1K);
+                    kx_writefpga(hw,EMU_HANA_WCLOCK,EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X);
+                    IOSleep(200);
+                    kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
+                    break;
+                    
+                case 48000:
+                    kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
+                    kx_writefpga(hw,EMU_HANA_DEFCLOCK,EMU_HANA_DEFCLOCK_48K);
+                    kx_writefpga(hw,EMU_HANA_WCLOCK,EMU_HANA_WCLOCK_INT_48K | EMU_HANA_WCLOCK_1X);
+                    IOSleep(200);
+                    kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
+                    break;
+                    
+                default:
+                    // This should not be possible since we only specified 44100 and 48000 as valid sample rates
+                    debug("\t Internal Error - unknown sample rate selected.\n");
+                    break;
             }
         }
-        
-    }else{
-        
-        debug("kXAudioEngine[%p]::peformFormatChange Necessary items are NULL (%p, %p, %p)\n", this, audioStream, newFormat, newSampleRate);
     }
-    
-    /*
-    if (newSampleRate)
-    {
-        switch (newSampleRate->whole) {
-            case 48000:
-                debug("\t-> 48kHz selected\n");
-     
-                // Add code to switch hardware to 48kHz
-                break;
-            default:
-                // This should not be possible since we only specified 44100 and 48000 as valid sample rates
-                debug("\t Internal Error - unknown sample rate selected.\n");
-                break;
-        }
-    }
-    */
     
     dump_addr();
     
@@ -857,5 +847,6 @@ void kXAudioEngine::dump_addr(void)
           OSMemberFunctionCast(void *,this,&kXAudioEngine::clipOutputSamples),
           OSMemberFunctionCast(void *,this,&kXAudioEngine::convertInputSamples)
           );
-#endif	  
+#endif
 }
+

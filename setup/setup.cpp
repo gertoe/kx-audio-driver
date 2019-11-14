@@ -1,5 +1,5 @@
 // kX Setup
-// Copyright (c) Eugene Gavrilov, 2001-2014.
+// Copyright (c) Eugene Gavrilov, 2001-2018.
 // All rights reserved
 
 /*
@@ -35,6 +35,8 @@ int failure=0;
 int kx_uninstall_driver();
 int kx_install_driver();
 int kx_clean_all();
+
+#include "..\kxmixer\mixerfolder.h"
 
 int complex_ask(TCHAR *t,int cleanup_only,int procedure,int hw_type)
 {
@@ -126,6 +128,10 @@ void kx_setup(kWindow *w,int remove_only)
    check_version_and_uninstall(1);
    driver_removed=1;
   }
+ }
+ else
+ {
+  kx_clean_all(); // used to be in kx_install_driver()
  }
 
  // enumerate all the devices
@@ -295,8 +301,8 @@ void register_startup(void)
 {
   // register 'startup' item
   {
-    TCHAR dir[MAX_PATH]; dir[0]='"'; GetCurrentDirectory(MAX_PATH-1,dir+1);
-    strcat(dir,"\\kxmixer.exe\" --startup");
+    TCHAR dir[MAX_PATH]; get_mixer_folder(dir,_T("kxmixer.exe"),false,false); // assume kxsetup.exe is always 'native' (32 on 32, 64 on 64)
+    strcat(dir," --startup");
     HKEY hKey=0;
     if(RegOpenKeyEx(HKEY_LOCAL_MACHINE,_T("Software\\Microsoft\\Windows\\CurrentVersion\\Run"),NULL,KEY_ALL_ACCESS,&hKey)!=ERROR_SUCCESS)
     {
@@ -638,9 +644,7 @@ void unregister_asio(void)
     TCHAR regsvr_path[MAX_PATH];
     sprintf(regsvr_path,"%s\\%s",dir,"regsvr32.exe");
 
-    dir[0]='"';
-    GetCurrentDirectory(MAX_PATH-1,dir+1);
-    _tcscat(dir,"\\kxasio.dll\"");
+    get_mixer_folder(dir,_T("kxasio.dll"),false,false); // first, uninstall native version (32 on 32, 64 on 64)
 
     debug("kxmixer: calling regsvr to unregister ASIO [%s %s]\n",regsvr_path,dir);
     debug("kxmixer: regsvr32 returned: %d\n",spawnl(P_WAIT,regsvr_path,regsvr_path,"/s /u",dir,NULL));
@@ -655,7 +659,7 @@ void unregister_asio(void)
     TCHAR regsvr_path[MAX_PATH];
     sprintf(regsvr_path,"%s\\%s",dir,"regsvr32.exe");
 
-    _stprintf(dir,_T("\"%s\\kX Project\\kxasio.dll\""),getenv("ProgramFiles(x86)"));
+    get_mixer_folder(dir,_T("kxasio.dll"),false,true); // now force 32-bit path
 
     debug("kxmixer: calling regsvr to unregister ASIO [%s %s]\n",regsvr_path,dir);
     debug("kxmixer: regsvr32 returned: %d\n",spawnl(P_WAIT,regsvr_path,regsvr_path,"/s /u",dir,NULL));
@@ -675,9 +679,7 @@ void register_asio(void)
     TCHAR regsvr_path[MAX_PATH];
     sprintf(regsvr_path,"%s\\%s",dir,"regsvr32.exe");
 
-    dir[0]='"';
-    GetCurrentDirectory(MAX_PATH-1,dir+1);
-    _tcscat(dir,"\\kxasio.dll\"");
+    get_mixer_folder(dir,_T("kxasio.dll"),false,false); // first, install native version (32 on 32, 64 on 64)
 
     debug("kxmixer: calling regsvr to register ASIO [%s %s]\n",regsvr_path,dir);
     debug("kxmixer: regsvr32 returned: %d\n",spawnl(P_WAIT,regsvr_path,regsvr_path,"/s",dir,NULL));
@@ -691,9 +693,9 @@ void register_asio(void)
     TCHAR regsvr_path[MAX_PATH];
     sprintf(regsvr_path,"%s\\%s",dir,"regsvr32.exe");
 
-    _stprintf(dir,_T("\"%s\\kX Project\\kxasio.dll\""),getenv("ProgramFiles(x86)"));
+    get_mixer_folder(dir,_T("kxasio.dll"),false,true); // now, force 32-bit path
 
-    debug("kxmixer: calling regsvr to unregister ASIO [%s %s]\n",regsvr_path,dir);
+    debug("kxmixer: calling regsvr to register ASIO [%s %s]\n",regsvr_path,dir);
     debug("kxmixer: regsvr32 returned: %d\n",spawnl(P_WAIT,regsvr_path,regsvr_path,"/s",dir,NULL));
   }
 #endif
@@ -730,9 +732,7 @@ void unregister_shell(void)
 void register_shell(void)
 {
         TCHAR tmp_file[MAX_PATH];
-        TCHAR mixer_file[MAX_PATH]; mixer_file[0]='"';
-        GetCurrentDirectory(MAX_PATH-1,mixer_file+1);
-        _tcscat(mixer_file,_T("\\kxmixer.exe\""));
+        TCHAR mixer_file[MAX_PATH]; get_mixer_folder(mixer_file,_T("kxmixer.exe"),false,false); // native kxmixer (32 on 32, 64 on 64)
         _stprintf(tmp_file,"%s,%d",mixer_file,-IDR_ICON_KX);
         TCHAR cmd[MAX_PATH];
 
@@ -808,9 +808,10 @@ void register_shell(void)
 
 int kx_install_driver(void)
 {
-    debug(_T("kxsetup: install kx drivers\n"));
+    debug(_T("kxsetup: install kx driver stuff\n"));
 
-    kx_clean_all();
+    // don't clean all here, because system32/drivers/kx.sys is already installed
+    // call kx_clean_all(); earlier in kx_setup() instead
 
     debug(_T("kxsetup: install INF file\n"));
     install_inf_file();
@@ -911,7 +912,7 @@ const TCHAR *file_list[]=
     _T("kxmixer.exe"),
     _T("kxsetup.exe"),
     _T("kxsfi.dll"),
-    _T("sfman32.dll"),
+    // _T("sfman32.dll"), // don't touch sfman32.dll, since we don't install it ourselves anymore
     _T("drivers\\kx.sys"),
     _T("kx.sys"),
     _T("kxefx.kxs"),

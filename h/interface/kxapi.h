@@ -106,7 +106,7 @@ class kMenu;
 	#if defined(WIN32)
 		#define kString CString
 	#elif defined(__APPLE__)
-		#include "interface/kString.h"
+		#include "interface/kstring.h"
 	#endif
 #endif
 

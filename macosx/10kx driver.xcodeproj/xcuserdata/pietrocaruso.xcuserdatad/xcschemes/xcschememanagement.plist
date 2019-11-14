@@ -9,7 +9,17 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>FloatLib.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>edspctrl.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>edspctrl.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>4</integer>
@@ -19,7 +29,17 @@
 			<key>orderHint</key>
 			<integer>6</integer>
 		</dict>
+		<key>kX AC97.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>kX Manager.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>kX Manager.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>5</integer>
@@ -29,7 +49,17 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>kXAPI.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>kXAudioDriver.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>kXAudioDriver.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -39,43 +69,10 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
-	</dict>
-	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>44212BE10DECB47E00E06065</key>
+		<key>kxctrl.xcscheme_^#shared#^_</key>
 		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>44212C1A0DECB61B00E06065</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E8A3E96D0E8F20FE005D3692</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E8A3EA1D0E8F2735005D3692</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E8A6D9840E908BA40083971C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E8A6D9B50E908E940083971C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E8D8957C10687D6E006F33DC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
+			<key>orderHint</key>
+			<integer>3</integer>
 		</dict>
 	</dict>
 </dict>

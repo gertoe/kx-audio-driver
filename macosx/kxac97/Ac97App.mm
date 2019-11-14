@@ -1,7 +1,7 @@
 //
 //  Ac97App.mm
 //  kX AC97 control utility
-//  www.kxproject.com
+//  https://github.com/kxproject/ (previously www.kxproject.com)
 //
 //  Created by Dmitry P. Gorelov on 30.07.09.
 //  Copyright Dmitry Gorelov, 2009. All rights reserved.
@@ -29,10 +29,11 @@
 
 @implementation Ac97App
 
-#define TESTING
+//#define TESTING
 
 - (void)awakeFromNib
 {
+    nItems = 0;
     ac97 = [[Ac97Controller alloc] initWithNibName:@"Ac97" bundle:nil];
     
     for (int i = 0; i < MAX_KX_DEVICES; i++)
@@ -61,6 +62,7 @@
 
 		[tabView addTabViewItem:item];
 		[item release];
+        nItems++;
     }
 	
     if (![tabView numberOfTabViewItems])
@@ -87,24 +89,43 @@
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
 {
-    for (NSTabViewItem *item in [tabView tabViewItems])
+//    for (NSTabViewItem *item in [tabView tabViewItems])
+//    {
+//        int device = [[item identifier] intValue];
+//
+//        if ([ac97 kx] && ([ac97 kx]->get_device_num() == device))
+//            [self saveState:[ac97 kx]];
+//        else
+//        {
+//            iKX *kx = iKX::create(device);
+//            if (kx)
+//            {
+//                [self saveState:kx];
+//                delete kx;
+//            }
+//        }
+//    }
+    for (Byte i = 0; i < nItems; i++)
     {
-		int device = [[item identifier] intValue];
-		
-		if ([ac97 kx] && ([ac97 kx]->get_device_num() == device))
-			[self saveState:[ac97 kx]];
-		else
-		{
-			iKX *kx = iKX::create(device);
-			if (kx)
-			{
-				[self saveState:kx];
-				delete kx;
-			}
-		}
+        if ([ac97 kx] && ([ac97 kx]->get_device_num() == i))
+            [self saveState:[ac97 kx]];
+        else
+        {
+            iKX *kx = iKX::create(i);
+            if (kx)
+            {
+                [self saveState:kx];
+                delete kx;
+            }
+        }
     }
 	
     return NSTerminateNow;
+}
+
+-(BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication
+{
+    return YES;
 }
 
 - (void)dealloc
