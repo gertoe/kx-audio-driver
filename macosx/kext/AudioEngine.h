@@ -26,7 +26,6 @@
 #define MAX_CHANNELS_	16
 
 #define MAPPING_NUM_CHANNELS 8
-#define MAX_SAMPLE_RATE_DIGITS 6
 
 #ifndef KX_INTERNAL
 	#error invalid configuration
@@ -47,12 +46,7 @@ public:
 	UInt8	n_channels;
 	
 	int		is_running;
-    
-    UInt8 defMapping[MAPPING_NUM_CHANNELS] = {
-        //2,3,4,5,6,7,8,9 - kX:  front, rear, center+lfe, back
-        //1,2,3,4,5,6,7,8 - OSX: front, center+lfe, rear, back
-        2,3,6,7,4,5,8,9
-    };
+    bool hama_experimental;
     
     //custom saplig rate and channels mapping code
     UInt8 mapping[MAPPING_NUM_CHANNELS];
@@ -62,6 +56,10 @@ public:
     // wave 4/5 - rear
     // 8/9 - rear center/etc.
     
+    //boot args stuff
+    UInt8 customMapping[MAPPING_NUM_CHANNELS];
+    char customSampleRate[KXBootArgValueLength];
+    char customMultiplyer[KXBootArgValueLength];
     
     
 		//kx_voice_buffer *in_buffers_[MAX_CHANNELS_];
@@ -96,6 +94,10 @@ public:
 
     virtual IOReturn clipOutputSamples(const void *mixBuf, void *sampleBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
     virtual IOReturn convertInputSamples(const void *sampleBuf, void *destBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
+    
+    virtual inline bool inRange(const int, const int, const int);
+    virtual inline UInt32 stringToNumber_dummy(const char *str);
+    
 };
 
 #endif /* _KXAUDIOENGINE_H */

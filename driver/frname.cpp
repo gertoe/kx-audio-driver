@@ -16,11 +16,8 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-
-
-
-
-int kx_get_friendly_name(unsigned int device,unsigned int subsys,unsigned int chiprev,
+//i don't really get why he used all those references while he just needed a reference to the kx object
+int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, const unsigned int chiprev,
 						 char *tmp_str,
 						 unsigned char &is_51,
 						 unsigned char &has_surdac,
@@ -36,7 +33,7 @@ int kx_get_friendly_name(unsigned int device,unsigned int subsys,unsigned int ch
 						 unsigned char &is_zsnb,
 						 unsigned char &is_cardbus);
 
-int kx_get_friendly_name(unsigned int device,unsigned int subsys,unsigned int chiprev,
+int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, const unsigned int chiprev,
 		char *tmp_str,
 		unsigned char &is_51,
 		unsigned char &has_surdac,
@@ -94,6 +91,7 @@ int kx_get_friendly_name(unsigned int device,unsigned int subsys,unsigned int ch
       case 0x40011102:
        if(is_10k2==0) // [1]
        {
+        //this card is rare, be proud of owning one
         strncpy(tmp_str,"E-MU APS",KX_MAX_STRING);
         is_aps=1;
         lack_ac97=1;
@@ -433,7 +431,7 @@ int kx_get_friendly_name(unsigned int device,unsigned int subsys,unsigned int ch
        else // [90]
        {
         //strncpy(tmp_str,"SB0360 10k2",KX_MAX_STRING); // audigy2 ZS Platinum Pro + sb290
-           
+           //expensive stuff
            strncpy(tmp_str,"SB Audigy 2 ZS",KX_MAX_STRING);
            
         is_a2ex=1;
@@ -484,6 +482,7 @@ int kx_get_friendly_name(unsigned int device,unsigned int subsys,unsigned int ch
      case 0x20071102: // [93]
        //strncpy(tmp_str,"SB0380 10k2",KX_MAX_STRING); // audigy4 PRO
          
+         //even more expensive stuff
          strncpy(tmp_str,"SB Audigy 4 PRO",KX_MAX_STRING);
          
        break;
@@ -502,21 +501,21 @@ int kx_get_friendly_name(unsigned int device,unsigned int subsys,unsigned int ch
        // has ac97 codec
        break;
      case 0x10211102: // [102]
-       {
         //strncpy(tmp_str,"SB0610 10k2",KX_MAX_STRING);
            
            strncpy(tmp_str,"SB Audigy 4",KX_MAX_STRING);
            
         is_a4=1;
         // has ac97
-       }
        break;
      case 0x10241102:
          //strncpy(tmp_str,"SB1550 10k2",KX_MAX_STRING); // audigy rx experimental
          
+         //get this card if you want to use this driver on a modern system
          strncpy(tmp_str,"SB Audigy RX",KX_MAX_STRING);
          
          is_a4=1;
+         //has ac97, since it's just an audigy 4 with a pcie bridge chip
          break;
      case 0x10221102: // [104]
        //strncpy(tmp_str,"SB1022 10k2",KX_MAX_STRING); // Audigy2 value ?
@@ -597,6 +596,7 @@ int kx_get_friendly_name(unsigned int device,unsigned int subsys,unsigned int ch
        break;
 
      default:
+         //if you are in this case you own some really wired sound cards
        strncpy(tmp_str,"kX audio driver",KX_MAX_STRING);
        ret=-1;
        break;

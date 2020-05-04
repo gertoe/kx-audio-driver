@@ -16,7 +16,6 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-
 /* This is the FPGA firmware for EMU Systems's Micro Dock,
  * Present in the EMU1616 and EMU1616m products.
  * It is nicknamed "micro_dock".

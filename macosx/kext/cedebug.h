@@ -24,6 +24,7 @@
 #define KXPROJECT_DEBUG_H
 
 #define DEBUGLOGGING
+//#define D_DEBUGLOGGING
 #define CONSOLELOGGING
 	// #define DEBUGGING		// additional code to check various buffers
 
@@ -41,6 +42,12 @@
 	#endif
 #else
 	#define debug(message...) ;
+#endif
+
+#ifdef D_DEBUGLOGGING
+    #define ddebug(message...) do { debug(message); } while (0)
+#else
+    #define ddebug(message...) ;
 #endif
 																
 #endif // KXPROJECT_DEBUG_H

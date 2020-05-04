@@ -2354,6 +2354,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 089C166AFE841209C02AAC07 /* SampleAudioDriver */;
@@ -2579,9 +2580,10 @@
 		44212BE50DECB47E00E06065 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2.20b0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -2591,13 +2593,16 @@
 					"KX_DEBUG_FUNC=hw->cb.debug_func",
 					KX_DEBUG,
 				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = kext/Info.plist;
 				KERNEL_MODULE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.kXProject.driver.kXAudioDriver;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = kXAudioDriver;
-				VALID_ARCHS = "x86_64 i386";
+				SDKROOT = macosx;
+				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = kext;
 			};
 			name = Deployment;
@@ -2605,10 +2610,13 @@
 		44212C1D0DECB66900E06065 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_X86_VECTOR_INSTRUCTIONS = sse4.1;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
 				GCC_ENABLE_KERNEL_DEVELOPMENT = YES;
+				GCC_ENABLE_SSE41_EXTENSIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"KERNEL_PRIVATE=1",
@@ -2618,11 +2626,14 @@
 					"KX_DEBUG_FUNC=hw->cb.debug_func",
 					KX_DEBUG,
 				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
 				KERNEL_MODULE = YES;
 				LIBRARY_STYLE = STATIC;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MODULE_IOKIT = YES;
 				PRODUCT_NAME = FloatLib;
+				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
 			};
 			name = Deployment;
@@ -2661,11 +2672,13 @@
 		E8A3E96F0E8F20FE005D3692 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				INSTALL_PATH = "@executable_path";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = kXAPI;
-				VALID_ARCHS = x86_64;
+				SDKROOT = macosx10.6;
+				VALID_ARCHS = "x86_64 i386";
 			};
 			name = Deployment;
 		};
@@ -2691,9 +2704,12 @@
 		E8A6D9B80E908E950083971C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_VERSION = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = edspctrl;
-				VALID_ARCHS = x86_64;
+				SDKROOT = macosx10.6;
+				VALID_ARCHS = "x86_64 i386";
 			};
 			name = Deployment;
 		};

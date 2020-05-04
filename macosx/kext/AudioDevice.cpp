@@ -39,9 +39,13 @@ OSDefineMetaClassAndStructors(kXAudioDevice, IOAudioDevice)
 
 bool kXAudioDevice::init(OSDictionary *dictionary)
 {
+    //debug stuff, please keep it
+    //PE_enter_debugger("start-up");
+    
     debug(DBGCLASS"[%p]::init: --- driver start-up, version %s -----------------------------------------\n",this,DRIVER_VERSION);
     
-    //PE_enter_debugger("start-up");
+    //if you comment out or delete this line you can go fork yourself
+    IOLog("** Please don't support any Tonymacx86 commercial rubbish, use the dear old handcrafted vanilla ;-) **");
     
     pciDevice=NULL;
     deviceMap=NULL;
@@ -68,6 +72,8 @@ bool kXAudioDevice::initHardware(IOService *provider)
     
     char tmp[KXBootArgValueLength];
     
+    //this is a driver-disable security switch
+    //we need this because we srew way up too mutch sometimes
     if (PE_parse_boot_argn("-kxoff", tmp, KXBootArgValueLength)){
         debug(DBGCLASS"[%p] Driver disabled by disable boot arg\n",this);
         return false;
@@ -155,7 +161,8 @@ bool kXAudioDevice::initHardware(IOService *provider)
     pciDevice->setIOEnable(true);
     pciDevice->setBusMasterEnable(true);
     
-    setManufacturerName("Eugene Gavrilov, kX Project, Mod by ITzTravelInTime");
+    //always give credits were the credits go
+    setManufacturerName("Eugene Gavrilov, kX Project, Mod by Alejandro, ITzTravelInTime (Pietro Caruso), BiOM");
     setDeviceTransportType(kIOAudioDeviceTransportTypePCI);
     
     kx_callbacks cb;
@@ -336,7 +343,7 @@ bool kXAudioDevice::createAudioEngine()
     kXAudioEngine *audioEngine = NULL;
     // IOAudioControl *control;
     
-    debug(DBGCLASS"[%p]::createAudioEngine() ---------------------------------------------------\n", this);
+    debug(DBGCLASS"[%p]::createAudioEngine()\n", this);
     
     audioEngine = new kXAudioEngine;
     if (!audioEngine)
@@ -490,7 +497,8 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
     kx_set_dsp_register(hw,prolog_pgm,"in6vol",0x2000*65535);
     kx_set_dsp_register(hw,prolog_pgm,"in7vol",0x2000*65535);
     
-    int hs = (-100 << 16) + (0);
+    //why always complaining about shifting negative signed values?
+    int hs = ((-100) << 16) + (0);
     
     {
         
@@ -732,6 +740,9 @@ IOReturn kXAudioDevice::volumeChanged(IOAudioControl *volumeControl, SInt32 oldV
         
         debug(DBGCLASS"[%p]::volumeChanged(%p, %d, %d): chn: %d -> %x; %d (%s)\n",
               this, volumeControl, (int)oldValue, (int)newValue, (int)volumeControl->getChannelID(),(unsigned int)vol,epilog_pgm,regs[id]);
+    }else{
+        debug(DBGCLASS"[%p]::volumeChanged(%p, %d, %d): !!! internal error chn: %d %d\n",
+        this, volumeControl, (int)oldValue, (int)newValue, (int)volumeControl->getChannelID(),epilog_pgm);
     }
     
     // Add hardware volume code change
@@ -846,9 +857,9 @@ IOReturn kXAudioDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldValue
 {
     debug(DBGCLASS"[%p]::gainChanged(%p, %i, %i)\n", this, gainControl, (int)oldValue, (int)newValue);
     
-        if (gainControl) {
-            debug("\t-> Channel %u\n", (unsigned int)(gainControl->getChannelID()));
-        }
+    if (gainControl) {
+        debug("\t-> Channel %u\n", (unsigned int)(gainControl->getChannelID()));
+    }
     
     // Add hardware gain change code here
     if (gainControl && prolog_pgm!=-1){
@@ -856,6 +867,7 @@ IOReturn kXAudioDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldValue
         int id = gainControl->getChannelID();
         gain=(dword)((newValue+1)*(0x2000)); // these are +12dB volumes
         
+        /*
         char chStr[7] = "in0vol";
         if (id >= 1 && id <= 8){
             chStr[2] = '0' + (id - 1);
@@ -863,8 +875,9 @@ IOReturn kXAudioDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldValue
         }else{
             debug(DBGCLASS"[%p]::gainChanged internal error: Invalid value for channel ID: %i\n", this, id);
         }
+        */
         
-        /*if(id == 1){
+        if(id == 1){
             kx_set_dsp_register(hw,prolog_pgm,"in0vol",gain);
         }
         if(id == 2){
@@ -887,7 +900,7 @@ IOReturn kXAudioDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldValue
         }
         if(id == 8){
             kx_set_dsp_register(hw,prolog_pgm,"in7vol",gain);
-        }*/
+        }
     }
     
     return kIOReturnSuccess;
@@ -916,7 +929,6 @@ IOReturn kXAudioDevice::gainChanged(IOAudioControl *gainControl, SInt32 oldValue
  }
  */
 
-
 #define prep_in(type) type *in; in=(type *)(((dword *)inStruct+1));
 #define prep_out(type) type *out; out=(type *)(((dword *)outStruct+1));
 
@@ -939,6 +951,8 @@ IOReturn kXAudioDevice::user_request(const void* inStruct, void* outStruct,uint3
     
     prop&=~(KX_TOPO|KX_WAVE);
     
+    
+    //your mom will be proud of all those switch cases
     switch(prop)
     {
         case KX_PROP_AC97+KX_PROP_GET:

@@ -361,12 +361,23 @@ else
 
     if(!can_passthru)
     {
+         /*
          OP(MACINTS,KX_FX2(0),C_0,asio0,C_4);
          if(is_aps || is_10k2 || (!is_51)) // on 5.1: conflicts with analog sub/center
          {
               OP(MACINTS,KX_FX2(1),C_0,asio1,C_4);
               OP(MACINTS,KX_FX2(2),C_0,asio2,C_4);
          }
+         */
+        
+        //TODO: check this code and debug it, for now it's left here untouched, from BiOM's fork
+        OP(MACINTS,KX_FX2(0),C_0,asio0,C_4);
+        OP(MACINTS,KX_FX2(1),C_0,asio1,C_4);
+        if(is_aps || is_10k2 || (!is_51)) // on 5.1: conflicts with analog sub/center
+        {
+             OP(MACINTS,KX_FX2(2),C_0,asio2,C_4);
+        }
+        
          OP(MACINTS,KX_FX2(3),C_0,asio3,C_4);
          OP(MACINTS,KX_FX2(4),C_0,asio4,C_4);
          OP(MACINTS,KX_FX2(5),C_0,asio5,C_4);

@@ -145,6 +145,12 @@ FOUND: // bus,dev,func contain right values
  hw->drum_channel=10;
 
  char tmp_str[KX_MAX_STRING];
+    
+    //needed on older os x versions because the next code do not guaratee that the string is 0 terminated
+    for (uint i = 0; i < KX_MAX_STRING; i++){
+        tmp_str[i] = '\0';
+    }
+    
  kx_get_friendly_name(hw->pci_device,hw->pci_subsys,hw->pci_chiprev,tmp_str,
                 hw->is_51,hw->has_surdac,
         hw->is_aps,hw->is_10k2,hw->is_a2,hw->is_a2ex,hw->is_k8,hw->is_a4,hw->is_edsp,
@@ -156,6 +162,11 @@ FOUND: // bus,dev,func contain right values
  *p=' '; p++; *p='['; p++;
  itoax(p,hw->port); p+=4;
  *p=']'; p++; *p=0;
+    
+    //other 0 termination check for mac os x
+    for (size_t i = strlen(tmp_str); i < KX_MAX_STRING; i++){
+        tmp_str[i] = '\0';
+    }
 
  strncpy(hw->card_name,tmp_str,KX_MAX_STRING);
  debug(DLIB,"card name: '%s'\n",hw->card_name);
