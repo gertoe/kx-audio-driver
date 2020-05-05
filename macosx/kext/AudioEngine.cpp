@@ -158,8 +158,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
     
     //about the multiplyer, it turns out some users have problems with it and some other users have problems without it, so it's better to have it changable via boot arg, and so users can just use whatever value in the supported range to try to fix their issues and all without having to touch the code
     
-    //maybe it's better to use an multiplyer by default so we avoid having to deal with problems in the majority of cases, for example some programs may still get us problems even if others works flawlessly, this should make the usage of the driver pretty painless for a lot of people by default and in case of problems the boot arg can solve them
-    n_frames = (int)(4 * (hw->mtr_buffer.size * 8 / bps / n_channels));
+    n_frames = (int)(hw->mtr_buffer.size * 8 / bps / n_channels);
     
     if (PE_parse_boot_argn("_kxcfm", customMultiplyer, KXBootArgValueLength)){
            
@@ -168,7 +167,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
         UInt32 mul = stringToNumber_dummy(customMultiplyer);
         
         //limited to 128 for "safety" reasons, 128x is already an insane value
-        if ((mul > 1) && (mul <= 128)){
+        if ((mul >= 1) && (mul <= 128)){
             debug(DBGCLASS"[%p]::init: custom n_frames multiplyer value is %u\n",this, (unsigned int)mul);
             n_frames = (int)(mul * (hw->mtr_buffer.size * 8 / bps / n_channels));
         }else{

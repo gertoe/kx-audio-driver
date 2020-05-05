@@ -42,10 +42,13 @@ bool kXAudioDevice::init(OSDictionary *dictionary)
     //debug stuff, please keep it
     //PE_enter_debugger("start-up");
     
-    debug(DBGCLASS"[%p]::init: --- driver start-up, version %s -----------------------------------------\n",this,DRIVER_VERSION);
+    debug(DBGCLASS"[%p]::init: -------- driver start-up, version %s -----------------------------------------\n",this,DRIVER_VERSION);
     
-    //if you comment out or delete this line you can go fork yourself
-    IOLog("** Please don't support any Tonymacx86 commercial rubbish, use the dear old handcrafted vanilla ;-) **");
+    //if you comment out or delete those line you can go fork yourself, you can't defeat our propaganda easter eggs for good hackintoshing
+    IOLog("\n\n** Please don't support any Tonymacx86 commercial rubbish, go to insanelymac.com, hackintosh-forum.de, macOS86.it and r/Hackintosh **\n\n");
+    
+    IOLog("** Please don't support any scammers asking you to pay for a hackintosh installation, those people are ignorants, and you will loose a lot of money and probably end up with a bad or poorly done installation. Hackintoshing is about freedom so let it be free for enyone **\n\n");
+    
     
     pciDevice=NULL;
     deviceMap=NULL;
@@ -222,7 +225,14 @@ bool kXAudioDevice::initHardware(IOService *provider)
     
     char device_name[KX_MAX_STRING];
     //strncpy(device_name,"kX ",KX_MAX_STRING);
-    strncat(device_name,hw->card_name,KX_MAX_STRING);
+    
+    for (uint i = 0; i < KX_MAX_STRING; i++){
+        device_name[i] = '\0';
+    }
+    
+    //strncat(device_name,hw->card_name,KX_MAX_STRING);
+    
+    strncpy(device_name, hw->card_name, KX_MAX_STRING);
     
     setDeviceName(device_name);
     setDeviceShortName("kXAudio");
