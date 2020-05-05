@@ -2600,6 +2600,7 @@
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.kXProject.driver.kXAudioDriver;
 				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kXProject.driver.kXAudioDriver;
 				PRODUCT_NAME = kXAudioDriver;
 				SDKROOT = macosx;
 				VALID_ARCHS = x86_64;
@@ -2626,7 +2627,7 @@
 					"KX_DEBUG_FUNC=hw->cb.debug_func",
 					KX_DEBUG,
 				);
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
 				KERNEL_MODULE = YES;
 				LIBRARY_STYLE = STATIC;

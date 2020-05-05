@@ -501,6 +501,7 @@ int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, c
        // has ac97 codec
        break;
      case 0x10211102: // [102]
+     case 0x10231102: // audigy 4 variant
         //strncpy(tmp_str,"SB0610 10k2",KX_MAX_STRING);
            
            strncpy(tmp_str,"SB Audigy 4",KX_MAX_STRING);
