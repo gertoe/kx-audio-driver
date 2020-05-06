@@ -94,7 +94,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
             
             num = customMapping[i] - '0';
             
-            if ((num < 2) || (num > 9)){
+            if (!inRange(num, 2, 9)){
                 
                 debug("kXAudioEngine[%p]::init: !!! remapping channel [%d] using illegal value [%d] !!!\n",this,i, num);
                 
@@ -127,7 +127,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
         custom_sampling_rate = stringToNumber_dummy(customSampleRate);
         
         //i mean who needs a smapling rate lower than 1k? i don't even know if the i/o kit allows for sampling rates this low - ITzTravelInTime
-        if (custom_sampling_rate < 1000 || custom_sampling_rate > 192000){
+        if (inRange(custom_sampling_rate, 1000, 192000)){
             
             debug("kXAudioEngine[%p]::init: new custom sampling rate \"%s\" is out of the supported range [1000, 192000] or uses illegal characters\n",this, customSampleRate);
             
@@ -167,7 +167,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
         UInt32 mul = stringToNumber_dummy(customMultiplyer);
         
         //limited to 128 for "safety" reasons, 128x is already an insane value
-        if ((mul >= 1) && (mul <= 128)){
+        if (inRange(mul, 1, 128)){
             debug(DBGCLASS"[%p]::init: custom n_frames multiplyer value is %u\n",this, (unsigned int)mul);
             n_frames = (int)(mul * (hw->mtr_buffer.size * 8 / bps / n_channels));
         }else{
@@ -221,7 +221,13 @@ bool kXAudioEngine::initHardware(IOService *provider)
     
     char device_name[KX_MAX_STRING];
     //strncpy(device_name,"kX ",KX_MAX_STRING);
-    strncat(device_name,hw->card_name,KX_MAX_STRING);
+    
+    for (uint i = 0; i < KX_MAX_STRING; i++){
+        device_name[i] = '\0';
+    }
+    //strncat(device_name,hw->card_name,KX_MAX_STRING);
+    
+    strncpy(device_name, hw->card_name, KX_MAX_STRING);
     
     setDescription(device_name);
     
