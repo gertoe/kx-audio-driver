@@ -45,10 +45,11 @@ bool kXAudioDevice::init(OSDictionary *dictionary)
     debug(DBGCLASS"[%p]::init: -------- driver start-up, version %s -----------------------------------------\n",this,DRIVER_VERSION);
     
     //if you comment out or delete those line you can go fork yourself, you can't defeat our propaganda easter eggs for good hackintoshing
-    IOLog("\n\n** Please don't support any Tonymacx86 commercial rubbish, go to insanelymac.com, hackintosh-forum.de, macOS86.it and r/Hackintosh **\n\n");
+    IOLog("\n\n** Please don't support any Tonymacx86 commercial rubbish, go to insanelymac.com, r/Hackintosh, hackintosh-forum.de and macOS86.it **\n\n");
     
-    IOLog("** Please don't support any scammers asking you to pay for a hackintosh installation, those people are ignorants, and you will loose a lot of money and probably end up with a bad or poorly done installation. Hackintoshing is about freedom so let it be free for enyone **\n\n");
+    IOLog("\n\n** Please don't support any scammers asking you to pay for a hackintosh installation, those people are most likely ignorants, and you will loose a lot of money and probably end up with a bad or poorly done installation. Hackintoshing is about freedom so let it be free for enyone **\n\n");
     
+
     
     pciDevice=NULL;
     deviceMap=NULL;
@@ -76,7 +77,7 @@ bool kXAudioDevice::initHardware(IOService *provider)
     char tmp[KXBootArgValueLength];
     
     //this is a driver-disable security switch
-    //we need this because we srew way up too mutch sometimes
+    //we need this because we can screw up way too mutch sometimes
     if (PE_parse_boot_argn("-kxoff", tmp, KXBootArgValueLength)){
         debug(DBGCLASS"[%p] Driver disabled by disable boot arg\n",this);
         return false;
@@ -508,7 +509,7 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
     kx_set_dsp_register(hw,prolog_pgm,"in7vol",0x2000*65535);
     
     //why always complaining about shifting negative signed values?
-    int hs = ((-100) << 16) + (0);
+    int hs = (int)(((unsigned int)(-100)) << 16) + (0);
     
     {
         

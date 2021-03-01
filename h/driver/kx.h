@@ -101,6 +101,7 @@ struct kx_mixer_control
 #define MAX_MPU_BUFFER          4096
 #define MAX_MPU_DEVICES         2
 
+/** Represents a memory buffer*/
 struct kx_voice_buffer
 {
  int pageindex; // do not fill it yourself
