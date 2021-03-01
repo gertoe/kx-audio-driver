@@ -73,7 +73,12 @@
  #define dane_alloc(size) malloc(size)
  #define dane_free(block) free(block)
  // your includes
- #include "i386.h"
+//#include "i386.h"
+#if defined(__GNUC__)
+#include "../h/defs.h"
+#else
+#include "defs.h"
+#endif
  #include "dsp.h"
 #endif
 

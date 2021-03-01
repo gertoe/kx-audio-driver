@@ -24,6 +24,8 @@
 
 #if defined(i386) || defined(I386) || defined(IX86) || defined(__I386__) || defined(_IX86) || defined(_M_IX86) || defined(AMD64) || defined(__x86_64__) || defined(__i386__)
  #include "i386.h"
+#elif defined(__PPC__) || defined(__ppc__) || defined(_ARCH_PPC) || defined(__POWERPC__) || defined(__powerpc) || defined(__powerpc__)
+#include "PPC.h"
 #else
  #error "Unknown processor architecture"
 #endif

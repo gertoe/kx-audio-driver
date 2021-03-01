@@ -46,6 +46,9 @@
 		44212D510DECBF2900E06065 /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
 		44212D8D0DECBF5100E06065 /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
 		44D7FC1D0E3E9E0F00612F22 /* multichn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44D7FC1C0E3E9E0F00612F22 /* multichn.cpp */; };
+		C612EA4925ED12C70006C564 /* PPC.h in Headers */ = {isa = PBXBuildFile; fileRef = C612EA4825ED12C70006C564 /* PPC.h */; };
+		C612EA4A25ED12C70006C564 /* PPC.h in Headers */ = {isa = PBXBuildFile; fileRef = C612EA4825ED12C70006C564 /* PPC.h */; };
+		C612EA4B25ED12C70006C564 /* PPC.h in Headers */ = {isa = PBXBuildFile; fileRef = C612EA4825ED12C70006C564 /* PPC.h */; };
 		E84375DE1527B2C100B8C85C /* asio.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C51527B2C100B8C85C /* asio.h */; };
 		E84375E11527B2C100B8C85C /* asiodrivers.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C61527B2C100B8C85C /* asiodrivers.h */; };
 		E84375E41527B2C100B8C85C /* asiodrvr.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C71527B2C100B8C85C /* asiodrvr.h */; };
@@ -627,6 +630,7 @@
 		449EE3DF0DE7A49D000769A3 /* wave.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = wave.cpp; path = ../driver/wave.cpp; sourceTree = "<group>"; };
 		449EE4590DE7A807000769A3 /* Compat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Compat.cpp; path = kext/Compat.cpp; sourceTree = "<group>"; };
 		44D7FC1C0E3E9E0F00612F22 /* multichn.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = multichn.cpp; path = ../driver/multichn.cpp; sourceTree = "<group>"; };
+		C612EA4825ED12C70006C564 /* PPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPC.h; sourceTree = "<group>"; };
 		E84374C51527B2C100B8C85C /* asio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asio.h; sourceTree = "<group>"; };
 		E84374C61527B2C100B8C85C /* asiodrivers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asiodrivers.h; sourceTree = "<group>"; };
 		E84374C71527B2C100B8C85C /* asiodrvr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asiodrvr.h; sourceTree = "<group>"; };
@@ -1167,6 +1171,7 @@
 				E84375281527B2C100B8C85C /* gui */,
 				E84375421527B2C100B8C85C /* hw */,
 				E843754B1527B2C100B8C85C /* i386.h */,
+				C612EA4825ED12C70006C564 /* PPC.h */,
 				E843754C1527B2C100B8C85C /* interface */,
 				E84375611527B2C100B8C85C /* kx3d */,
 				E84375651527B2C100B8C85C /* legacy */,
@@ -1999,6 +2004,7 @@
 				E843781E1527B2C200B8C85C /* raros.hpp in Headers */,
 				E84378211527B2C200B8C85C /* rartypes.hpp in Headers */,
 				E84378241527B2C200B8C85C /* rarvm.hpp in Headers */,
+				C612EA4925ED12C70006C564 /* PPC.h in Headers */,
 				E84378271527B2C200B8C85C /* rawread.hpp in Headers */,
 				E843782A1527B2C200B8C85C /* rdwrfn.hpp in Headers */,
 				E843782D1527B2C200B8C85C /* recvol.hpp in Headers */,
@@ -2071,6 +2077,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C612EA4A25ED12C70006C564 /* PPC.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2196,6 +2203,7 @@
 				E84378DA1527B2C200B8C85C /* inffixed.h in Headers */,
 				E84378DD1527B2C200B8C85C /* inftrees.h in Headers */,
 				E84378E01527B2C200B8C85C /* infutil.h in Headers */,
+				C612EA4B25ED12C70006C564 /* PPC.h in Headers */,
 				E84378E31527B2C200B8C85C /* trees.h in Headers */,
 				E84378E61527B2C200B8C85C /* unzip.h in Headers */,
 				E84378E91527B2C200B8C85C /* zconf.h in Headers */,
@@ -2630,7 +2638,7 @@
 				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
 				KERNEL_MODULE = YES;
 				LIBRARY_STYLE = STATIC;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MODULE_IOKIT = YES;
 				PRODUCT_NAME = FloatLib;
 				SDKROOT = macosx;
@@ -2672,12 +2680,12 @@
 		E8A3E96F0E8F20FE005D3692 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				INSTALL_PATH = "@executable_path";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = kXAPI;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				VALID_ARCHS = "x86_64 i386";
 			};
 			name = Deployment;
@@ -2685,6 +2693,7 @@
 		E8A3EA210E8F2735005D3692 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = kxmanager/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -2695,7 +2704,7 @@
 		E8A6D9870E908BA50083971C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				PRODUCT_NAME = kxctrl;
 				VALID_ARCHS = "x86_64 i386";
 			};
@@ -2704,11 +2713,11 @@
 		E8A6D9B80E908E950083971C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				GCC_VERSION = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = edspctrl;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				VALID_ARCHS = "x86_64 i386";
 			};
 			name = Deployment;
@@ -2716,6 +2725,7 @@
 		E8D8958010687D6E006F33DC /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = kxac97/kxac97_Prefix.pch;

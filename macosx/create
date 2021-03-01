@@ -67,6 +67,7 @@ cp -R ./h/interface ./distr/Developer/Examples/kXSDK/h
 cp ./h/debug.h ./distr/Developer/Examples/kXSDK/h/debug.h
 cp ./h/defs.h ./distr/Developer/Examples/kXSDK/h/defs.h
 cp ./h/i386.h ./distr/Developer/Examples/kXSDK/h/i386.h
+cp ./h/PPC.h ./distr/Developer/Examples/kXSDK/h/PPC.h
 cp ./h/vers.h ./distr/Developer/Examples/kXSDK/h/vers.h
 
 echo === Making driver package...
