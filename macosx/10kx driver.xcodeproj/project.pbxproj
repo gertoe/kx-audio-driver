@@ -3303,7 +3303,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = kext/Info.plist;
 				KERNEL_MODULE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.kXProject.driver.kXAudioDriver;
 				ONLY_ACTIVE_ARCH = NO;
@@ -3364,7 +3364,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = "kXAudioDriver copy-Info.plist";
 				KERNEL_MODULE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.kXProject.driver.kXAudioDriver;
 				ONLY_ACTIVE_ARCH = NO;
