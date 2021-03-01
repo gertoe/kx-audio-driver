@@ -23,7 +23,9 @@
 #include "AudioDevice.h"
 #include "AudioEngine.h"
 
+#if !defined(KX_LIBLESS)
 #include "IOAudioBlitterLib.h"
+#endif
 
 #undef debug
 #include "cedebug.h"
@@ -71,7 +73,7 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
     // Calculate the number of actual samples to convert
     int num_samples = numSampleFrames * streamFormat->fNumChannels;
 
-	#if 1
+	#if !defined(KX_LIBLESS)
 	if(bps==32)
 		Float32ToNativeInt32_Portable(fMixBuf, (SInt32 *)outputBuf, num_samples);
 	else
@@ -124,7 +126,7 @@ IOReturn kXAudioEngine::convertInputSamples(const void *sampleBuf, void *destBuf
     int num_samples = numSampleFrames * streamFormat->fNumChannels;
 	UInt8 *inputBuf = &(((UInt8 *)sampleBuf)[firstSampleFrame * streamFormat->fNumChannels * streamFormat->fBitWidth / 8]);
 
-	#if 1
+	#if !defined(KX_LIBLESS)
 	if(bps==32)
 		NativeInt32ToFloat32_Portable((SInt32 *)inputBuf,(Float32 *)destBuf,num_samples);
 	else
