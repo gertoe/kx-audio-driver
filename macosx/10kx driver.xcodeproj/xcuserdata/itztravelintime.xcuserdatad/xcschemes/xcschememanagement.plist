@@ -9,6 +9,26 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>FloatLib_Libraryless copy 2.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
+		<key>FloatLib_Libraryless copy copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>FloatLib_Libraryless copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>FloatLib_Libraryless.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>edspctrl.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -34,6 +54,21 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>kXAudioDriver_LibraryLess copy 2.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>kXAudioDriver_LibraryLess copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>kXAudioDriver_LibraryLess.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
 		<key>kxctrl.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -48,6 +83,41 @@
 			<true/>
 		</dict>
 		<key>44212C1A0DECB61B00E06065</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C612EA7D25ED16130006C564</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C612EBC025ED1AFA0006C564</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD360B1125EDF1CE006DECBA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD360C4125EDF1D0006DECBA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD5FC79D25ED49BA000DD663</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD5FC8CD25ED49CB000DD663</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD5FC8D625ED49CE000DD663</key>
 		<dict>
 			<key>primary</key>
 			<true/>

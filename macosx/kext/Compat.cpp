@@ -193,7 +193,7 @@ void kXAudioDevice::get_physical(kx_voice_buffer *buff,int offset,__int64 *physi
 {
     //apparently this is needed to have the driver working somewhat correctly, so this warning will remain here
 	//*physical=(__int64)(buff->physical+offset);
-    *physical=(__int64)((byte *)(buff->physical+offset));
+    (*physical)=(__int64)((byte *)(buff->physical+offset));
 }
 
 void kXAudioDevice::save_fpu_state(kx_fpu_state *state)
