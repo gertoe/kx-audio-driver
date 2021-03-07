@@ -59,9 +59,11 @@ class kXAudioEngine;
 class kXAudioDevice : public IOAudioDevice
 {
     friend class kXAudioEngine;
+    
 public:    
     OSDeclareDefaultStructors(kXAudioDevice)
     
+    //protected stuff
     IOPCIDevice						*pciDevice;
     IOMemoryMap						*deviceMap;
 	kx_hw							*hw;
@@ -121,7 +123,7 @@ public:
     virtual IOReturn outputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
 	
 	int create_audio_controls(IOAudioEngine *audioEngine);
-	
+    
 public:
 	virtual IOReturn user_request(const void* inStruct, void* outStruct,uint32_t inStructSize, const uint32_t* outStructSize);
 
@@ -144,5 +146,7 @@ protected:
     static void interruptHandler(OSObject *owner, IOInterruptEventSource *source, int count);
     static bool interruptFilter(OSObject *owner, IOFilterInterruptEventSource *source);
 };
+
+
 
 #endif /* _KXAUDIODEVICE_H */

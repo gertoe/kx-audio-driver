@@ -43,6 +43,96 @@
 #undef kx_lock_acquire
 #undef kx_lock_release
 
+#if defined(SYSTEM_IO)
+#if (defined(__ppc__) || defined(__arm__))
+
+dword inpd_System(io_port_t port){
+    dword value = 0;
+    
+    value = OSReadLittleInt32( (volatile void *)port, 0);
+    OSSynchronizeIO();
+    
+    return value;
+}
+
+word inpw_System(io_port_t port){
+    word value = 0;
+    
+    value = OSReadLittleInt16( (volatile void *)port, 0);
+    OSSynchronizeIO();
+    
+    return value;
+}
+
+byte inp_System(io_port_t port){
+    word value = 0;
+    
+    value = (*port);
+    OSSynchronizeIO();
+    
+    return value;
+}
+
+void outpd_System(io_port_t port, dword value){
+    OSWriteLittleInt32( port, 0, value);
+    OSSynchronizeIO();
+}
+
+void outpw_System(io_port_t port, word value){
+    OSWriteLittleInt16( port, 0, value);
+    OSSynchronizeIO();
+}
+
+void outp_System(io_port_t port, byte value){
+    (*port) = value;
+    OSSynchronizeIO();
+}
+
+#elif defined(__i386__) || defined(__x86_64__)
+
+dword inpd_System(io_port_t port){
+    dword value = 0;
+    
+    __asm__ volatile("inl %w1, %0" : "=a" (value) : "Nd" (port));
+    
+    return value;
+}
+
+word inpw_System(io_port_t port){
+    word value = 0;
+    
+    __asm__ volatile("inw %w1, %0" : "=a" (value) : "Nd" (port));
+    
+    return value;
+}
+
+byte inp_System(io_port_t port){
+    byte value = 0;
+    
+    __asm__ volatile("inb %w1, %b0" : "=a" (value) : "Nd" (port));
+    
+    return value;
+}
+
+void outpd_System(io_port_t port, dword value){
+    __asm__ volatile("outl %0, %w1" : : "a" (value), "Nd" (port));
+}
+
+void outpw_System(io_port_t port, word value){
+    __asm__ volatile("outw %0, %w1" : : "a" (value), "Nd" (port));
+}
+
+void outp_System(io_port_t port, byte value){
+    __asm__ volatile("outb %0, %w1" : : "a" (value), "Nd" (port));
+}
+
+#else
+
+#error Missing I/O implementation!!
+
+#endif
+#endif
+
 void kXAudioDevice::malloc_func(int len,void **b,int where)
 {
 	int *mem=(int *)IOMalloc(len+sizeof(int));

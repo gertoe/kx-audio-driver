@@ -685,7 +685,7 @@ int kx_hal_init(kx_hw *hw,int fast)
         {
                // before anything else, enable I/O on zs notebook
 
-               word port=hw->port+TINA_POWER_CTRL;
+               io_port_t port=hw->port+TINA_POWER_CTRL;
                dword value;
 
                value = inpd(port);

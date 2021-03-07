@@ -25,6 +25,8 @@
 // maintain any (future) linux compatibility
 // in no event should this code be considered as 'derived' from any linux source
 
+#if !defined(SYSTEM_IO)
+
 #define CONFIG_CMD(bus, device_fn, where)   (0x80000000 | (bus << 16) | (device_fn << 8) | (where & ~3))
 KX_API(int,pcibios_read_config_dword (byte bus,
         byte device_fn, byte where, dword *value))
@@ -79,4 +81,6 @@ KX_API(int, pcibios_write_config_word (byte bus, byte device_fn,
     outpd(0xCF8,0);
     return 1;
 }
+
+#endif
 

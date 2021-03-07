@@ -26,6 +26,7 @@
 const char *copyright=KX_COPYRIGHT_STR;
 
 static inline char itoax_s(dword v)
+//hex string conversion
 {
  if(v>=10)
  {
@@ -35,8 +36,9 @@ static inline char itoax_s(dword v)
   return (char)v+'0';
 }
 
-static inline void itoax(char *str,dword val)
+static inline void itoax(char *str,size_t vall)
 {
+    dword val = vall & 0xffff;
  *str=itoax_s((val&0xf000)>>12); str++;
  *str=itoax_s((val&0xf00)>>8); str++;
  *str=itoax_s((val&0xf0)>>4); str++;
@@ -47,9 +49,10 @@ static inline void itoax(char *str,dword val)
 int pci_init(kx_hw *hw);
 int pci_init(kx_hw *hw)
 {
- if((hw->cb.io_base==0)||(hw->standalone)) // do autoscan
+ if((!hw->cb.io_base && !system_io)||(hw->standalone)) // do autoscan
  {
- word wdata;
+#ifndef SYSTEM_IO
+word wdata;
  byte bdata;
  dword device;
  dword subsys;
@@ -99,6 +102,8 @@ int pci_init(kx_hw *hw)
     // here we get only if no emu10kx is present
     debug(DLIB,"PCI: no Emu10kx found\n");
     return 2; // error: not found
+     
+#endif
 
  } // end autoscan
  else // provided device/subsys/chip_rev & bus/dev/fn
@@ -116,8 +121,9 @@ int pci_init(kx_hw *hw)
   hw->pci_func=hw->cb.func;
  }
 
+#ifndef SYSTEM_IO
 FOUND: // bus,dev,func contain right values
-
+#endif
   if(hw->pci_device!=0x021102 && hw->pci_device!=0x041102 && hw->pci_device!=0x081102) // Emu10kx + Creative
   {
    debug(DLIB,"PCI: bad device/subsys supplied [%x]\n",hw->pci_device);
@@ -160,7 +166,7 @@ FOUND: // bus,dev,func contain right values
 
  char *p=&tmp_str[strlen(tmp_str)];
  *p=' '; p++; *p='['; p++;
- itoax(p,hw->port); p+=4;
+ itoax(p,(size_t)(hw->port)); p+=4;
  *p=']'; p++; *p=0;
     
     //other 0 termination check for mac os x
@@ -645,7 +651,7 @@ KX_API(dword,kx_getdword(kx_hw *hw,int what,dword *ret))
   switch(what)
   {
     case KX_DWORD_CARD_PORT:
-        *ret=(dword)hw->port;
+        *ret=(dword)(((unsigned long)hw->port) & 0xffff);
         break;
     case KX_DWORD_CARD_IRQ:
         *ret=(dword)hw->irq;

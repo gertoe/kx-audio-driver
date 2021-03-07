@@ -1042,7 +1042,7 @@ UInt32 kXAudioEngine::stringToNumber_dummy(const char *str){
     if (str){
         
         //if the string starts with 0x it's interpreted like a an hex value, otherwise is interpreted as a base 10 value
-        static const UInt8 hex_mul = 16, dec_mul = 10;
+        const UInt8 hex_mul = 16, dec_mul = 10;
         const UInt8 mul = ((str[0] == '0') && (str[1] == 'x')) ? hex_mul : dec_mul;
         ddebug("    mul is %u\n", mul);
         

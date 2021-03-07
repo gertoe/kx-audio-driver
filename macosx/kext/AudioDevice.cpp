@@ -174,7 +174,12 @@ bool kXAudioDevice::initHardware(IOService *provider)
     
     cb.call_with=this;
     cb.irql=0x0; // unused
-    cb.io_base=deviceMap->getPhysicalAddress();
+    
+    #if defined(SYSTEM_IO) && (defined(__ppc__) || defined(__arm__))
+    cb.io_base = (io_port_t)deviceMap->getVirtualAddress();
+    #else
+    cb.io_base = (io_port_t)deviceMap->getPhysicalAddress();
+    #endif
     
     cb.device=dev_id;
     cb.subsys=subsys_id;
@@ -280,6 +285,7 @@ Done:
         }
         
         pciDevice=NULL;
+        
     }
     
     return result;
@@ -496,8 +502,6 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
     }
     
     kx_lock_release(hw,&hw->dsp_lock,&flags);
-    
-    
     
     kx_set_dsp_register(hw,prolog_pgm,"in0vol",0x2000*65535);
     kx_set_dsp_register(hw,prolog_pgm,"in1vol",0x2000*65535);
@@ -2097,4 +2101,16 @@ IOReturn kXAudioDevice::performPowerStateChange(IOAudioDevicePowerState oldPower
     
     return result;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

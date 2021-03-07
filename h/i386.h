@@ -38,7 +38,10 @@ typedef unsigned char byte;
 #endif
 
 #ifdef KX_INTERNAL
- #ifndef CONIO_USAGE
+
+#define SYSTEM_IO
+
+#if !defined(CONIO_USAGE) && !defined(SYSTEM_IO)
 
 #ifdef _MSC_VER
 // MS Visual C specific code
