@@ -20,8 +20,7 @@
 
 
 #include "kx.h"
-
-#include "frname.cpp"
+#include "frname.h"
 
 const char *copyright=KX_COPYRIGHT_STR;
 

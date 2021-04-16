@@ -344,9 +344,9 @@
 		C612EBC225ED1AFA0006C564 /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
 		C612EBC625ED1AFA0006C564 /* AudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0117744B00710CA77F000001 /* AudioClip.cpp */; };
 		C612EBF425ED1B200006C564 /* libAudioFloatLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C612EBCD25ED1AFA0006C564 /* libAudioFloatLib.a */; };
-		C613B8AD26299B0400C73208 /* frname.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.cpp */; };
-		C613B8AE26299B0400C73208 /* frname.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.cpp */; };
-		C613B8AF26299B0400C73208 /* frname.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.cpp */; };
+		C613B8AD26299B0400C73208 /* frname.h in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.h */; };
+		C613B8AE26299B0400C73208 /* frname.h in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.h */; };
+		C613B8AF26299B0400C73208 /* frname.h in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.h */; };
 		C6B69BAC261906B6008B711B /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
 		DD360B1525EDF1CE006DECBA /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
 		DD360B1625EDF1CE006DECBA /* AudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A224C3EFF42367911CA2CB7 /* AudioDevice.h */; };
@@ -1288,7 +1288,7 @@
 		C612EBAB25ED16130006C564 /* kXAudioDriver_LibraryLess.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver_LibraryLess.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		C612EBAC25ED16130006C564 /* kXAudioDriver copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "kXAudioDriver copy-Info.plist"; path = "/Users/pietrocaruso/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver copy-Info.plist"; sourceTree = "<absolute>"; };
 		C612EBCD25ED1AFA0006C564 /* libAudioFloatLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAudioFloatLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		C613B8AC26299B0400C73208 /* frname.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = frname.cpp; path = ../driver/frname.cpp; sourceTree = "<group>"; };
+		C613B8AC26299B0400C73208 /* frname.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = frname.h; path = ../driver/frname.h; sourceTree = "<group>"; };
 		DD360C3F25EDF1CE006DECBA /* kXAudioDriver_Updated.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver_Updated.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD360C4025EDF1CE006DECBA /* kXAudioDriver_LibraryLess copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "kXAudioDriver_LibraryLess copy2-Info.plist"; path = "/Users/itztravelintime/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver_LibraryLess copy2-Info.plist"; sourceTree = "<absolute>"; };
 		DD360C4925EDF1D0006DECBA /* libFloatLib_Updated.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatLib_Updated.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1854,7 +1854,7 @@
 				449EE3C40DE7A49D000769A3 /* dbdetect.cpp */,
 				449EE3CA0DE7A49D000769A3 /* dsp.cpp */,
 				449EE3CB0DE7A49D000769A3 /* ecard.cpp */,
-				C613B8AC26299B0400C73208 /* frname.cpp */,
+				C613B8AC26299B0400C73208 /* frname.h */,
 				449EE3CD0DE7A49D000769A3 /* hal.cpp */,
 				449EE3CE0DE7A49D000769A3 /* init.cpp */,
 				449EE3CF0DE7A49D000769A3 /* irq.cpp */,
@@ -3879,7 +3879,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C613B8AD26299B0400C73208 /* frname.cpp in Sources */,
+				C613B8AD26299B0400C73208 /* frname.h in Sources */,
 				44212C280DECB75500E06065 /* ac97.cpp in Sources */,
 				44212C290DECB75500E06065 /* bufmgr.cpp in Sources */,
 				44212C2A0DECB75500E06065 /* calc.cpp in Sources */,
@@ -3926,7 +3926,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C613B8AE26299B0400C73208 /* frname.cpp in Sources */,
+				C613B8AE26299B0400C73208 /* frname.h in Sources */,
 				C612EB8A25ED16130006C564 /* ac97.cpp in Sources */,
 				C612EB8B25ED16130006C564 /* bufmgr.cpp in Sources */,
 				C612EB8C25ED16130006C564 /* calc.cpp in Sources */,
@@ -3970,7 +3970,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C613B8AF26299B0400C73208 /* frname.cpp in Sources */,
+				C613B8AF26299B0400C73208 /* frname.h in Sources */,
 				DD360C1E25EDF1CE006DECBA /* ac97.cpp in Sources */,
 				DD360C1F25EDF1CE006DECBA /* bufmgr.cpp in Sources */,
 				DD360C2025EDF1CE006DECBA /* calc.cpp in Sources */,

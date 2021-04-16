@@ -16,8 +16,10 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
+#include "kx.h"
+
 //i don't really get why he used all those references while he just needed a reference to the kx object
-int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, const unsigned int chiprev,
+/*int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, const unsigned int chiprev,
 						 char *tmp_str,
 						 unsigned char &is_51,
 						 unsigned char &has_surdac,
@@ -32,8 +34,8 @@ int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, c
 						 char &lack_ac97,
 						 unsigned char &is_zsnb,
 						 unsigned char &is_cardbus);
-
-int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, const unsigned int chiprev,
+*/
+static int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, const unsigned int chiprev,
 		char *tmp_str,
 		unsigned char &is_51,
 		unsigned char &has_surdac,

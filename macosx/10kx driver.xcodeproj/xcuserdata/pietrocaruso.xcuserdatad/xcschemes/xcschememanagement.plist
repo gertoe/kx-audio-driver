@@ -17,17 +17,17 @@
 		<key>FloatLib.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
+			<integer>2</integer>
 		</dict>
 		<key>FloatLib_Libraryless.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>7</integer>
+			<integer>1</integer>
 		</dict>
 		<key>FloatLib_Updated.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>12</integer>
 		</dict>
 		<key>edspctrl.xcscheme</key>
 		<dict>
@@ -42,7 +42,7 @@
 		<key>edspctrl_libraryless.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>11</integer>
+			<integer>7</integer>
 		</dict>
 		<key>kX AC97.xcscheme</key>
 		<dict>
@@ -52,7 +52,7 @@
 		<key>kX AC97.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>1</integer>
+			<integer>9</integer>
 		</dict>
 		<key>kX Manager.xcscheme</key>
 		<dict>
@@ -62,7 +62,7 @@
 		<key>kX Manager.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>4</integer>
 		</dict>
 		<key>kXAPI.xcscheme</key>
 		<dict>
@@ -72,7 +72,7 @@
 		<key>kXAPI.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>8</integer>
 		</dict>
 		<key>kXAudioDriver copy.xcscheme_^#shared#^_</key>
 		<dict>
@@ -92,12 +92,12 @@
 		<key>kXAudioDriver_LibraryLess.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>5</integer>
 		</dict>
 		<key>kXAudioDriver_Updated.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>6</integer>
 		</dict>
 		<key>kxctrl.xcscheme</key>
 		<dict>
@@ -107,12 +107,12 @@
 		<key>kxctrl.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>12</integer>
+			<integer>11</integer>
 		</dict>
 		<key>kxctrl_libraryless.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>8</integer>
+			<integer>0</integer>
 		</dict>
 	</dict>
 </dict>
