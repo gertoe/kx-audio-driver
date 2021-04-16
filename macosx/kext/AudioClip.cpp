@@ -19,11 +19,11 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-
-#include "AudioDevice.h"
-#include "AudioEngine.h"
-
 #if defined(KX_LIBLESS)
+
+#include <IOKit/IOLib.h>
+//#include "AudioDevice.h"
+#include "AudioEngine.h"
 
 static const float clipMax = 1.0f;
 static const float clipMin = -1.0f;
@@ -41,55 +41,20 @@ static const float clipNegMul16 = 32768.0f;
 static const float clipPosMulDiv16 = 1 / clipPosMul16;
 static const float clipNegMulDiv16 = 1 / clipNegMul16;
 
-static const float clipPosMul32 = 2147483648.0f;
-static const float clipNegMul32 = 2147483647.0f;
+static const float clipPosMul32 = 2147483647.0f;
+static const float clipNegMul32 = 2147483648.0f;
 
 static const float clipPosMulDiv32 = 1 / clipPosMul32;
 static const float clipNegMulDiv32 = 1 / clipNegMul32;
 
-#ifdef __BIG_ENDIAN__
-//#if 0
-//#warning Experimental code
-
-static UInt32 littleToBig32(const UInt32 num){
-    
-    UInt32 res = 0;
-    
-    res |= (num & 0xff000000) >> 24;
-    res |= (num & 0x00ff0000) >> 8 ;
-    res |= (num & 0x0000ff00) << 8 ;
-    res |= (num & 0x000000ff) << 24;
-    
-    return res;
-    
-}
-
-#define correctEndian32(num) (littleToBig32(num))
-
-
-static UInt16 littleToBig16(const UInt16 num){
-    
-    UInt16 res = 0;
-    
-    res |= (num & 0xff00) >> 8 ;
-    res |= (num & 0x00ff) << 8 ;
-    
-    return res;
-    
-}
-
-#define correctEndian16(num) (littleToBig16(num))
-
-#else
-
-#define correctEndian32(num) (num)
-#define correctEndian16(num) (num)
-
-#endif
+#define correctEndian32(num) (OSSwapHostToLittleInt32(num))
+#define correctEndian16(num) (OSSwapHostToLittleInt16(num))
 
 #else
 
 #include "IOAudioBlitterLib.h"
+#include "AudioDevice.h"
+#include "AudioEngine.h"
 
 #endif
 
@@ -102,11 +67,15 @@ static UInt16 littleToBig16(const UInt16 num){
 
 IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream)
 {
+	//debug("kXAudioEngine[%p]::clipOutputSamples\n",this);
+	
 	// just some checks
-	#ifdef DEBUGGING
+	#if defined(DEBUGGING)// && !defined(KX_LIBLESS)
+    
 	int i;
 	int n_voice=-1;
 	int sz=-1;
+    
 	for(i=0;i<KX_NUMBER_OF_VOICES;i++)
 	{
 		if(hw->voicetable[i].buffer.addr==sampleBuf)
@@ -116,11 +85,13 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
 			break;
 		}
 	}
+    
 	if(i==KX_NUMBER_OF_VOICES)
 	{
 		debug("!! kXAudioEngine[%p]::clipOutputSamples: invalid buffer [%08x]\n",this,sampleBuf);
 		return 0;
 	}
+    
 	if(firstSampleFrame+numSampleFrames>n_frames || (firstSampleFrame+numSampleFrames)*bps/8>sz)
 	{
 		debug("!! kXAudioEngine[%p]::clipOutputSamples: invalid offset [buf: %d, %08x first: %d num: %d [%04x, %04x]\n",this,i,
@@ -130,9 +101,11 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
 			  (firstSampleFrame+numSampleFrames)*1*bps/8);
 		return 0;
 	}
+    
 	#endif
 	
     #if !defined(KX_LIBLESS)
+    
 	int frsamples=firstSampleFrame * streamFormat->fNumChannels;
     UInt8 *outputBuf = &(((UInt8 *)sampleBuf)[frsamples * streamFormat->fBitWidth / 8]);
 	float *fMixBuf = ((float *)mixBuf) + frsamples;
@@ -183,15 +156,13 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
             // Scale the -1.0 to 1.0 range to the appropriate scale for signed 32-bit samples and then
             // convert to SInt32 and store in the hardware sample buffer
             
-            
-            
             if (inSample >= 0)
             {
-                outputSInt32Buf[sampleIndex] = (SInt32)correctEndian32(inSample * clipPosMul32);
+                outputSInt32Buf[sampleIndex] = (SInt32)correctEndian32((UInt32)(inSample * clipPosMul32));
             }
             else
             {
-                outputSInt32Buf[sampleIndex] = (SInt32)correctEndian32(inSample * clipNegMul32);
+                outputSInt32Buf[sampleIndex] = (SInt32)correctEndian32((UInt32)(inSample * clipNegMul32));
             }
         }
         
@@ -220,11 +191,11 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
             
             if (inSample >= 0)
             {
-                outputSInt16Buf[sampleIndex] = (SInt16)correctEndian16(inSample * clipPosMul16);
+                outputSInt16Buf[sampleIndex] = (SInt16)correctEndian16((UInt16)(inSample * clipPosMul16));
             }
             else
             {
-                outputSInt16Buf[sampleIndex] = (SInt16)correctEndian16(inSample * clipNegMul16);
+                outputSInt16Buf[sampleIndex] = (SInt16)correctEndian16((UInt16)(inSample * clipNegMul16));
             }
             
             /*
@@ -237,6 +208,7 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
         }
         
     }
+    
 #endif
     
     return kIOReturnSuccess;
@@ -337,9 +309,9 @@ IOReturn kXAudioEngine::convertInputSamples(const void *sampleBuf, void *destBuf
             // Scale that sample to a range of -1.0 to 1.0, convert to float and store in the destination buffer
             // at the proper location
             if (inputSample >= 0) {
-                (*floatDestBuf) = (SInt16)correctEndian16(inputSample * clipPosMulDiv16);// / 32767.0;
+                (*floatDestBuf) = (SInt16)correctEndian16((UInt16)(inputSample * clipPosMulDiv16));// / 32767.0;
             } else {
-                (*floatDestBuf) = (SInt16)correctEndian16(inputSample * clipNegMulDiv16);// / 32768.0;
+                (*floatDestBuf) = (SInt16)correctEndian16((UInt16)(inputSample * clipNegMulDiv16));// / 32768.0;
             }
             
             // Move on to the next sample

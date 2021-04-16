@@ -23,11 +23,66 @@
 #define DEFS_H_
 
 #if defined(i386) || defined(I386) || defined(IX86) || defined(__I386__) || defined(_IX86) || defined(_M_IX86) || defined(AMD64) || defined(__x86_64__) || defined(__i386__)
- #include "i386.h"
+    #include "i386.h"
 #elif defined(__PPC__) || defined(__ppc__) || defined(_ARCH_PPC) || defined(__POWERPC__) || defined(__powerpc) || defined(__powerpc__)
-#include "PPC.h"
+    #include "PPC.h"
 #else
- #error "Unknown processor architecture"
+    #error "Unknown processor architecture"
+#endif
+
+#if defined(SYSTEM_IO) && (defined(__ppc__) || defined(__arm__))
+typedef volatile byte* io_port_t; //volatile char*
+#else
+typedef word io_port_t;
+#endif
+
+
+#if defined(SYSTEM_IO)
+
+dword inpd_System(const io_port_t port);
+word inpw_System(const io_port_t port);
+byte inp_System(const io_port_t port);
+
+void outpd_System(io_port_t port, const dword value);
+void outpw_System(io_port_t port, const word value);
+void outp_System(io_port_t port, const byte value);
+
+static const int system_io = 1;
+
+extern __inline__ dword inpd(const io_port_t port)
+{
+    return inpd_System(port);
+}
+
+extern __inline__ word inpw(const io_port_t port)
+{
+    return inpw_System(port);
+}
+
+extern __inline__ byte inp(const io_port_t port)
+{
+    return inp_System(port);
+}
+
+extern __inline__ void outpd(io_port_t port, const dword value)
+{
+    outpd_System(port, value);
+}
+
+extern __inline__ void outpw(io_port_t port, const word value)
+{
+    outpw_System(port, value);
+}
+
+extern __inline__ void outp(io_port_t port, const byte value)
+{
+    outp_System(port, value);
+}
+
+#else
+
+static const int system_io = 0;
+
 #endif
 
 #if defined(_MSC_VER)
@@ -51,7 +106,7 @@
 
 #elif defined(__GNUC__)
 
- #define __int64  long long
+ //#define __int64  long long
 
  typedef long			__darwin_intptr_t;
  #ifndef _INTPTR_T

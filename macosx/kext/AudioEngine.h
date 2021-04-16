@@ -19,6 +19,8 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
+#include <IOKit/audio/IOAudioEngine.h>
+#include "AudioDevice.h"
 
 #ifndef _KXAUDIOENGINE_H
 #define _KXAUDIOENGINE_H
@@ -87,15 +89,15 @@ public:
     
     virtual UInt32 getCurrentSampleFrame();
 	
-	virtual IOBufferMemoryDescriptor *my_alloc_contiguous(mach_vm_size_t size, void **addr, dword *phys);
-	virtual void my_free_contiguous(IOBufferMemoryDescriptor *desc, mach_vm_size_t size);
+	virtual struct memhandle *my_alloc_contiguous(mach_vm_size_t size);
+	virtual void       my_free_contiguous(struct memhandle *desc, mach_vm_size_t size);
     
     virtual IOReturn performFormatChange(IOAudioStream *audioStream, const IOAudioStreamFormat *newFormat, const IOAudioSampleRate *newSampleRate);
 
     virtual IOReturn clipOutputSamples(const void *mixBuf, void *sampleBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
     virtual IOReturn convertInputSamples(const void *sampleBuf, void *destBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
     
-    virtual inline bool inRange(const int, const int, const int);
+    virtual inline bool inRange(const long, const long, const long);
     virtual inline UInt32 stringToNumber_dummy(const char *str);
     
 };

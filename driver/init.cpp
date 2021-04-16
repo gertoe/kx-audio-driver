@@ -26,6 +26,7 @@
 const char *copyright=KX_COPYRIGHT_STR;
 
 static inline char itoax_s(dword v)
+//hex string conversion
 {
  if(v>=10)
  {
@@ -35,21 +36,38 @@ static inline char itoax_s(dword v)
   return (char)v+'0';
 }
 
-static inline void itoax(char *str,dword val)
+static inline void itoax(char *str, const size_t vall, const byte len)
 {
+    dword val = (dword)vall;// & 0xffff;
+	
+	size_t mask = 0xf << 4 * (len - 1);
+	size_t shift = 4 * (len - 1);
+	
+	for(byte i = 0; i < len; i++){
+		*str++=itoax_s((val&mask)>>shift);
+		shift -= 4;
+		mask = mask >> 4;
+	}
+	
+	/*
  *str=itoax_s((val&0xf000)>>12); str++;
  *str=itoax_s((val&0xf00)>>8); str++;
  *str=itoax_s((val&0xf0)>>4); str++;
  *str=itoax_s((val&0xf)); str++;
+	 */
+	
+	
+	
 }
 
 // bus=0xff for autoscan PCI
 int pci_init(kx_hw *hw);
 int pci_init(kx_hw *hw)
 {
- if((hw->cb.io_base==0)||(hw->standalone)) // do autoscan
+ if((!hw->cb.io_base && !system_io)||(hw->standalone)) // do autoscan
  {
- word wdata;
+#ifndef SYSTEM_IO
+word wdata;
  byte bdata;
  dword device;
  dword subsys;
@@ -99,12 +117,15 @@ int pci_init(kx_hw *hw)
     // here we get only if no emu10kx is present
     debug(DLIB,"PCI: no Emu10kx found\n");
     return 2; // error: not found
+     
+#endif
 
  } // end autoscan
  else // provided device/subsys/chip_rev & bus/dev/fn
  {
-  /// use WDM supplied resources
+  /// use supplied resources
   hw->port=hw->cb.io_base;
+  hw->actualPort = hw->cb.actual_io_base;
   hw->irq=hw->cb.irql;
 
   hw->pci_device=hw->cb.device; // should be real
@@ -116,8 +137,9 @@ int pci_init(kx_hw *hw)
   hw->pci_func=hw->cb.func;
  }
 
+#ifndef SYSTEM_IO
 FOUND: // bus,dev,func contain right values
-
+#endif
   if(hw->pci_device!=0x021102 && hw->pci_device!=0x041102 && hw->pci_device!=0x081102) // Emu10kx + Creative
   {
    debug(DLIB,"PCI: bad device/subsys supplied [%x]\n",hw->pci_device);
@@ -159,14 +181,50 @@ FOUND: // bus,dev,func contain right values
  hw->can_k8_passthru=hw->is_k8;
 
  char *p=&tmp_str[strlen(tmp_str)];
- *p=' '; p++; *p='['; p++;
- itoax(p,hw->port); p+=4;
- *p=']'; p++; *p=0;
+ 
+ *p++=' ';
+ *p++='[';
+ itoax(p,(size_t)(hw->port), (byte)(sizeof(hw->port)*2)); p+=(sizeof(hw->port)*2);
+ *p++=']'; 
+	
+	if (sizeof(hw->port) != sizeof(word)){
+		
+		*p++=' ';
+		*p++='[';
+		itoax(p,(size_t)(hw->actualPort), (byte)(sizeof(hw->actualPort)*2)); p+=(sizeof(hw->actualPort)*2);
+		*p++=']';
+		
+#if 0
+		*p++=' ';
+		*p++='[';
+		itoax(p,sizeof(dword), 2); p+=2;
+		*p++=']';
+		
+		*p++=' ';
+		*p++='[';
+		itoax(p,sizeof(word), 2); p+=2;
+		*p++=']';
+		
+		*p++=' ';
+		*p++='[';
+		itoax(p,sizeof(byte), 2); p+=2;
+		*p++=']';
+		
+		*p++=' ';
+		*p++='[';
+		itoax(p,sizeof(int), 2); p+=2;
+		*p++=']';
+		
+		*p++=' ';
+		*p++='[';
+		itoax(p,sizeof(__int64), 2); p+=2;
+		*p++=']';
+#endif	
+	}
+ 
+	
+	*p=0;
     
-    //other 0 termination check for mac os x
-    for (size_t i = strlen(tmp_str); i < KX_MAX_STRING; i++){
-        tmp_str[i] = '\0';
-    }
 
  strncpy(hw->card_name,tmp_str,KX_MAX_STRING);
  debug(DLIB,"card name: '%s'\n",hw->card_name);
@@ -645,7 +703,7 @@ KX_API(dword,kx_getdword(kx_hw *hw,int what,dword *ret))
   switch(what)
   {
     case KX_DWORD_CARD_PORT:
-        *ret=(dword)hw->port;
+        *ret=(dword)(((unsigned long)hw->port) & 0xffff);
         break;
     case KX_DWORD_CARD_IRQ:
         *ret=(dword)hw->irq;

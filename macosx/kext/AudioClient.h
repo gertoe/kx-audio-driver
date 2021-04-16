@@ -25,9 +25,13 @@
 #ifndef _KXAUDIOCLIENT_H
 #define _KXAUDIOCLIENT_H
 
+
 #include "interface/kx_ioctl.h"
 
-// #define USE_TIGER_IPC
+//#define USE_TIGER_IPC
+
+#if 1//!defined (__ppc__)
+#include <IOKit/IOUserClient.h>
 
 class kXUserClient : public IOUserClient
 {
@@ -70,4 +74,5 @@ class kXUserClient : public IOUserClient
 		virtual IOReturn closeUserClient(void);
 };
 
+#endif /* __ppc__ */
 #endif /* _KXAUDIOCLIENT_H */

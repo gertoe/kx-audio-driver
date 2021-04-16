@@ -43,6 +43,90 @@
 #undef kx_lock_acquire
 #undef kx_lock_release
 
+#if defined(SYSTEM_IO)
+#if (defined(__ppc__) || defined(__arm__))
+
+dword inpd_System(const io_port_t port){
+    register dword value = OSReadLittleInt32( (volatile void *) port, 0);
+    OSSynchronizeIO();
+    
+    return value;
+}
+
+word inpw_System(const io_port_t port){
+    register word value = OSReadLittleInt16( (volatile void *)port, 0);
+    OSSynchronizeIO();
+    
+    return value;
+}
+
+byte inp_System(const io_port_t port){
+    register byte value = port[0];
+    OSSynchronizeIO();
+    
+    return value;
+}
+
+void outpd_System(io_port_t port, const dword value){
+    OSWriteLittleInt32( port, 0, value);
+    OSSynchronizeIO();
+}
+
+void outpw_System(io_port_t port, const word value){
+    OSWriteLittleInt16( port, 0, value);
+    OSSynchronizeIO();
+}
+
+void outp_System(io_port_t port, const byte value){
+    port[0] = value;
+    OSSynchronizeIO();
+}
+
+#elif defined(__i386__) || defined(__x86_64__)
+
+dword inpd_System(const io_port_t port){
+    dword value = 0;
+    
+    __asm__ volatile("inl %w1, %0" : "=a" (value) : "Nd" (port));
+    
+    return value;
+}
+
+word inpw_System(const io_port_t port){
+    word value = 0;
+    
+    __asm__ volatile("inw %w1, %0" : "=a" (value) : "Nd" (port));
+    
+    return value;
+}
+
+byte inp_System(const io_port_t port){
+    byte value = 0;
+    
+    __asm__ volatile("inb %w1, %b0" : "=a" (value) : "Nd" (port));
+    
+    return value;
+}
+
+void outpd_System(io_port_t port, const dword value){
+    __asm__ volatile("outl %0, %w1" : : "a" (value), "Nd" (port));
+}
+
+void outpw_System(io_port_t port, const word value){
+    __asm__ volatile("outw %0, %w1" : : "a" (value), "Nd" (port));
+}
+
+void outp_System(io_port_t port, const byte value){
+    __asm__ volatile("outb %0, %w1" : : "a" (value), "Nd" (port));
+}
+
+#else
+
+#error Missing I/O implementation!!
+
+#endif
+#endif
+
 void kXAudioDevice::malloc_func(int len,void **b,int where)
 {
 	int *mem=(int *)IOMalloc(len+sizeof(int));
@@ -90,32 +174,43 @@ void * kXAudioDevice::lmem_get_addr_func(void **lm,int offset,__int64 *physical)
 	return NULL;
 }
 
-int kXAudioDevice::pci_alloc(struct memhandle *h,kx_cpu_cache_type_t cache_type)
+int kXAudioDevice::pci_alloc(struct memhandle *h, kx_cpu_cache_type_t cache_type)
 {
-		//h->addr=IOMallocContiguous(h->size,PAGE_SIZE,&phys_addr);
-	mach_vm_address_t mask = 0x000000007FFFFFFFULL & ~(PAGE_SIZE - 1);
-	
-	h->desc = IOBufferMemoryDescriptor::inTaskWithPhysicalMask(
-		kernel_task,
-		kIODirectionInOut | kIOMemoryPhysicallyContiguous,
-		h->size,
-		mask);
-
-	if (!h->desc)
-		return -1;
-
-	h->desc->prepare();
-
-	h->addr = h->desc->getBytesNoCopy();
-	h->dma_handle = (dword)h->desc->getPhysicalAddress();
-	
-	return 0;
+#if defined(OLD_ALLOC)
+    IOPhysicalAddress physical;
+    h->addr=IOMallocContiguous((vm_size_t)h->size,PAGE_SIZE,&physical);
+    h->dma_handle = (dword)physical;
+    
+    if (!(h->addr) || !(h->dma_handle))
+        return -1;
+#else
+    //h->addr=IOMallocContiguous(h->size,PAGE_SIZE,&phys_addr);
+    mach_vm_address_t mask = kx_allocation_mask; //0x000000007FFFFFFFULL & ~(PAGE_SIZE - 1);
+    
+    h->desc = IOBufferMemoryDescriptor::inTaskWithPhysicalMask(
+                                                               kernel_task,
+                                                               kIODirectionInOut | kIOMemoryPhysicallyContiguous,
+                                                               h->size,
+                                                               mask);
+    
+    if (!h->desc)
+        return -1;
+    
+    h->desc->prepare();
+    
+    h->addr = h->desc->getBytesNoCopy();
+    h->dma_handle = (dword)h->desc->getPhysicalAddress();
+#endif
+    return 0;
 }
 
 void kXAudioDevice::pci_free(struct memhandle *h)
 {
-		//IOFreeContiguous((void *)h->addr,h->size);
+#if defined(OLD_ALLOC)
+    IOFreeContiguous(h->addr,h->size);
+#else
 	h->desc->release();
+#endif
 	memset(h, 0, sizeof(*h));
 }
 
@@ -193,7 +288,7 @@ void kXAudioDevice::get_physical(kx_voice_buffer *buff,int offset,__int64 *physi
 {
     //apparently this is needed to have the driver working somewhat correctly, so this warning will remain here
 	//*physical=(__int64)(buff->physical+offset);
-    (*physical)=(__int64)((byte *)(buff->physical+offset));
+    (*physical)=(__int64)(buff->physical+offset);
 }
 
 void kXAudioDevice::save_fpu_state(kx_fpu_state *state)
@@ -233,6 +328,12 @@ KX_API(void,kx_lock_release(kx_hw *hw, spinlock_t *lock, unsigned long *,const c
 	lock->file=file;
 	lock->line=line;
 	IORecursiveLockUnlock(lock->lock);
+}
+
+double kx_log2(register double _x_)
+{
+	// FIXME
+	return 0.0;
 }
 
 double kx_log10(register double _x_)

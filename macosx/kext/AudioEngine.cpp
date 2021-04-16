@@ -140,8 +140,8 @@ bool kXAudioEngine::init(kx_hw *hw_)
         custom_sampling_rate = stringToNumber_dummy(customSampleRate);
         
         //i mean who needs a smapling rate lower than 1k? i don't even know if the i/o kit allows for sampling rates this low - ITzTravelInTime
-        if (!inRange(custom_sampling_rate, 1000, 192000)){
-            debug("kXAudioEngine[%p]::init: new custom sampling rate \"%s\" is out of the supported range [1000 to 192000] or uses illegal characters\n",this, customSampleRate);
+        if (!inRange(custom_sampling_rate, KX_MIN_RATE, KX_MAX_RATE)){
+            debug("kXAudioEngine[%p]::init: new custom sampling rate \"%s\" is out of the supported range [%i to %i] or uses illegal characters\n",this, customSampleRate, KX_MIN_RATE, KX_MAX_RATE);
             custom_sampling_rate = sampling_rate;
         }else{
             debug("kXAudioEngine[%p]::init: new custom sampling rate: %u\n",this, (unsigned int)custom_sampling_rate);
@@ -173,11 +173,11 @@ bool kXAudioEngine::init(kx_hw *hw_)
            
         debug(DBGCLASS"[%p]::init: custom n_frames multiplyer specified with the _kxcfm boot arg\n",this);
         
-        UInt32 mul = stringToNumber_dummy(customMultiplyer);
+        unsigned int mul = (unsigned int)stringToNumber_dummy(customMultiplyer);
         
         //limited to 128x for "safety" reasons, 128x is already an insane value
         if (inRange(mul, 1, 128)){
-            debug(DBGCLASS"[%p]::init: custom n_frames multiplyer value is %u\n",this, mul);
+            debug(DBGCLASS"[%p]::init: custom n_frames multiplyer value is %u\n",this, (unsigned int)mul);
             
             n_frames *= ((int)mul);
         }else{
@@ -378,7 +378,7 @@ void kXAudioEngine::free_all()
         debug("kXAudioEngine[%p]::free_all() - iKX interface already closed\n",this);
 }
 
-IOBufferMemoryDescriptor *kXAudioEngine::my_alloc_contiguous(mach_vm_size_t size, void **addr, dword *phys)
+struct memhandle *kXAudioEngine::my_alloc_contiguous(mach_vm_size_t size)
 {
     if(size<PAGE_SIZE)
         size=PAGE_SIZE;
@@ -386,11 +386,28 @@ IOBufferMemoryDescriptor *kXAudioEngine::my_alloc_contiguous(mach_vm_size_t size
 #ifdef DEBUGGING
     size += 2 * PAGE_SIZE;
 #endif
+    
+    struct memhandle* mem = new struct memhandle;
+    bzero((void*)mem, sizeof(*mem));
+    mem->size = size;
+    
+#if defined(OLD_ALLOC)
+    
     //old allocation method, deprecated and with a lot of drawbacks, the new one makes sure we are allocating memory in the 32 bit address space and that the buffer is contiguous
     
-    //void *addr=IOMallocContiguous(size+PAGE_SIZE+PAGE_SIZE,alignment,phys);
+    IOPhysicalAddress phy = NULL;
+    mem->addr = IOMallocContiguous(size, PAGE_SIZE, &phy);
+    mem->dma_handle = (dword)phy;
     
-    mach_vm_address_t mask = 0x000000007FFFFFFFULL & ~(PAGE_SIZE - 1);
+    if (!mem->addr || !mem->dma_handle){
+        debug("kXAudioEngine[%p]::my_alloc_contiguous() - allocation failed\n",this);
+        delete mem;
+        return NULL;
+    }
+
+    
+#else
+	mach_vm_address_t mask = kx_allocation_mask;//0x000000007FFFFFFFULL & ~(PAGE_SIZE - 1);
     
     IOBufferMemoryDescriptor *desc =
     IOBufferMemoryDescriptor::inTaskWithPhysicalMask(
@@ -399,33 +416,32 @@ IOBufferMemoryDescriptor *kXAudioEngine::my_alloc_contiguous(mach_vm_size_t size
                                                      size,
                                                      mask);
     
-    if(desc)
-    {
+    if(desc){
         desc->prepare();
         
         IOPhysicalAddress pa = desc->getPhysicalAddress();
+        mem->desc = desc;
         
-        if (pa & ~mask)
+        if (pa & (~mask))
             debug("kXAudioEngine[%p]::my_alloc_contiguous() - memory misaligned or beyond 2GB limit (%p)\n", this, (void *)pa);
         
-        *phys = (dword)pa; //pa is the address of the memory buffer, so why is it casted as a unsigned int? probably to have a 32 bit address for the card, whose can't support 64 bit
-        *addr = desc->getBytesNoCopy();
+        mem->dma_handle = (dword)pa; //pa is the address of the memory buffer, so why is it casted as a unsigned int? probably to have a 32 bit address for the card, whose can't support 64 bit
+        mem->addr = desc->getBytesNoCopy();
         
-#ifdef DEBUGGING
-        memset(addr,0x11,PAGE_SIZE);
-        memset((UInt8 *)addr+PAGE_SIZE+size,0x22,PAGE_SIZE);
-        
-        *((UInt8 *)addr) += PAGE_SIZE;
-        *phys += PAGE_SIZE;
-#endif
-    }
-    else
+    }else{
         debug("kXAudioEngine[%p]::my_alloc_contiguous() - allocation failed\n",this);
+        delete mem;
+        return NULL;
+    }
+#endif
     
-    return desc;
+    debug("kXAudioEngine[%p]::my_alloc_contiguos() - Allocation success. Virtual address [%p], Physical address [%p]\n", (this), (mem->addr), (void*)(IOPhysicalAddress)(mem->dma_handle));
+    
+    return mem;
+    
 }
 
-void kXAudioEngine::my_free_contiguous(IOBufferMemoryDescriptor *desc, mach_vm_size_t size)
+void kXAudioEngine::my_free_contiguous(struct memhandle *desc, mach_vm_size_t size)
 {
 #ifdef DEBUGGING
     if(size<PAGE_SIZE)
@@ -450,16 +466,25 @@ void kXAudioEngine::my_free_contiguous(IOBufferMemoryDescriptor *desc, mach_vm_s
     }
 #endif
     
+#if !defined(OLD_ALLOC)
     //this is enought to free the memory buffer
-    desc->release();
+    desc->desc->release();
+#else
+    IOFreeContiguous(desc->addr, desc->size);
+#endif
 }
 
 void kXAudioEngine::freeAudioStream(int chn,IOAudioStreamDirection direction)
 {
+    
+    
     if(direction==kIOAudioStreamDirectionOutput)
     {
+        
         for(int i=0;i<KX_NUMBER_OF_VOICES;i++)
         {
+            struct memhandle mem;
+            
             if(hw->voicetable[i].asio_id==this && hw->voicetable[i].asio_channel==(dword)chn)
             {
                 kx_wave_close(hw,i);
@@ -471,10 +496,25 @@ void kXAudioEngine::freeAudioStream(int chn,IOAudioStreamDirection direction)
                 hw->voicetable[i].asio_kernel_addr=0;
                 hw->voicetable[i].asio_user_addr=0;
                 
-                if(hw->voicetable[i].buffer.desc && hw->voicetable[i].buffer.addr && hw->voicetable[i].buffer.size!=0)
+                
+                bzero(&mem, sizeof(mem));
+                
+                mem.addr = hw->voicetable[i].buffer.addr;
+                mem.dma_handle = hw->voicetable[i].buffer.physical;
+                mem.size = hw->voicetable[i].buffer.size;
+                
+#if !defined(OLD_ALLOC)
+                if(!hw->voicetable[i].buffer.desc){
+                    continue;
+                }
+                mem.desc = hw->voicetable[i].buffer.desc;
+#endif
+                
+                
+                if(mem.addr && mem.size!=0)
                 {
                     //my_free_contiguous(hw->voicetable[i].buffer.addr,hw->voicetable[i].buffer.size);
-                    my_free_contiguous(hw->voicetable[i].buffer.desc, hw->voicetable[i].buffer.size);
+                    my_free_contiguous(&mem, mem.size);
                     bzero(&(hw->voicetable[i].buffer), sizeof(hw->voicetable[i].buffer));
                 }
             }
@@ -484,9 +524,16 @@ void kXAudioEngine::freeAudioStream(int chn,IOAudioStreamDirection direction)
     {
         if(direction==kIOAudioStreamDirectionInput)
         {
-            if (hw->mtr_buffer.desc && hw->mtr_buffer.addr && hw->mtr_buffer.size != 0)
+            
+#if !defined(OLD_ALLOC)
+            if (!hw->mtr_buffer.desc){
+                return;
+            }
+#endif
+            
+            if (hw->mtr_buffer.addr && hw->mtr_buffer.size != 0)
             {
-                my_free_contiguous(hw->mtr_buffer.desc, hw->mtr_buffer.size);
+                my_free_contiguous(&hw->mtr_buffer, hw->mtr_buffer.size);
                 bzero(&(hw->mtr_buffer), sizeof(hw->mtr_buffer));
             }
         }
@@ -497,8 +544,6 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
 {
     IOAudioStream *audioStream = new IOAudioStream;
     
-    //UInt8 depth, width;
-    
     if (audioStream)
     {
         if (!audioStream->initWithAudioEngine(this, direction, 1))
@@ -506,8 +551,6 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
             audioStream->release();
         } else {
             IOAudioSampleRate rate;
-            
-            //void *sampleBuffer=NULL;
             
             IOAudioStreamFormat format = {
                 1,                                              // num channels
@@ -521,26 +564,35 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 0                                               // driver-defined tag - unused by this driver
             };
             
-            //buffer object creation and cleaning
-            kx_voice_buffer buffer;
-            bzero(&buffer, sizeof(buffer));
-            
             //buffer allocation
-            buffer.desc = my_alloc_contiguous(sampleBufferSize, &(buffer.addr), &(buffer.physical));
+            struct memhandle* mem = my_alloc_contiguous(sampleBufferSize);
             
-            //basically the buffer is not allocated if this happens
-            if (!buffer.desc)
+            if(!mem){
                 return NULL;
-            
-            //finishes to set up the buffer object
-            buffer.size=sampleBufferSize;
-            buffer.that=this;
-            buffer.notify=-n_frames;
-            //sampleBuffer=buffer.addr;
+            }
             
             // allocate memory:
             if(direction==kIOAudioStreamDirectionOutput)
             {
+                //buffer object creation and cleaning
+                kx_voice_buffer buffer;
+                bzero(&buffer, sizeof(buffer));
+                
+                buffer.physical = mem->dma_handle;
+                buffer.addr = mem->addr;
+                
+    #if !defined(OLD_ALLOC)
+                buffer.desc = mem->desc;
+                //basically the buffer is not allocated if this happens
+                if (!buffer.desc)
+                    return NULL;
+    #endif
+                
+                //finishes to set up the buffer object
+                buffer.size=sampleBufferSize;
+                buffer.that=this;
+                buffer.notify=-n_frames;
+                
                 int need_notifier=VOICE_OPEN_NOTIMER;
                 if(chn==0) // first voice?
                     need_notifier|=VOICE_OPEN_NOTIFY; // half/full buffer
@@ -555,6 +607,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                  // wave 4/5 - rear
                  // 8/9 - rear center/etc.
                  */
+                
                 int i=kx_allocate_multichannel(hw,bps,sampling_rate,need_notifier,&buffer,DEF_ASIO_ROUTING+mapping[chn]); // start with 2/3
                 
                 if(i>=0)
@@ -576,11 +629,16 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
             {
                 format.fNumChannels = n_channels;
                 
-                //the mtr buffer should be already allocated here, why allocating it again?
+                /*
+#if !defined(OLD_ALLOC)
                 hw->mtr_buffer.desc = buffer.desc;
+#endif
                 hw->mtr_buffer.addr = buffer.addr; //sets the address in the driver code
                 hw->mtr_buffer.size = buffer.size; //sets the sice in the driver code
                 hw->mtr_buffer.dma_handle = buffer.physical; //sets the address for the dma functions/memory access from hardware
+                */
+                
+                memcpy(&hw->mtr_buffer, mem, sizeof(hw->mtr_buffer));
                 
                 //kx_writeptr(hw,FXIDX,0,0);
                 
@@ -589,7 +647,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 kx_writeptr(hw, FXBA, 0, hw->mtr_buffer.dma_handle); //sets the appropriate dma reg in the card
                 
                 dword ch = (1 << (format.fNumChannels * 2)) - 1;    // 24bit needs 2 physical channels
-                debug("createNewAudioStream FXWCH/FXWC_K1: %x\n", ch);
+                debug("createNewAudioStream FXWCH/FXWC_K1: %x\n", (unsigned int)ch);
                 
                 if(hw->is_10k2)
                 {
@@ -600,12 +658,14 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                     kx_writeptr(hw,FXWC_K1, 0, ch << 16);
             }
             
+            
+            
             debug("kXAudioEngine[%p] Initializing sampling rates\n",this);
             
             // As part of creating a new IOAudioStream, its sample buffer needs to be set
             // It will automatically create a mix buffer should it be needed
-            if((buffer.addr) && (buffer.size))
-                audioStream->setSampleBuffer((buffer.addr), (buffer.size));
+            if((mem->addr) && (mem->size))
+                audioStream->setSampleBuffer((mem->addr), (mem->size));
             
             //we need to add our supported sample rates now
             
@@ -640,6 +700,8 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
             
             // Finally, the IOAudioStream's current format needs to be indicated
             audioStream->setFormat(&format);
+            
+            delete mem;
         }
     }
     
@@ -1025,7 +1087,7 @@ void kXAudioEngine::dump_addr(void)
 }
 
 //just to make syntax a little bit better
-bool kXAudioEngine::inRange(const int n, const int min, const int max){
+bool kXAudioEngine::inRange(const long n, const long min, const long max){
     return (n <= max && n >= min);
 }
 
@@ -1042,7 +1104,7 @@ UInt32 kXAudioEngine::stringToNumber_dummy(const char *str){
     if (str){
         
         //if the string starts with 0x it's interpreted like a an hex value, otherwise is interpreted as a base 10 value
-        static const UInt8 hex_mul = 16, dec_mul = 10;
+        const UInt8 hex_mul = 16, dec_mul = 10;
         const UInt8 mul = ((str[0] == '0') && (str[1] == 'x')) ? hex_mul : dec_mul;
         ddebug("    mul is %u\n", mul);
         

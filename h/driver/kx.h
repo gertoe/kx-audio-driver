@@ -114,7 +114,7 @@ struct kx_voice_buffer
 
  void *instance;
 
-#if defined(__APPLE__) && defined(__MACH__) // MacOSX
+#if defined(__APPLE__) && defined(__MACH__) && !defined(OLD_ALLOC) // MacOSX
  IOBufferMemoryDescriptor *desc;
 #endif
 };
@@ -175,8 +175,10 @@ struct kx_callbacks
     int (*lmem_alloc_func)(void *call_with,int len,void **lm,kx_cpu_cache_type_t cache_type);
     int (*lmem_free_func)(void *call_with,void **lm);
     void * (*lmem_get_addr_func)(void *call_with,void **lm,int offset,__int64 *phisical); // physical is optional
-
-    word io_base;
+    
+    io_port_t io_base;
+	word actual_io_base;
+    
     byte irql;
 
     dword device; // needed
@@ -409,6 +411,8 @@ struct asio_physical_descr_t
        void *mdl;
 };
 
+
+
 struct kx_hw
 {
     char kx_version[KX_MAX_STRING];
@@ -464,7 +468,9 @@ struct kx_hw
     byte can_passthru;
 
     // Resources
-    word port;
+    io_port_t port;
+	word actualPort;
+    
     byte irq;
     byte standalone;
 

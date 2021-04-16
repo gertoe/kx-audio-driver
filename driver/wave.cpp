@@ -44,6 +44,7 @@ KX_API(int,kx_wave_open(kx_hw *hw,kx_voice_buffer *buffer,int usage,int sampling
 
  buffer->pageindex=-1;
 
+    /*
  voice->buffer.size=buffer->size;
  voice->buffer.physical=buffer->physical;
  voice->buffer.addr=buffer->addr;
@@ -55,7 +56,10 @@ KX_API(int,kx_wave_open(kx_hw *hw,kx_voice_buffer *buffer,int usage,int sampling
 #if defined(__APPLE__) && defined(__MACH__) // MacOSX
  voice->buffer.desc=buffer->desc;
 #endif
+*/
 
+    memcpy(&voice->buffer, buffer, sizeof(voice->buffer));
+    
  if(kx_alloc_buffer(hw,num))
  {
   debug(DLIB,"wave_open: error allocating buffer for voice\n");

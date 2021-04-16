@@ -76,7 +76,9 @@ struct memhandle
 	void * addr;		// virtual
 	dword dma_handle;	// physical
 
+#if !defined(OLD_ALLOC)
 	IOBufferMemoryDescriptor *desc;
+#endif
 };
 
 #endif

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -343,7 +343,11 @@
 		C612EBA525ED16130006C564 /* AudioClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A96CE90E8DEC1C004CB7A2 /* AudioClient.cpp */; };
 		C612EBC225ED1AFA0006C564 /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
 		C612EBC625ED1AFA0006C564 /* AudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0117744B00710CA77F000001 /* AudioClip.cpp */; };
-		C612EBF425ED1B200006C564 /* libFloatLib_Libraryless.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C612EBCD25ED1AFA0006C564 /* libFloatLib_Libraryless.a */; };
+		C612EBF425ED1B200006C564 /* libAudioFloatLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C612EBCD25ED1AFA0006C564 /* libAudioFloatLib.a */; };
+		C613B8AD26299B0400C73208 /* frname.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.cpp */; };
+		C613B8AE26299B0400C73208 /* frname.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.cpp */; };
+		C613B8AF26299B0400C73208 /* frname.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.cpp */; };
+		C6B69BAC261906B6008B711B /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
 		DD360B1525EDF1CE006DECBA /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
 		DD360B1625EDF1CE006DECBA /* AudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A224C3EFF42367911CA2CB7 /* AudioDevice.h */; };
 		DD360B1725EDF1CE006DECBA /* AudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 0117744E00710DAB7F000001 /* AudioEngine.h */; };
@@ -644,6 +648,12 @@
 		DD360C4D25EDF210006DECBA /* IOAudioBlitterLibDispatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17251D9917063EEC006D7687 /* IOAudioBlitterLibDispatch.cpp */; };
 		DD360C4E25EDF210006DECBA /* IOAudioBlitterLibX86.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17251D9B17063EEC006D7687 /* IOAudioBlitterLibX86.cpp */; };
 		DD360C5125EDF244006DECBA /* libFloatLib_Updated.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD360C4925EDF1D0006DECBA /* libFloatLib_Updated.a */; };
+		DDA39A7026132BBD00008BFD /* kxctrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A6D9A00E908C080083971C /* kxctrl.cpp */; };
+		DDA39A7126132BBD00008BFD /* parse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A532530E91D9D40077BCD8 /* parse.cpp */; };
+		DDA39A7326132BBD00008BFD /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
+		DDA39A9926132D4D00008BFD /* edspctrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A6D9C20E908EC50083971C /* edspctrl.cpp */; };
+		DDA39A9A26132D4D00008BFD /* edsplib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A6D9C30E908EC50083971C /* edsplib.cpp */; };
+		DDA39A9C26132D4D00008BFD /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
 		E84375DE1527B2C100B8C85C /* asio.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C51527B2C100B8C85C /* asio.h */; };
 		E84375E11527B2C100B8C85C /* asiodrivers.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C61527B2C100B8C85C /* asiodrivers.h */; };
 		E84375E41527B2C100B8C85C /* asiodrvr.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C71527B2C100B8C85C /* asiodrvr.h */; };
@@ -1042,7 +1052,6 @@
 		E8A6D9F30E9090610083971C /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
 		E8A96CEC0E8DEC1C004CB7A2 /* AudioClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A96CE90E8DEC1C004CB7A2 /* AudioClient.cpp */; };
 		E8A96CED0E8DEC1C004CB7A2 /* AudioClient.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A96CEA0E8DEC1C004CB7A2 /* AudioClient.h */; };
-		E8D8958610687D9E006F33DC /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
 		E8D8958C10687E07006F33DC /* kxac97-main.icns in Resources */ = {isa = PBXBuildFile; fileRef = E8D8958B10687E07006F33DC /* kxac97-main.icns */; };
 		E8D8959610687E87006F33DC /* mute-off.tif in Resources */ = {isa = PBXBuildFile; fileRef = E8D8958E10687E87006F33DC /* mute-off.tif */; };
 		E8D8959710687E87006F33DC /* mute-on.tif in Resources */ = {isa = PBXBuildFile; fileRef = E8D8958F10687E87006F33DC /* mute-on.tif */; };
@@ -1096,6 +1105,41 @@
 			proxyType = 1;
 			remoteGlobalIDString = C612EBC025ED1AFA0006C564;
 			remoteInfo = FloatLib_Libraryless;
+		};
+		DDA39A6E26132BBD00008BFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E8A3E96D0E8F20FE005D3692;
+			remoteInfo = kXAPI;
+		};
+		DDA39A8026132BEA00008BFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C612EA7D25ED16130006C564;
+			remoteInfo = kXAudioDriver_LibraryLess;
+		};
+		DDA39A9526132D4D00008BFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E8A3E96D0E8F20FE005D3692;
+			remoteInfo = kXAPI;
+		};
+		DDA39AA226132D7600008BFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C612EA7D25ED16130006C564;
+			remoteInfo = kXAudioDriver_LibraryLess;
+		};
+		DDA39AA426132D7A00008BFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DDA39A6A26132BBD00008BFD;
+			remoteInfo = kxctrl_libraryless;
 		};
 		E84378F41527C03200B8C85C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1239,14 +1283,18 @@
 		449EE3DF0DE7A49D000769A3 /* wave.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = wave.cpp; path = ../driver/wave.cpp; sourceTree = "<group>"; };
 		449EE4590DE7A807000769A3 /* Compat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Compat.cpp; path = kext/Compat.cpp; sourceTree = "<group>"; };
 		44D7FC1C0E3E9E0F00612F22 /* multichn.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = multichn.cpp; path = ../driver/multichn.cpp; sourceTree = "<group>"; };
+		C60063722613AB3300367C27 /* install.command */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = install.command; sourceTree = "<group>"; };
 		C612EA4825ED12C70006C564 /* PPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPC.h; sourceTree = "<group>"; };
 		C612EBAB25ED16130006C564 /* kXAudioDriver_LibraryLess.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver_LibraryLess.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		C612EBAC25ED16130006C564 /* kXAudioDriver copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "kXAudioDriver copy-Info.plist"; path = "/Users/pietrocaruso/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver copy-Info.plist"; sourceTree = "<absolute>"; };
-		C612EBCD25ED1AFA0006C564 /* libFloatLib_Libraryless.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatLib_Libraryless.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C612EBCD25ED1AFA0006C564 /* libAudioFloatLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAudioFloatLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C613B8AC26299B0400C73208 /* frname.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = frname.cpp; path = ../driver/frname.cpp; sourceTree = "<group>"; };
 		DD360C3F25EDF1CE006DECBA /* kXAudioDriver_Updated.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver_Updated.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD360C4025EDF1CE006DECBA /* kXAudioDriver_LibraryLess copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "kXAudioDriver_LibraryLess copy2-Info.plist"; path = "/Users/itztravelintime/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver_LibraryLess copy2-Info.plist"; sourceTree = "<absolute>"; };
 		DD360C4925EDF1D0006DECBA /* libFloatLib_Updated.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatLib_Updated.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD5FC8CC25ED49BA000DD663 /* kXAudioDriver_LibraryLess copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "kXAudioDriver_LibraryLess copy-Info.plist"; path = "/Users/itztravelintime/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver_LibraryLess copy-Info.plist"; sourceTree = "<absolute>"; };
+		DDA39A7626132BBD00008BFD /* kxctrl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kxctrl; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDA39A9F26132D4D00008BFD /* edspctrl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = edspctrl; sourceTree = BUILT_PRODUCTS_DIR; };
 		E84374C51527B2C100B8C85C /* asio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asio.h; sourceTree = "<group>"; };
 		E84374C61527B2C100B8C85C /* asiodrivers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asiodrivers.h; sourceTree = "<group>"; };
 		E84374C71527B2C100B8C85C /* asiodrvr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asiodrvr.h; sourceTree = "<group>"; };
@@ -1629,7 +1677,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C612EBF425ED1B200006C564 /* libFloatLib_Libraryless.a in Frameworks */,
+				C612EBF425ED1B200006C564 /* libAudioFloatLib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1652,6 +1700,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDA39A7226132BBD00008BFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDA39A7326132BBD00008BFD /* kXAPI.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDA39A9B26132D4D00008BFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDA39A9C26132D4D00008BFD /* kXAPI.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1695,10 +1759,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8D8958610687D9E006F33DC /* kXAPI.dylib in Frameworks */,
 				E8A581DE108948FB00104EEB /* Cocoa.framework in Frameworks */,
 				E8A581E01089490100104EEB /* AppKit.framework in Frameworks */,
 				E8A581E21089491200104EEB /* Foundation.framework in Frameworks */,
+				C6B69BAC261906B6008B711B /* kXAPI.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1718,6 +1782,7 @@
 				C612EBAC25ED16130006C564 /* kXAudioDriver copy-Info.plist */,
 				DD5FC8CC25ED49BA000DD663 /* kXAudioDriver_LibraryLess copy-Info.plist */,
 				DD360C4025EDF1CE006DECBA /* kXAudioDriver_LibraryLess copy2-Info.plist */,
+				C60063722613AB3300367C27 /* install.command */,
 			);
 			name = SampleAudioDriver;
 			sourceTree = "<group>";
@@ -1733,9 +1798,11 @@
 				E8A6D9B60E908E940083971C /* edspctrl */,
 				E8D8957D10687D6E006F33DC /* kX AC97.app */,
 				C612EBAB25ED16130006C564 /* kXAudioDriver_LibraryLess.kext */,
-				C612EBCD25ED1AFA0006C564 /* libFloatLib_Libraryless.a */,
+				C612EBCD25ED1AFA0006C564 /* libAudioFloatLib.a */,
 				DD360C3F25EDF1CE006DECBA /* kXAudioDriver_Updated.kext */,
 				DD360C4925EDF1D0006DECBA /* libFloatLib_Updated.a */,
+				DDA39A7626132BBD00008BFD /* kxctrl */,
+				DDA39A9F26132D4D00008BFD /* edspctrl */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1787,6 +1854,7 @@
 				449EE3C40DE7A49D000769A3 /* dbdetect.cpp */,
 				449EE3CA0DE7A49D000769A3 /* dsp.cpp */,
 				449EE3CB0DE7A49D000769A3 /* ecard.cpp */,
+				C613B8AC26299B0400C73208 /* frname.cpp */,
 				449EE3CD0DE7A49D000769A3 /* hal.cpp */,
 				449EE3CE0DE7A49D000769A3 /* init.cpp */,
 				449EE3CF0DE7A49D000769A3 /* irq.cpp */,
@@ -2386,8 +2454,8 @@
 			isa = PBXGroup;
 			children = (
 				44212BE30DECB47E00E06065 /* Info.plist */,
-				E8A96CE90E8DEC1C004CB7A2 /* AudioClient.cpp */,
 				E8A96CEA0E8DEC1C004CB7A2 /* AudioClient.h */,
+				E8A96CE90E8DEC1C004CB7A2 /* AudioClient.cpp */,
 				449EE2410DE799E7000769A3 /* cedebug.h */,
 				1A224C3EFF42367911CA2CB7 /* AudioDevice.h */,
 				1A224C3FFF42367911CA2CB7 /* AudioDevice.cpp */,
@@ -3468,10 +3536,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C612EBA925ED16130006C564 /* Build configuration list for PBXNativeTarget "kXAudioDriver_LibraryLess" */;
 			buildPhases = (
+				C60063512613AA3B00367C27 /* ShellScript */,
 				C612EA8025ED16130006C564 /* Headers */,
-				C612EB8925ED16130006C564 /* Sources */,
 				C612EBA625ED16130006C564 /* Resources */,
+				C612EB8925ED16130006C564 /* Sources */,
 				C612EBA725ED16130006C564 /* Frameworks */,
+				C600634D2613AA2400367C27 /* Rez */,
+				C600634B2613AA0900367C27 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3490,6 +3561,7 @@
 				C612EBC125ED1AFA0006C564 /* Headers */,
 				C612EBC525ED1AFA0006C564 /* Sources */,
 				C612EBCA25ED1AFA0006C564 /* Frameworks */,
+				C600634C2613AA2400367C27 /* Rez */,
 			);
 			buildRules = (
 			);
@@ -3497,7 +3569,7 @@
 			);
 			name = FloatLib_Libraryless;
 			productName = FloatLib;
-			productReference = C612EBCD25ED1AFA0006C564 /* libFloatLib_Libraryless.a */;
+			productReference = C612EBCD25ED1AFA0006C564 /* libAudioFloatLib.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		DD360B1125EDF1CE006DECBA /* kXAudioDriver_Updated */ = {
@@ -3535,6 +3607,43 @@
 			productName = FloatLib;
 			productReference = DD360C4925EDF1D0006DECBA /* libFloatLib_Updated.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		DDA39A6A26132BBD00008BFD /* kxctrl_libraryless */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDA39A7426132BBD00008BFD /* Build configuration list for PBXNativeTarget "kxctrl_libraryless" */;
+			buildPhases = (
+				DDA39A6F26132BBD00008BFD /* Sources */,
+				DDA39A7226132BBD00008BFD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DDA39A8126132BEA00008BFD /* PBXTargetDependency */,
+				DDA39A6D26132BBD00008BFD /* PBXTargetDependency */,
+			);
+			name = kxctrl_libraryless;
+			productName = kxctrl;
+			productReference = DDA39A7626132BBD00008BFD /* kxctrl */;
+			productType = "com.apple.product-type.tool";
+		};
+		DDA39A9126132D4D00008BFD /* edspctrl_libraryless */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDA39A9D26132D4D00008BFD /* Build configuration list for PBXNativeTarget "edspctrl_libraryless" */;
+			buildPhases = (
+				DDA39A9826132D4D00008BFD /* Sources */,
+				DDA39A9B26132D4D00008BFD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DDA39A9426132D4D00008BFD /* PBXTargetDependency */,
+				DDA39AA326132D7600008BFD /* PBXTargetDependency */,
+				DDA39AA526132D7A00008BFD /* PBXTargetDependency */,
+			);
+			name = edspctrl_libraryless;
+			productName = edspctrl;
+			productReference = DDA39A9F26132D4D00008BFD /* edspctrl */;
+			productType = "com.apple.product-type.tool";
 		};
 		E8A3E96D0E8F20FE005D3692 /* kXAPI */ = {
 			isa = PBXNativeTarget;
@@ -3643,8 +3752,8 @@
 				ORGANIZATIONNAME = "kX Project";
 			};
 			buildConfigurationList = E84281580B8E825C0042E2D2 /* Build configuration list for PBXProject "10kx driver" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				English,
@@ -3663,6 +3772,8 @@
 				E8D8957C10687D6E006F33DC /* kX AC97 */,
 				C612EA7D25ED16130006C564 /* kXAudioDriver_LibraryLess */,
 				C612EBC025ED1AFA0006C564 /* FloatLib_Libraryless */,
+				DDA39A6A26132BBD00008BFD /* kxctrl_libraryless */,
+				DDA39A9126132D4D00008BFD /* edspctrl_libraryless */,
 				DD360B1125EDF1CE006DECBA /* kXAudioDriver_Updated */,
 				DD360C4125EDF1D0006DECBA /* FloatLib_Updated */,
 			);
@@ -3717,11 +3828,58 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXRezBuildPhase section */
+		C600634C2613AA2400367C27 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C600634D2613AA2400367C27 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C600634B2613AA0900367C27 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "script=\"${SYSTEM_DEVELOPER_DIR}/ProjectBuilder Extras/Kernel Extension Support/KEXTPostprocess\";\nif [ -x \"$script\" ]; then\n    . \"$script\"\nfi\nfind \"${BUILT_PRODUCTS_DIR}/kXAudioDriver_LibraryLess.kext\" -type d -exec /bin/chmod 0755 {} \\;\nfind \"${BUILT_PRODUCTS_DIR}/kXAudioDriver_LibraryLess.kext\" -type f -exec /bin/chmod 0644 {} \\;\ncp ${SRCROOT}/install.command ${BUILT_PRODUCTS_DIR}";
+		};
+		C60063512613AA3B00367C27 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "script=\"${SYSTEM_DEVELOPER_DIR}/ProjectBuilder Extras/Kernel Extension Support/KEXTPreprocess\";\nif [ -x \"$script\" ]; then\n    . \"$script\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		44212BDE0DECB47E00E06065 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C613B8AD26299B0400C73208 /* frname.cpp in Sources */,
 				44212C280DECB75500E06065 /* ac97.cpp in Sources */,
 				44212C290DECB75500E06065 /* bufmgr.cpp in Sources */,
 				44212C2A0DECB75500E06065 /* calc.cpp in Sources */,
@@ -3768,6 +3926,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C613B8AE26299B0400C73208 /* frname.cpp in Sources */,
 				C612EB8A25ED16130006C564 /* ac97.cpp in Sources */,
 				C612EB8B25ED16130006C564 /* bufmgr.cpp in Sources */,
 				C612EB8C25ED16130006C564 /* calc.cpp in Sources */,
@@ -3811,6 +3970,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C613B8AF26299B0400C73208 /* frname.cpp in Sources */,
 				DD360C1E25EDF1CE006DECBA /* ac97.cpp in Sources */,
 				DD360C1F25EDF1CE006DECBA /* bufmgr.cpp in Sources */,
 				DD360C2025EDF1CE006DECBA /* calc.cpp in Sources */,
@@ -3850,6 +4010,24 @@
 				DD360C4D25EDF210006DECBA /* IOAudioBlitterLibDispatch.cpp in Sources */,
 				DD360C4E25EDF210006DECBA /* IOAudioBlitterLibX86.cpp in Sources */,
 				DD360C4525EDF1D0006DECBA /* AudioClip.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDA39A6F26132BBD00008BFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDA39A7026132BBD00008BFD /* kxctrl.cpp in Sources */,
+				DDA39A7126132BBD00008BFD /* parse.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDA39A9826132D4D00008BFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDA39A9926132D4D00008BFD /* edspctrl.cpp in Sources */,
+				DDA39A9A26132D4D00008BFD /* edsplib.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3929,6 +4107,31 @@
 			target = C612EBC025ED1AFA0006C564 /* FloatLib_Libraryless */;
 			targetProxy = DD889EB525ED3CF300A2D924 /* PBXContainerItemProxy */;
 		};
+		DDA39A6D26132BBD00008BFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E8A3E96D0E8F20FE005D3692 /* kXAPI */;
+			targetProxy = DDA39A6E26132BBD00008BFD /* PBXContainerItemProxy */;
+		};
+		DDA39A8126132BEA00008BFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C612EA7D25ED16130006C564 /* kXAudioDriver_LibraryLess */;
+			targetProxy = DDA39A8026132BEA00008BFD /* PBXContainerItemProxy */;
+		};
+		DDA39A9426132D4D00008BFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E8A3E96D0E8F20FE005D3692 /* kXAPI */;
+			targetProxy = DDA39A9526132D4D00008BFD /* PBXContainerItemProxy */;
+		};
+		DDA39AA326132D7600008BFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C612EA7D25ED16130006C564 /* kXAudioDriver_LibraryLess */;
+			targetProxy = DDA39AA226132D7600008BFD /* PBXContainerItemProxy */;
+		};
+		DDA39AA526132D7A00008BFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DDA39A6A26132BBD00008BFD /* kxctrl_libraryless */;
+			targetProxy = DDA39AA426132D7A00008BFD /* PBXContainerItemProxy */;
+		};
 		E84378F51527C03200B8C85C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E8A6D9840E908BA40083971C /* kxctrl */;
@@ -3990,7 +4193,7 @@
 		44212BE50DECB47E00E06065 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2.20b0;
@@ -4006,7 +4209,7 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = kext/Info.plist;
 				KERNEL_MODULE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.kXProject.driver.kXAudioDriver;
 				ONLY_ACTIVE_ARCH = NO;
@@ -4020,7 +4223,7 @@
 		44212C1D0DECB66900E06065 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_X86_VECTOR_INSTRUCTIONS = sse4.1;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -4040,24 +4243,31 @@
 				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
 				KERNEL_MODULE = YES;
 				LIBRARY_STYLE = STATIC;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				MODULE_IOKIT = YES;
 				PRODUCT_NAME = FloatLib;
 				SDKROOT = macosx;
-				VALID_ARCHS = "x86_64 i386";
+				VALID_ARCHS = x86_64;
 			};
 			name = Deployment;
 		};
 		C612EBAA25ED16130006C564 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 2.20b0;
+				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ALTIVEC_EXTENSIONS = NO;
+				GCC_DEBUGGING_SYMBOLS = used;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_MODEL_PPC64 = NO;
+				GCC_MODEL_TUNING = G4;
+				GCC_ONE_BYTE_BOOL = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_1)",
 					KX_INTERNAL,
@@ -4065,29 +4275,72 @@
 					KX_DEBUG,
 					KX_LIBLESS,
 				);
-				GCC_VERSION = "";
-				INFOPLIST_FILE = "kXAudioDriver copy-Info.plist";
+				GCC_VERSION = 3.3;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
+				GCC_WARN_PROTOTYPE_CONVERSION = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				INFOPLIST_FILE = "kXAudioDriver_LibraryLess copy-Info.plist";
 				KERNEL_MODULE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\\\"$(SRCROOT)/build/Deployment\\\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.kXProject.driver.kXAudioDriver;
+				MODULE_VERSION = 2.2.0;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-DDEBUG";
+				OTHER_REZFLAGS = "";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				VALID_ARCHS = "x86_64 i386";
+				SDKROOT = macosx10.5;
+				SEPARATE_STRIP = NO;
+				SEPARATE_SYMBOL_EDIT = NO;
+				SKIP_INSTALL = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = debugging;
+				USER_HEADER_SEARCH_PATHS = "../h/**";
+				VALID_ARCHS = "ppc x86_64 i386 ppc7400";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
 				WRAPPER_EXTENSION = kext;
+				ZERO_LINK = NO;
 			};
 			name = Deployment;
 		};
 		C612EBCC25ED1AFA0006C564 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				CLANG_X86_VECTOR_INSTRUCTIONS = sse4.1;
-				COMBINE_HIDPI_IMAGES = YES;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(NATIVE_ARCH)";
+				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_DEBUGGING_SYMBOLS = used;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_KERNEL_DEVELOPMENT = YES;
-				GCC_ENABLE_SSE41_EXTENSIONS = YES;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_PPC64 = NO;
+				GCC_MODEL_TUNING = G4;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4098,16 +4351,61 @@
 					"KX_DEBUG_FUNC=hw->cb.debug_func",
 					KX_DEBUG,
 					KX_LIBLESS,
+					DRIVER_PRIVATE,
+					APPLE,
+					NeXT,
 				);
-				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
-				KERNEL_MODULE = YES;
+				GCC_VERSION = 3.3;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
+				GCC_WARN_PROTOTYPE_CONVERSION = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers",
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers/bsd",
+				);
+				LD_GENERATE_MAP_FILE = YES;
 				LIBRARY_STYLE = STATIC;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				MODULE_IOKIT = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				VALID_ARCHS = "x86_64 i386";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MODULE_VERSION = "";
+				OTHER_CFLAGS = (
+					"-nostdinc",
+					"-finline",
+					"-fno-keep-inline-functions",
+					"-force_cpusubtype_ALL",
+					"-mlong-branch",
+					"-fcheck-new",
+					"-findirect-virtual-calls",
+					"-static",
+				);
+				OTHER_LIBTOOL_FLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = AudioFloatLib;
+				REZ_EXECUTABLE = YES;
+				SDKROOT = macosx10.5;
+				SEPARATE_SYMBOL_EDIT = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = debugging;
+				USER_HEADER_SEARCH_PATHS = "../h/**";
+				VALID_ARCHS = "ppc7400 ppc x86_64 i386";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = NO;
 			};
 			name = Deployment;
 		};
@@ -4172,6 +4470,28 @@
 			};
 			name = Deployment;
 		};
+		DDA39A7526132BBD00008BFD /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				PRODUCT_NAME = kxctrl;
+				SDKROOT = "";
+				VALID_ARCHS = "ppc x86_64 i386";
+			};
+			name = Deployment;
+		};
+		DDA39A9E26132D4D00008BFD /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_VERSION = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				PRODUCT_NAME = edspctrl;
+				SDKROOT = "";
+				VALID_ARCHS = "ppc x86_64 i386";
+			};
+			name = Deployment;
+		};
 		E842815A0B8E825C0042E2D2 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4206,13 +4526,13 @@
 		E8A3E96F0E8F20FE005D3692 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				INSTALL_PATH = "@executable_path";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = kXAPI;
-				SDKROOT = macosx;
-				VALID_ARCHS = "x86_64 i386";
+				SDKROOT = "";
+				VALID_ARCHS = "ppc x86_64 i386";
 			};
 			name = Deployment;
 		};
@@ -4230,9 +4550,10 @@
 		E8A6D9870E908BA50083971C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				PRODUCT_NAME = kxctrl;
-				VALID_ARCHS = "x86_64 i386";
+				SDKROOT = "";
+				VALID_ARCHS = "ppc x86_64 i386";
 			};
 			name = Deployment;
 		};
@@ -4251,13 +4572,15 @@
 		E8D8958010687D6E006F33DC /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(NATIVE_ARCH)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = kxac97/kxac97_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = kxac97/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				PRODUCT_NAME = "kX AC97";
+				SDKROOT = "";
 			};
 			name = Deployment;
 		};
@@ -4308,6 +4631,22 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DD360C4825EDF1D0006DECBA /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		DDA39A7426132BBD00008BFD /* Build configuration list for PBXNativeTarget "kxctrl_libraryless" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDA39A7526132BBD00008BFD /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		DDA39A9D26132D4D00008BFD /* Build configuration list for PBXNativeTarget "edspctrl_libraryless" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDA39A9E26132D4D00008BFD /* Deployment */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Deployment;

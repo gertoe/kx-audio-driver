@@ -1973,12 +1973,12 @@ int iKX::upload_fpga_firmware(byte *data,int size)
         int first=1;
         int ret=0;
         
-        /*
+        
         dword crc=0x0055aa55;
         for(int i=0;i<size;i++)
             crc=crc+data[i]*i;
         printf("=== size: %d; crc=%08x\n",size,crc);
-        */
+        
         
         while(size>0)
         {

@@ -30,12 +30,12 @@ KX_API(void,kx_disable_analog(kx_hw *hw,int disable));
 
 KX_API(void, kx_writefn0(kx_hw *hw, dword reg, dword data))
 {
-    unsigned long flags=0;
+    register unsigned long flags=0;
 
     if(reg & 0xff000000) 
     {
-        dword mask;
-        byte size, offset;
+        register dword mask;
+        register byte size, offset;
 
         size = (byte) ((reg >> 24) & 0x3f);
         offset = (byte) ((reg >> 16) & 0x1f);
@@ -56,8 +56,8 @@ KX_API(void, kx_writefn0(kx_hw *hw, dword reg, dword data))
 
 KX_API(int, kx_writespi(kx_hw *hw, dword data))
 {
-    dword reset, set;
-    dword reg, tmp;
+    register dword reset, set;
+    register dword reg, tmp;
 
     int n, result;
     if(hw->is_zsnb)
@@ -104,9 +104,9 @@ KX_API(int, kx_writei2c(kx_hw * hw,dword reg, dword value))
 {
     // return 0;
 
-    dword tmp;
+    register dword tmp;
     int timeout = 0;
-    int status;
+    dword status;
     int retry;
 
     if ((reg > 0x7f) || (value > 0x1ff)) {
@@ -164,13 +164,13 @@ KX_API(int, kx_writei2c(kx_hw * hw,dword reg, dword value))
 
 KX_API(dword, kx_readfn0(kx_hw * hw, dword reg))
 {
-    dword val;
+    register dword val;
     unsigned long flags=0;
 
     if(reg & 0xff000000) 
     {
-        dword mask;
-        byte size, offset;
+        register dword mask;
+        register byte size, offset;
 
         size = (byte) ((reg >> 24) & 0x3f);
         offset = (byte) ((reg >> 16) & 0x1f);
@@ -182,9 +182,9 @@ KX_API(dword, kx_readfn0(kx_hw * hw, dword reg))
         kx_lock_release(hw,&hw->hw_lock, &flags);
 
         return (val & mask) >> offset;
-        }
-         else 
-        {
+    }
+    else
+    {
         return inpd(hw->port + reg);
     }
 }
@@ -212,7 +212,7 @@ KX_API(byte, kx_readfn0b(kx_hw * hw, dword reg))
 
 KX_API(void, kx_writeptrw(kx_hw *hw, dword reg, dword channel, word data))
 {
-        dword regptr;
+        register dword regptr;
         unsigned long flags=0;
 
         regptr = ((reg << 16) & PTR_ADDRESS_MASK) | (channel & PTR_CHANNELNUM_MASK);
@@ -225,8 +225,8 @@ KX_API(void, kx_writeptrw(kx_hw *hw, dword reg, dword channel, word data))
 
 KX_API(word, kx_readptrw(kx_hw * hw, dword reg, dword channel))
 {
-        dword regptr;
-        word val;
+        register dword regptr;
+        register word val;
         unsigned long flags=0;
 
         regptr = ((reg << 16) & PTR_ADDRESS_MASK) | (channel & PTR_CHANNELNUM_MASK);
@@ -242,7 +242,7 @@ KX_API(word, kx_readptrw(kx_hw * hw, dword reg, dword channel))
 
 KX_API(void, kx_writeptrb(kx_hw *hw, dword reg, dword channel, byte data))
 {
-        dword regptr;
+        register dword regptr;
         unsigned long flags=0;
 
         regptr = ((reg << 16) & PTR_ADDRESS_MASK) | (channel & PTR_CHANNELNUM_MASK);
@@ -257,8 +257,8 @@ KX_API(void, kx_writeptrb(kx_hw *hw, dword reg, dword channel, byte data))
 
 KX_API(byte, kx_readptrb(kx_hw * hw, dword reg, dword channel))
 {
-        dword regptr;
-        byte val;
+        register dword regptr;
+        register byte val;
         unsigned long flags=0;
 
         regptr = ((reg << 16) & PTR_ADDRESS_MASK) | (channel & PTR_CHANNELNUM_MASK);
@@ -273,15 +273,15 @@ KX_API(byte, kx_readptrb(kx_hw * hw, dword reg, dword channel))
 
 KX_API(void,kx_writeptr(kx_hw *hw, dword reg, dword channel, dword data))
 {
-    dword regptr;
+    register dword regptr;
     unsigned long flags=0;
 
     regptr = ((reg << 16) & PTR_ADDRESS_MASK) | (channel & PTR_CHANNELNUM_MASK);
 
     if(reg & 0xff000000) 
     {
-        dword mask;
-        byte size, offset;
+        register dword mask;
+        register byte size, offset;
 
         size = (byte) ((reg >> 24) & 0x3f);
         offset = (byte) ((reg >> 16) & 0x1f);
@@ -366,23 +366,23 @@ KX_API(void,kx_writeptr_multiple(kx_hw *hw, dword channel, ...))
     va_list args;
 
     unsigned long flags=0;
-        dword reg;
+        register dword reg;
 
     va_start(args, channel);
 
     kx_lock_acquire(hw,&hw->hw_lock, &flags);
     while((reg = va_arg(args, dword)) != (dword)REGLIST_END) 
     {
-        dword data = va_arg(args, dword);
-        dword regptr = (((reg << 16) & PTR_ADDRESS_MASK)
+        register dword data = va_arg(args, dword);
+        register dword regptr = (((reg << 16) & PTR_ADDRESS_MASK)
                   | (channel & PTR_CHANNELNUM_MASK));
         outpd(hw->port + PTR,regptr);
 
         if(reg & 0xff000000) 
         {
-            int size = (reg >> 24) & 0x3f;
-                        int offset = (reg >> 16) & 0x1f;
-            dword mask = ((1 << size) - 1) << offset;
+            register dword size = (reg >> 24) & 0x3f;
+			register dword offset = (reg >> 16) & 0x1f;
+            register dword mask = ((1 << size) - 1) << offset;
             data = (data << offset) & mask;
 
             data |= inpd(hw->port + DATA) & ~mask;
@@ -396,15 +396,15 @@ KX_API(void,kx_writeptr_multiple(kx_hw *hw, dword channel, ...))
 
 KX_API(dword, kx_readptr(kx_hw * hw, dword reg, dword channel))
 {
-    dword regptr, val;
+    register dword regptr, val;
     unsigned long flags=0;
 
     regptr = ((reg << 16) & PTR_ADDRESS_MASK) | (channel & PTR_CHANNELNUM_MASK);
 
     if(reg & 0xff000000)
     {
-        dword mask;
-        byte size, offset;
+        register dword mask;
+        register byte size, offset;
 
         size = (byte) ((reg >> 24) & 0x3f);
         offset = (byte) ((reg >> 16) & 0x1f);
@@ -685,7 +685,7 @@ int kx_hal_init(kx_hw *hw,int fast)
         {
                // before anything else, enable I/O on zs notebook
 
-               word port=hw->port+TINA_POWER_CTRL;
+               io_port_t port=hw->port+TINA_POWER_CTRL;
                dword value;
 
                value = inpd(port);
