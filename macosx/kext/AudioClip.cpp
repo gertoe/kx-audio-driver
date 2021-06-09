@@ -73,10 +73,10 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
 
 	#if 1
 	if(bps==32)
-		Float32ToNativeInt32_Portable(fMixBuf, (SInt32 *)outputBuf, num_samples);
+		Float32ToNativeInt32_X86(fMixBuf, (SInt32 *)outputBuf, num_samples);
 	else
 		if(bps==16)
-			Float32ToNativeInt16_Portable(fMixBuf, (SInt16 *)outputBuf, num_samples);
+			Float32ToNativeInt16_X86(fMixBuf, (SInt16 *)outputBuf, num_samples);
 	#else
 	{
 		SInt32 *out=(SInt32 *)outputBuf;
@@ -126,10 +126,10 @@ IOReturn kXAudioEngine::convertInputSamples(const void *sampleBuf, void *destBuf
 
 	#if 1
 	if(bps==32)
-		NativeInt32ToFloat32_Portable((SInt32 *)inputBuf,(Float32 *)destBuf,num_samples);
+		NativeInt32ToFloat32_X86((SInt32 *)inputBuf,(Float32 *)destBuf,num_samples);
 	else
 		if(bps==16)
-			NativeInt16ToFloat32_Portable((SInt16 *)inputBuf,(Float32 *)destBuf,num_samples);
+			NativeInt16ToFloat32_X86((SInt16 *)inputBuf,(Float32 *)destBuf,num_samples);
 	#endif
     return kIOReturnSuccess;
 }
