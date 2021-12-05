@@ -524,7 +524,7 @@ KX_API(int,kx_p16v_rec_open(kx_hw *hw,kx_voice_buffer *buff,int frequency,int fl
 
  kx_p16v_rec_set_notify(hw,buff->notify);
 
- kx_writep16v(hw,pRFBS,hw->p16v_rec_chn,(buff->size&0xffff)<<16); // buffer size
+ kx_writep16v(hw,pRFBS,hw->p16v_rec_chn,((buff->size)&0xffff)<<16); // buffer size
 
  // 3538j: dynamic p16v i2s in/out programming (bypass->96kHz)
  if(hw->ext_flags&KX_HW_P16V_FOLLOW)

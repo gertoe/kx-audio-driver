@@ -250,54 +250,58 @@ FOUND: // bus,dev,func contain right values
 static int kx_pci_buffers_init(kx_hw *hw)
 {
     int ret=0;
-
+	
     hw->tankmem.size = hw->cb.tram_size;
     hw->virtualpagetable.size = MAXPAGES * sizeof(dword);
     hw->silentpage.size = KX_PAGE_SIZE;
     hw->mtr_buffer.size=65536; // always
-
+	
     if(!hw->cb.pci_alloc || hw->standalone)
-         return 0;
-
+		return 0;
+	
     ret=hw->cb.pci_alloc(hw->cb.call_with,&hw->virtualpagetable,KX_NONCACHED);
     if(ret)
     {
-     debug(DLIB,"Error allocating PCI for PT\n");
-     return ret;
+		debug(DLIB,"Error allocating PCI for PT\n");
+		return ret;
     }
-
+	
     ret=hw->cb.pci_alloc(hw->cb.call_with,&hw->silentpage,KX_NONCACHED);
     if(ret)
     { 
-      debug(DLIB,"Error allocating PCI for first page\n");
-      hw->cb.pci_free(hw->cb.call_with,&hw->virtualpagetable);
-      return ret; 
+		debug(DLIB,"Error allocating PCI for first page\n");
+		hw->cb.pci_free(hw->cb.call_with,&hw->virtualpagetable);
+		return ret; 
     }
-
+	
+	bzero(hw->silentpage.addr, hw->silentpage.size);
+	
     ret=hw->cb.pci_alloc(hw->cb.call_with,&hw->mtr_buffer,KX_NONCACHED);
     if(ret)
     {
-     debug(DLIB,"Error allocating PCI for MTR buffer\n");
-     return ret;
+		hw->cb.pci_free(hw->cb.call_with,&hw->virtualpagetable);
+		hw->cb.pci_free(hw->cb.call_with,&hw->silentpage);
+		debug(DLIB,"Error allocating PCI for MTR buffer\n");
+		return ret;
     }
-
+	
     if(hw->cb.tram_size>0)
     {
-            ret=hw->cb.pci_alloc(hw->cb.call_with,&hw->tankmem,KX_NONCACHED);
-            if(ret)
-            { 
-               debug(DLIB,"Error allocating PCI for TRAM\n");
-               hw->cb.pci_free(hw->cb.call_with,&hw->virtualpagetable);
-               hw->cb.pci_free(hw->cb.call_with,&hw->silentpage);
-                   hw->cb.pci_free(hw->cb.call_with,&hw->mtr_buffer);
-               hw->cb.tram_size=0;
-               return ret; 
-            }
-            memset(hw->tankmem.addr,0,hw->tankmem.size);
+		ret=hw->cb.pci_alloc(hw->cb.call_with,&hw->tankmem,KX_NONCACHED);
+		if(ret)
+		{ 
+			debug(DLIB,"Error allocating PCI for TRAM\n");
+			hw->cb.pci_free(hw->cb.call_with,&hw->virtualpagetable);
+			hw->cb.pci_free(hw->cb.call_with,&hw->silentpage);
+			hw->cb.pci_free(hw->cb.call_with,&hw->mtr_buffer);
+			hw->cb.tram_size=0;
+			return ret; 
+		}
+		bzero(hw->tankmem.addr,hw->tankmem.size);
     }
-
+	
     hw->initialized|=KX_BUFFERS_INITED;
-
+	
     return ret;
 }
 

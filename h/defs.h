@@ -22,7 +22,7 @@
 #ifndef DEFS_H_
 #define DEFS_H_
 
-#if defined(i386) || defined(I386) || defined(IX86) || defined(__I386__) || defined(_IX86) || defined(_M_IX86) || defined(AMD64) || defined(__x86_64__) || defined(__i386__)
+#if defined(i386) || defined(I386) || defined(IX86) || defined(__I386__) || defined(_IX86) || defined(_M_IX86) || defined(AMD64) || defined(__x86_64__) || defined(__i386__) || defined(__LP64__)
     #include "i386.h"
 #elif defined(__PPC__) || defined(__ppc__) || defined(_ARCH_PPC) || defined(__POWERPC__) || defined(__powerpc) || defined(__powerpc__)
     #include "PPC.h"
@@ -30,12 +30,23 @@
     #error "Unknown processor architecture"
 #endif
 
-#if defined(SYSTEM_IO) && (defined(__ppc__) || defined(__arm__))
+#if defined(SYSTEM_IO) && !(defined(__x86_64__) || defined(__i386__) || defined(__LP64__))
 typedef volatile byte* io_port_t; //volatile char*
 #else
 typedef word io_port_t;
 #endif
 
+__int64 correctEndianess64(const __int64 number);
+dword correctEndianess32(const dword number);
+word  correctEndianess16(const word  number);
+
+//void writeLE64(__int64* addr, const __int64 data);
+void writeLE32(dword* addr, const dword data);
+void writeLE16(word* addr, const word data);
+
+//__int64 readLE64(const __int64* addr);
+dword readLE32(const dword* addr);
+word readLE16(const word* addr);
 
 #if defined(SYSTEM_IO)
 

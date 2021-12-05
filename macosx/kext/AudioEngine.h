@@ -89,7 +89,7 @@ public:
     
     virtual UInt32 getCurrentSampleFrame();
 	
-	virtual struct memhandle *my_alloc_contiguous(mach_vm_size_t size);
+	virtual struct memhandle *my_alloc_contiguous(size_t size);
 	virtual void       my_free_contiguous(struct memhandle *desc, mach_vm_size_t size);
     
     virtual IOReturn performFormatChange(IOAudioStream *audioStream, const IOAudioStreamFormat *newFormat, const IOAudioSampleRate *newSampleRate);

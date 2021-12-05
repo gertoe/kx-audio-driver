@@ -28,9 +28,17 @@
 
 KX_API(void,kx_disable_analog(kx_hw *hw,int disable));
 
+io_port_t ioAddr(kx_hw* hw, const dword reg){
+	#if defined(SYSTEM_IO) && !(defined(__x86_64__) || defined(__i386__) || defined(__LP64__))
+	return &(hw->port[reg]);
+	#else
+	return hw->port + reg;
+	#endif
+}
+
 KX_API(void, kx_writefn0(kx_hw *hw, dword reg, dword data))
 {
-    register unsigned long flags=0;
+    unsigned long flags=0;
 
     if(reg & 0xff000000) 
     {
@@ -44,13 +52,13 @@ KX_API(void, kx_writefn0(kx_hw *hw, dword reg, dword data))
         reg &= 0x7f;
 
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        data |= inpd(hw->port + (word)reg) & ~mask;
-        outpd(hw->port + reg,data);
+        data |= inpd(ioAddr(hw, reg)) & ~mask;
+        outpd(ioAddr(hw, reg),data);
         kx_lock_release(hw,&hw->hw_lock, &flags);
     } 
      else 
     {
-        outpd(hw->port + reg,data);
+        outpd(ioAddr(hw, reg),data);
     }
 }
 
@@ -178,36 +186,36 @@ KX_API(dword, kx_readfn0(kx_hw * hw, dword reg))
         reg &= 0x7f;
 
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        val = inpd(hw->port + reg);
+        val = inpd(ioAddr(hw, reg));
         kx_lock_release(hw,&hw->hw_lock, &flags);
 
         return (val & mask) >> offset;
     }
     else
     {
-        return inpd(hw->port + reg);
+        return inpd(ioAddr(hw, reg));
     }
 }
 
 KX_API(void, kx_writefn0w(kx_hw *hw, dword reg, word data))
 {
-        outpw(hw->port + reg,data);
+        outpw(ioAddr(hw, reg),data);
 }
 
 KX_API(void, kx_writefn0b(kx_hw *hw, dword reg, byte data))
 {
-        outp(hw->port + reg,data);
+        outp(ioAddr(hw, reg),data);
 }
 
 
 KX_API(word, kx_readfn0w(kx_hw * hw, dword reg))
 {
-        return inpw(hw->port + reg);
+        return inpw(ioAddr(hw, reg));
 }
 
 KX_API(byte, kx_readfn0b(kx_hw * hw, dword reg))
 {
-        return inp(hw->port + reg);
+        return inp(ioAddr(hw, reg));
 }
 
 KX_API(void, kx_writeptrw(kx_hw *hw, dword reg, dword channel, word data))
@@ -799,7 +807,9 @@ int kx_hal_init(kx_hw *hw,int fast)
             {
 
                 for(int pagecount = 0; pagecount < MAXPAGES; pagecount++)
-                        ((dword *) hw->virtualpagetable.addr)[pagecount] = (hw->silentpage.dma_handle * 2) | pagecount;
+                        //((dword *) hw->virtualpagetable.addr)[pagecount] = correctEndianess32((hw->silentpage.dma_handle * 2) | pagecount);
+					writeLE32(&(((dword *) hw->virtualpagetable.addr)[pagecount]), (hw->silentpage.dma_handle * 2) | pagecount);
+
 
                     /* Init page table & tank memory base register */
                     dword trbs=0;
@@ -823,6 +833,7 @@ int kx_hal_init(kx_hw *hw,int fast)
                             hw->cb.tram_size=0x0; // disable TRAM
                             break;
                     }
+                
                     kx_writeptr_multiple(hw, 0,
                                 PTBA, hw->virtualpagetable.dma_handle,
                                 TRBA, hw->cb.tram_size?hw->tankmem.dma_handle:0,

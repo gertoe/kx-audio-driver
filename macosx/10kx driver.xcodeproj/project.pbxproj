@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 42;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -47,7 +47,6 @@
 		44212D8D0DECBF5100E06065 /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
 		44D7FC1D0E3E9E0F00612F22 /* multichn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44D7FC1C0E3E9E0F00612F22 /* multichn.cpp */; };
 		C612EA4925ED12C70006C564 /* PPC.h in Headers */ = {isa = PBXBuildFile; fileRef = C612EA4825ED12C70006C564 /* PPC.h */; };
-		C612EA4A25ED12C70006C564 /* PPC.h in Headers */ = {isa = PBXBuildFile; fileRef = C612EA4825ED12C70006C564 /* PPC.h */; };
 		C612EA4B25ED12C70006C564 /* PPC.h in Headers */ = {isa = PBXBuildFile; fileRef = C612EA4825ED12C70006C564 /* PPC.h */; };
 		C612EA8125ED16130006C564 /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
 		C612EA8225ED16130006C564 /* AudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A224C3EFF42367911CA2CB7 /* AudioDevice.h */; };
@@ -347,7 +346,11 @@
 		C613B8AD26299B0400C73208 /* frname.h in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.h */; };
 		C613B8AE26299B0400C73208 /* frname.h in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.h */; };
 		C613B8AF26299B0400C73208 /* frname.h in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.h */; };
+		C6A3360A262B502300E98427 /* defs.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374F51527B2C100B8C85C /* defs.h */; };
 		C6B69BAC261906B6008B711B /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
+		DD2CF6B8273AC91D004137AC /* PortableAudioClip.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2CF6B7273AC91D004137AC /* PortableAudioClip.h */; };
+		DD2CF6B9273AC91D004137AC /* PortableAudioClip.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2CF6B7273AC91D004137AC /* PortableAudioClip.h */; };
+		DD2CF6BA273AC91D004137AC /* PortableAudioClip.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2CF6B7273AC91D004137AC /* PortableAudioClip.h */; };
 		DD360B1525EDF1CE006DECBA /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
 		DD360B1625EDF1CE006DECBA /* AudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A224C3EFF42367911CA2CB7 /* AudioDevice.h */; };
 		DD360B1725EDF1CE006DECBA /* AudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 0117744E00710DAB7F000001 /* AudioEngine.h */; };
@@ -648,6 +651,7 @@
 		DD360C4D25EDF210006DECBA /* IOAudioBlitterLibDispatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17251D9917063EEC006D7687 /* IOAudioBlitterLibDispatch.cpp */; };
 		DD360C4E25EDF210006DECBA /* IOAudioBlitterLibX86.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17251D9B17063EEC006D7687 /* IOAudioBlitterLibX86.cpp */; };
 		DD360C5125EDF244006DECBA /* libFloatLib_Updated.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD360C4925EDF1D0006DECBA /* libFloatLib_Updated.a */; };
+		DD6EE29C275C1FD700BAB794 /* interface-osx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD6EE29B275C1FD700BAB794 /* interface-osx.cpp */; };
 		DDA39A7026132BBD00008BFD /* kxctrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A6D9A00E908C080083971C /* kxctrl.cpp */; };
 		DDA39A7126132BBD00008BFD /* parse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A532530E91D9D40077BCD8 /* parse.cpp */; };
 		DDA39A7326132BBD00008BFD /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
@@ -1092,6 +1096,13 @@
 			remoteGlobalIDString = 44212C1A0DECB61B00E06065;
 			remoteInfo = FloatLib;
 		};
+		DD140B13273576EB000F909D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C612EBC025ED1AFA0006C564;
+			remoteInfo = FloatLib_Libraryless;
+		};
 		DD360C4F25EDF239006DECBA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
@@ -1255,7 +1266,7 @@
 		1A224C3EFF42367911CA2CB7 /* AudioDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AudioDevice.h; path = kext/AudioDevice.h; sourceTree = "<group>"; };
 		1A224C3FFF42367911CA2CB7 /* AudioDevice.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AudioDevice.cpp; path = kext/AudioDevice.cpp; sourceTree = "<group>"; };
 		44212BE20DECB47E00E06065 /* kXAudioDriver.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver.kext; sourceTree = BUILT_PRODUCTS_DIR; };
-		44212BE30DECB47E00E06065 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = kext/Info.plist; sourceTree = "<group>"; };
+		44212BE30DECB47E00E06065 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = kext/Info.plist; sourceTree = "<group>"; };
 		44212C1B0DECB61B00E06065 /* libFloatLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		449EE2410DE799E7000769A3 /* cedebug.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = cedebug.h; path = kext/cedebug.h; sourceTree = "<group>"; };
 		449EE3C00DE7A49D000769A3 /* ac97.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ac97.cpp; path = ../driver/ac97.cpp; sourceTree = "<group>"; };
@@ -1286,13 +1297,15 @@
 		C60063722613AB3300367C27 /* install.command */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = install.command; sourceTree = "<group>"; };
 		C612EA4825ED12C70006C564 /* PPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPC.h; sourceTree = "<group>"; };
 		C612EBAB25ED16130006C564 /* kXAudioDriver_LibraryLess.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver_LibraryLess.kext; sourceTree = BUILT_PRODUCTS_DIR; };
-		C612EBAC25ED16130006C564 /* kXAudioDriver copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "kXAudioDriver copy-Info.plist"; path = "/Users/pietrocaruso/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver copy-Info.plist"; sourceTree = "<absolute>"; };
+		C612EBAC25ED16130006C564 /* kXAudioDriver copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "kXAudioDriver copy-Info.plist"; path = "/Users/pietrocaruso/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver copy-Info.plist"; sourceTree = "<absolute>"; };
 		C612EBCD25ED1AFA0006C564 /* libAudioFloatLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAudioFloatLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		C613B8AC26299B0400C73208 /* frname.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = frname.h; path = ../driver/frname.h; sourceTree = "<group>"; };
+		DD2CF6B7273AC91D004137AC /* PortableAudioClip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PortableAudioClip.h; sourceTree = "<group>"; };
 		DD360C3F25EDF1CE006DECBA /* kXAudioDriver_Updated.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver_Updated.kext; sourceTree = BUILT_PRODUCTS_DIR; };
-		DD360C4025EDF1CE006DECBA /* kXAudioDriver_LibraryLess copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "kXAudioDriver_LibraryLess copy2-Info.plist"; path = "/Users/itztravelintime/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver_LibraryLess copy2-Info.plist"; sourceTree = "<absolute>"; };
+		DD360C4025EDF1CE006DECBA /* kXAudioDriver_LibraryLess copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "kXAudioDriver_LibraryLess copy2-Info.plist"; path = "/Users/itztravelintime/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver_LibraryLess copy2-Info.plist"; sourceTree = "<absolute>"; };
 		DD360C4925EDF1D0006DECBA /* libFloatLib_Updated.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatLib_Updated.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		DD5FC8CC25ED49BA000DD663 /* kXAudioDriver_LibraryLess copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "kXAudioDriver_LibraryLess copy-Info.plist"; path = "/Users/itztravelintime/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver_LibraryLess copy-Info.plist"; sourceTree = "<absolute>"; };
+		DD5FC8CC25ED49BA000DD663 /* kXAudioDriver_LibraryLess copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "kXAudioDriver_LibraryLess copy-Info.plist"; path = "/Users/itztravelintime/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver_LibraryLess copy-Info.plist"; sourceTree = "<absolute>"; };
+		DD6EE29B275C1FD700BAB794 /* interface-osx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "interface-osx.cpp"; path = "../kxapi/interface-osx.cpp"; sourceTree = SOURCE_ROOT; };
 		DDA39A7626132BBD00008BFD /* kxctrl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kxctrl; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDA39A9F26132D4D00008BFD /* edspctrl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = edspctrl; sourceTree = BUILT_PRODUCTS_DIR; };
 		E84374C51527B2C100B8C85C /* asio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asio.h; sourceTree = "<group>"; };
@@ -1587,7 +1600,7 @@
 		E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = kXAPI.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8A3E97C0E8F21E7005D3692 /* interface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = interface.cpp; path = ../kxapi/interface.cpp; sourceTree = "<group>"; };
 		E8A3EA1E0E8F2735005D3692 /* kX Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kX Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8A3EA200E8F2735005D3692 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = kxmanager/Info.plist; sourceTree = "<group>"; };
+		E8A3EA200E8F2735005D3692 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = kxmanager/Info.plist; sourceTree = "<group>"; };
 		E8A3EA630E8F27A3005D3692 /* kX Manager_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "kX Manager_Prefix.pch"; path = "kxmanager/kX Manager_Prefix.pch"; sourceTree = "<group>"; };
 		E8A3EA640E8F27AF005D3692 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = kxmanager/main.mm; sourceTree = "<group>"; };
 		E8A3EA6B0E8F27F4005D3692 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -1596,7 +1609,7 @@
 		E8A3EA6F0E8F27F4005D3692 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		E8A3EFF00E8F2913005D3692 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		E8A3EFF10E8F2913005D3692 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
-		E8A3F0500E8F2D6C005D3692 /* manager.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = manager.xib; path = kxmanager/manager.xib; sourceTree = "<group>"; };
+		E8A3F0500E8F2D6C005D3692 /* manager.xib */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.xib; name = manager.xib; path = kxmanager/manager.xib; sourceTree = "<group>"; };
 		E8A3F07E0E8F3507005D3692 /* kxmanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kxmanager.h; path = kxmanager/kxmanager.h; sourceTree = "<group>"; };
 		E8A3F07F0E8F3507005D3692 /* kxmanager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = kxmanager.mm; path = kxmanager/kxmanager.mm; sourceTree = "<group>"; };
 		E8A532530E91D9D40077BCD8 /* parse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = parse.cpp; path = ../kxctrl/parse.cpp; sourceTree = "<group>"; };
@@ -1630,7 +1643,7 @@
 		E8D8955B10687C8C006F33DC /* RoundedBox.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RoundedBox.mm; path = kxac97/RoundedBox.mm; sourceTree = "<group>"; };
 		E8D8956310687CAB006F33DC /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = kxac97/main.m; sourceTree = "<group>"; };
 		E8D8957D10687D6E006F33DC /* kX AC97.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kX AC97.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8D8957F10687D6E006F33DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = kxac97/Info.plist; sourceTree = "<group>"; };
+		E8D8957F10687D6E006F33DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = kxac97/Info.plist; sourceTree = "<group>"; };
 		E8D8958B10687E07006F33DC /* kxac97-main.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "kxac97-main.icns"; path = "kxac97/kxac97-main.icns"; sourceTree = "<group>"; };
 		E8D8958E10687E87006F33DC /* mute-off.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "mute-off.tif"; path = "kxac97/mute-off.tif"; sourceTree = "<group>"; };
 		E8D8958F10687E87006F33DC /* mute-on.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "mute-on.tif"; path = "kxac97/mute-on.tif"; sourceTree = "<group>"; };
@@ -1638,8 +1651,8 @@
 		E8D8959110687E87006F33DC /* gain-on.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "gain-on.tif"; path = "kxac97/gain-on.tif"; sourceTree = "<group>"; };
 		E8D8959210687E87006F33DC /* linked.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = linked.tif; path = kxac97/linked.tif; sourceTree = "<group>"; };
 		E8D8959310687E87006F33DC /* unlinked.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = unlinked.tif; path = kxac97/unlinked.tif; sourceTree = "<group>"; };
-		E8D8959410687E87006F33DC /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = kxac97/MainMenu.xib; sourceTree = "<group>"; };
-		E8D8959510687E87006F33DC /* Ac97.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Ac97.xib; path = kxac97/Ac97.xib; sourceTree = "<group>"; };
+		E8D8959410687E87006F33DC /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.xib; name = MainMenu.xib; path = kxac97/MainMenu.xib; sourceTree = "<group>"; };
+		E8D8959510687E87006F33DC /* Ac97.xib */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.xib; name = Ac97.xib; path = kxac97/Ac97.xib; sourceTree = "<group>"; };
 		E8D89C7A1068842D006F33DC /* kxac97_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kxac97_Prefix.pch; path = kxac97/kxac97_Prefix.pch; sourceTree = "<group>"; };
 		E8DD9A8E0EA2F21F009342A3 /* compile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = compile.cpp; path = ../kxapi/compile.cpp; sourceTree = "<group>"; };
 		E8DD9A8F0EA2F21F009342A3 /* dane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dane.cpp; path = ../kxapi/dane.cpp; sourceTree = "<group>"; };
@@ -2389,6 +2402,7 @@
 				E8DD9A910EA2F21F009342A3 /* parse.cpp */,
 				E8DD9A920EA2F21F009342A3 /* rifx.cpp */,
 				E8A3E97C0E8F21E7005D3692 /* interface.cpp */,
+				DD6EE29B275C1FD700BAB794 /* interface-osx.cpp */,
 				E8A2CCD1108FFAA4007B1176 /* interface-win.cpp */,
 				E8DD9A9A0EA2F24A009342A3 /* stdafx.h */,
 				E8DD9BEE0EA2FBB8009342A3 /* kstring.cpp */,
@@ -2463,6 +2477,7 @@
 				0117744F00710DAB7F000001 /* AudioEngine.cpp */,
 				0117744B00710CA77F000001 /* AudioClip.cpp */,
 				449EE4590DE7A807000769A3 /* Compat.cpp */,
+				DD2CF6B7273AC91D004137AC /* PortableAudioClip.h */,
 			);
 			name = kext;
 			sourceTree = "<group>";
@@ -2520,6 +2535,7 @@
 				44212D8D0DECBF5100E06065 /* cedebug.h in Headers */,
 				17251D9D17063EEC006D7687 /* IOAudioBlitterLib.h in Headers */,
 				17251D9F17063EEC006D7687 /* IOAudioBlitterLibDispatch.h in Headers */,
+				DD2CF6B8273AC91D004137AC /* PortableAudioClip.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3070,6 +3086,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C612EBC225ED1AFA0006C564 /* cedebug.h in Headers */,
+				DD2CF6B9273AC91D004137AC /* PortableAudioClip.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3351,6 +3368,7 @@
 				DD360C4A25EDF203006DECBA /* IOAudioBlitterLib.h in Headers */,
 				DD360C4B25EDF203006DECBA /* IOAudioBlitterLibDispatch.h in Headers */,
 				DD360C4325EDF1D0006DECBA /* cedebug.h in Headers */,
+				DD2CF6BA273AC91D004137AC /* PortableAudioClip.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3358,7 +3376,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C612EA4A25ED12C70006C564 /* PPC.h in Headers */,
+				C6A3360A262B502300E98427 /* defs.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3618,6 +3636,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DD140B14273576EB000F909D /* PBXTargetDependency */,
 				DDA39A8126132BEA00008BFD /* PBXTargetDependency */,
 				DDA39A6D26132BBD00008BFD /* PBXTargetDependency */,
 			);
@@ -4049,6 +4068,7 @@
 				E8DD9A970EA2F21F009342A3 /* parse.cpp in Sources */,
 				E8DD9AA70EA2F370009342A3 /* danestd.cpp in Sources */,
 				E8DD9AA80EA2F370009342A3 /* error.cpp in Sources */,
+				DD6EE29C275C1FD700BAB794 /* interface-osx.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4096,6 +4116,11 @@
 			isa = PBXTargetDependency;
 			target = 44212C1A0DECB61B00E06065 /* FloatLib */;
 			targetProxy = 44212CA20DECBABC00E06065 /* PBXContainerItemProxy */;
+		};
+		DD140B14273576EB000F909D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C612EBC025ED1AFA0006C564 /* FloatLib_Libraryless */;
+			targetProxy = DD140B13273576EB000F909D /* PBXContainerItemProxy */;
 		};
 		DD360C5025EDF239006DECBA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4193,7 +4218,7 @@
 		44212BE50DECB47E00E06065 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2.20b0;
@@ -4215,7 +4240,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = kXAudioDriver;
 				SDKROOT = macosx;
-				VALID_ARCHS = x86_64;
+				VALID_ARCHS = "x86_64 i386";
 				WRAPPER_EXTENSION = kext;
 			};
 			name = Deployment;
@@ -4223,7 +4248,7 @@
 		44212C1D0DECB66900E06065 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_X86_VECTOR_INSTRUCTIONS = sse4.1;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -4247,7 +4272,7 @@
 				MODULE_IOKIT = YES;
 				PRODUCT_NAME = FloatLib;
 				SDKROOT = macosx;
-				VALID_ARCHS = x86_64;
+				VALID_ARCHS = "x86_64 i386";
 			};
 			name = Deployment;
 		};
@@ -4255,7 +4280,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = "$(NATIVE_ARCH)";
+				ARCHS = ppc;
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 2.20b0;
 				DEAD_CODE_STRIPPING = NO;
@@ -4307,7 +4332,7 @@
 				OTHER_REZFLAGS = "";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.5;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				SEPARATE_STRIP = NO;
 				SEPARATE_SYMBOL_EDIT = NO;
 				SKIP_INSTALL = NO;
@@ -4329,7 +4354,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = "$(NATIVE_ARCH)";
+				ARCHS = ppc;
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -4394,7 +4419,7 @@
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = AudioFloatLib;
 				REZ_EXECUTABLE = YES;
-				SDKROOT = macosx10.5;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				SEPARATE_SYMBOL_EDIT = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = debugging;
@@ -4412,7 +4437,7 @@
 		DD360C3E25EDF1CE006DECBA /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2.20b0;
@@ -4431,7 +4456,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.kXProject.driver.kXAudioDriver;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				VALID_ARCHS = "x86_64 i386";
@@ -4442,7 +4467,7 @@
 		DD360C4825EDF1D0006DECBA /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_X86_VECTOR_INSTRUCTIONS = sse4.1;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -4464,6 +4489,7 @@
 				LIBRARY_STYLE = STATIC;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MODULE_IOKIT = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				VALID_ARCHS = "x86_64 i386";
@@ -4473,9 +4499,11 @@
 		DDA39A7526132BBD00008BFD /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = ppc;
+				GCC_VERSION = 4.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = kxctrl;
-				SDKROOT = "";
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				VALID_ARCHS = "ppc x86_64 i386";
 			};
 			name = Deployment;
@@ -4483,11 +4511,11 @@
 		DDA39A9E26132D4D00008BFD /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				GCC_VERSION = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ARCHS = ppc;
+				GCC_VERSION = 4.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = edspctrl;
-				SDKROOT = "";
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				VALID_ARCHS = "ppc x86_64 i386";
 			};
 			name = Deployment;
@@ -4526,12 +4554,14 @@
 		E8A3E96F0E8F20FE005D3692 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = ppc;
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_VERSION = 4.0;
 				INSTALL_PATH = "@executable_path";
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = kXAPI;
-				SDKROOT = "";
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				VALID_ARCHS = "ppc x86_64 i386";
 			};
 			name = Deployment;
@@ -4572,15 +4602,15 @@
 		E8D8958010687D6E006F33DC /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = kxac97/kxac97_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = kxac97/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = "kX AC97";
-				SDKROOT = "";
+				SDKROOT = macosx;
 			};
 			name = Deployment;
 		};

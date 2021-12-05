@@ -25,10 +25,9 @@
 #ifndef _KXAUDIOCLIENT_H
 #define _KXAUDIOCLIENT_H
 
+#define USE_TIGER_IPC
 
 #include "interface/kx_ioctl.h"
-
-//#define USE_TIGER_IPC
 
 #if 1//!defined (__ppc__)
 #include <IOKit/IOUserClient.h>

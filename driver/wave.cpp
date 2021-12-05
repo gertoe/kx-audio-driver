@@ -44,7 +44,8 @@ KX_API(int,kx_wave_open(kx_hw *hw,kx_voice_buffer *buffer,int usage,int sampling
 
  buffer->pageindex=-1;
 
-    /*
+	
+	//assigns the buffer to the voice
  voice->buffer.size=buffer->size;
  voice->buffer.physical=buffer->physical;
  voice->buffer.addr=buffer->addr;
@@ -53,12 +54,11 @@ KX_API(int,kx_wave_open(kx_hw *hw,kx_voice_buffer *buffer,int usage,int sampling
  voice->buffer.notify=buffer->notify;
  voice->buffer.instance=buffer->instance;
 
-#if defined(__APPLE__) && defined(__MACH__) // MacOSX
+#if defined(__APPLE__) && defined(__MACH__) && !defined(OLD_ALLOC) // MacOSX
  voice->buffer.desc=buffer->desc;
 #endif
-*/
 
-    memcpy(&voice->buffer, buffer, sizeof(voice->buffer));
+    /*memcpy(&voice->buffer, buffer, sizeof(voice->buffer));*/
     
  if(kx_alloc_buffer(hw,num))
  {

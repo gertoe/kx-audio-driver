@@ -23,8 +23,8 @@
 #define KX_DRIVER_H_
 
 // #define KX_INTERNAL      // - include internal structures/defs
-// #define KX_DEBUG     // - release / debug
-// #define KX_DEBUG_FUNC    // - code to debug smthing
+//#define KX_DEBUG     // - release / debug
+//#define KX_DEBUG_FUNC    // - code to debug smthing
 
 #include "vers.h"
 #include "defs.h"
@@ -75,7 +75,7 @@
 #if defined(KX_DEBUG_FUNC) && defined(KX_DEBUG)
  #define debug (((KX_DEBUG_FUNC)==0)?0:(KX_DEBUG_FUNC))
 #else
- #define debug (void)
+ #define debug 
 #endif
 
 enum kx_cpu_cache_type_t
@@ -168,7 +168,7 @@ struct kx_callbacks
     // allocates contiguous memory
     int  (*pci_alloc)(void *call_with,struct memhandle *,kx_cpu_cache_type_t cache_type);
     void (*pci_free)(void *call_with,struct memhandle *);
-    void (*get_physical)(void *call_with,kx_voice_buffer *buff,int offset,__int64 *physical_addr);
+    void (*get_physical)(void *call_with,kx_voice_buffer *buff, const dword offset, dword *physical_addr);
 
     // soundfont functions
     // allocates large memory blocks [nonpaged, not-contiguous]
@@ -635,6 +635,8 @@ KX_API(dword,kx_getdword(kx_hw *hw,int what,dword *ret)); // returns 0 on succes
 // buffer management; num is voice number
 int kx_alloc_buffer(kx_hw *hw,int num);
 void kx_free_buffer(kx_hw *hw,int num);
+
+io_port_t ioAddr(kx_hw* hw, const dword reg);
 
 // UART
 KX_API(int,kx_mpu_write_data(kx_hw *card, byte data,int where));

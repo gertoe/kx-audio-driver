@@ -30,10 +30,17 @@
     #define api_alloc(a) LocalAlloc(LMEM_FIXED|LMEM_ZEROINIT,(a))
     #define api_free(a) LocalFree((HLOCAL)(a))
 #elif defined(__APPLE__)
-    #include "interface-osx.cpp"
+    //#include "interface-osx.cpp"
     #define api_alloc(a) malloc(a)
     #define api_free(a) free(a)
 #endif
+
+#if !defined(GetLastError)
+	static int GetLastError(void){
+		return 0;
+	}
+#endif
+
 
 iKX* iKX::create(int id)
 {

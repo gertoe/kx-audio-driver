@@ -80,10 +80,12 @@ bool kXAudioEngine::init(kx_hw *hw_)
     
     //enable some experiemntal stuff, no warraties here, be very carefoul, the customMapping array is used as temporary storage for calling this function
     
+	#if !defined(USE_TIGER_IPC)
     if (PE_parse_boot_argn("-kxtest", customMapping, KXBootArgValueLength)){
         debug(DBGCLASS"[%p]::init: WARNING Experimental features enabled using the -kxtest boot arg, you are doing this at your own risk, this stuff may harm your computer, YOU HAVE BEEN WARNED!!\n",this);
         hama_experimental = true;
     }
+	#endif
     
     //cleanup
     for (int i = 0; i < KXBootArgValueLength; i++) {
@@ -93,6 +95,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
     //when you need a custom output mapping for whatever reason, here it is, it's supported via boot arg, the equivalent thing via mac's midi configuration app is quite buggy
     //This is for you Hurrain, because you told me you have a broken jack on your sound card
     
+	#if !defined(USE_TIGER_IPC)
     if (PE_parse_boot_argn("_kxcl", customMapping, MAPPING_NUM_CHANNELS)) {
         debug(DBGCLASS"[%p]::init: custom output layout specified with the _kxcl boot arg \n",this);
         
@@ -125,6 +128,9 @@ bool kXAudioEngine::init(kx_hw *hw_)
     }else{
         def = true;
     }
+	#else
+	def = true;
+	#endif
     
     if (def) {
         debug("kXAudioEngine[%p]::init: Using default mapping value\n",this);
@@ -133,6 +139,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
         }
     }
     
+	#if !defined(USE_TIGER_IPC)
      //this boot arg is used to enter custom sampling rates values for consumer cards which just uses a pitch adjustment trick and so they can basically use any sampling rate not higher than 192khz and not lower than 1khz
     if (PE_parse_boot_argn("_kxcsr", customSampleRate, KXBootArgValueLength)){
         debug(DBGCLASS"[%p]::init: custom sampling rate specified with the _kxcsr boot arg\n",this);
@@ -148,6 +155,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
         }
         
     }
+	#endif
     
     if(hw->is_10k2)
         bps=32;
@@ -169,6 +177,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
     //hw->mtr_buffer is already allocated here, so why allocating it again later?
     n_frames = (int)((hw->mtr_buffer.size * 8 / bps / n_channels));
     
+	#if !defined(USE_TIGER_IPC)
     if (PE_parse_boot_argn("_kxcfm", customMultiplyer, KXBootArgValueLength)){
            
         debug(DBGCLASS"[%p]::init: custom n_frames multiplyer specified with the _kxcfm boot arg\n",this);
@@ -184,7 +193,8 @@ bool kXAudioEngine::init(kx_hw *hw_)
             debug(DBGCLASS"[%p]::init: custom n_frames multiplyer value \"%s\" uses illegal chracters or it's out of the supported range [1 to 128]\n",this, customMultiplyer);
         }
     }
-    
+    #endif
+	
     debug("kXAudioEngine[%p]::init - n_frames=%d\n", this, n_frames);
     
     is_running=0;
@@ -282,8 +292,7 @@ bool kXAudioEngine::initHardware(IOService *provider)
         out_streams[i]=audioStream;
     }
     
-    // recording
-    //why is a single buffer used for the recording?
+    // recording, a single buffer for 8 channels is used
     audioStream = createNewAudioStream(0,kIOAudioStreamDirectionInput, n_channels*buffer_size);
     if (!audioStream) {
         goto Done;
@@ -378,7 +387,7 @@ void kXAudioEngine::free_all()
         debug("kXAudioEngine[%p]::free_all() - iKX interface already closed\n",this);
 }
 
-struct memhandle *kXAudioEngine::my_alloc_contiguous(mach_vm_size_t size)
+struct memhandle *kXAudioEngine::my_alloc_contiguous(size_t size)
 {
     if(size<PAGE_SIZE)
         size=PAGE_SIZE;
@@ -425,7 +434,7 @@ struct memhandle *kXAudioEngine::my_alloc_contiguous(mach_vm_size_t size)
         if (pa & (~mask))
             debug("kXAudioEngine[%p]::my_alloc_contiguous() - memory misaligned or beyond 2GB limit (%p)\n", this, (void *)pa);
         
-        mem->dma_handle = (dword)pa; //pa is the address of the memory buffer, so why is it casted as a unsigned int? probably to have a 32 bit address for the card, whose can't support 64 bit
+        mem->dma_handle = (dword)pa; //pa is the address of the memory buffer, which must be in the 32 bit address space limit for the card to work
         mem->addr = desc->getBytesNoCopy();
         
     }else{
@@ -436,6 +445,8 @@ struct memhandle *kXAudioEngine::my_alloc_contiguous(mach_vm_size_t size)
 #endif
     
     debug("kXAudioEngine[%p]::my_alloc_contiguos() - Allocation success. Virtual address [%p], Physical address [%p]\n", (this), (mem->addr), (void*)(IOPhysicalAddress)(mem->dma_handle));
+    
+    bzero(mem->addr, mem->size);
     
     return mem;
     
@@ -480,10 +491,10 @@ void kXAudioEngine::freeAudioStream(int chn,IOAudioStreamDirection direction)
     
     if(direction==kIOAudioStreamDirectionOutput)
     {
-        
+        struct memhandle mem;
+		
         for(int i=0;i<KX_NUMBER_OF_VOICES;i++)
         {
-            struct memhandle mem;
             
             if(hw->voicetable[i].asio_id==this && hw->voicetable[i].asio_channel==(dword)chn)
             {
@@ -496,12 +507,11 @@ void kXAudioEngine::freeAudioStream(int chn,IOAudioStreamDirection direction)
                 hw->voicetable[i].asio_kernel_addr=0;
                 hw->voicetable[i].asio_user_addr=0;
                 
+                bzero(((byte*)&mem), sizeof(mem));
                 
-                bzero(&mem, sizeof(mem));
-                
-                mem.addr = hw->voicetable[i].buffer.addr;
+                mem.addr       = hw->voicetable[i].buffer.addr;
                 mem.dma_handle = hw->voicetable[i].buffer.physical;
-                mem.size = hw->voicetable[i].buffer.size;
+                mem.size       = hw->voicetable[i].buffer.size;
                 
 #if !defined(OLD_ALLOC)
                 if(!hw->voicetable[i].buffer.desc){
@@ -509,13 +519,12 @@ void kXAudioEngine::freeAudioStream(int chn,IOAudioStreamDirection direction)
                 }
                 mem.desc = hw->voicetable[i].buffer.desc;
 #endif
-                
-                
+				
                 if(mem.addr && mem.size!=0)
                 {
                     //my_free_contiguous(hw->voicetable[i].buffer.addr,hw->voicetable[i].buffer.size);
                     my_free_contiguous(&mem, mem.size);
-                    bzero(&(hw->voicetable[i].buffer), sizeof(hw->voicetable[i].buffer));
+                    bzero(((byte*)&(hw->voicetable[i].buffer)), sizeof(hw->voicetable[i].buffer));
                 }
             }
         }
@@ -576,7 +585,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
             {
                 //buffer object creation and cleaning
                 kx_voice_buffer buffer;
-                bzero(&buffer, sizeof(buffer));
+                bzero(((byte*)&buffer), sizeof(buffer));
                 
                 buffer.physical = mem->dma_handle;
                 buffer.addr = mem->addr;
@@ -589,7 +598,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
     #endif
                 
                 //finishes to set up the buffer object
-                buffer.size=sampleBufferSize;
+                buffer.size=(dword)mem->size;
                 buffer.that=this;
                 buffer.notify=-n_frames;
                 
@@ -627,7 +636,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
             }
             else if(direction==kIOAudioStreamDirectionInput)
             {
-                format.fNumChannels = n_channels;
+                format.fNumChannels = n_channels; // sets input to 8 channels
                 
                 /*
 #if !defined(OLD_ALLOC)
@@ -665,38 +674,37 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
             // As part of creating a new IOAudioStream, its sample buffer needs to be set
             // It will automatically create a mix buffer should it be needed
             if((mem->addr) && (mem->size))
-                audioStream->setSampleBuffer((mem->addr), (mem->size));
+				audioStream->setSampleBuffer((mem->addr), (UInt32)(mem->size));
             
             //we need to add our supported sample rates now
-            
             rate.fraction = 0;
             
-            //we don't have to worry about repetitions of sampleing rates here, because the os already takes care of that by not considering duplicates
-            UInt32 supportedFreqs[] = {44100, 48000, 88200, 96000, 176400, 192000, 7000, 8000, 9600, 11025, 12000, 16000, 18900, 22050, 24000, 32000, 37800, 44056, 49716, 64000, custom_sampling_rate, sampling_rate};
-            unsigned int length = sizeof(supportedFreqs) / sizeof(supportedFreqs[0]);
-            
-            if (hw->is_edsp){
-                debug("kXAudioEngine[%p] The current sound card in an E-MU e-dsp or similar (using the same architecture), using hardware support for sampling rathes rather than the software resampler\n",this);
+                //we don't have to worry about repetitions of sampleing rates here, because the os already takes care of that by not considering duplicates
+                const UInt32 supportedFreqs[] = {44100, 48000, 88200, 96000, 176400, 192000, 7000, 8000, 9600, 11025, 12000, 16000, 18900, 22050, 24000, 32000, 37800, 44056, 49716, 64000, custom_sampling_rate, sampling_rate};
+                UInt8 length = sizeof(supportedFreqs) / sizeof(*supportedFreqs);
                 
-                length = (hama_experimental) ? 6 : 2;
-                
-            }else{
-                //support for custom sampling rates for the software resampler
-                if (custom_sampling_rate != sampling_rate)
-                    debug("kXAudioEngine[%p] Custom sampling rate: %u\n",this, (unsigned int)custom_sampling_rate);
-            }
-            
-            format.fBitWidth = bps;
-            
-            for (UInt8 d = 8; d <= format.fBitWidth; d += 8){
-                format.fBitDepth = d;
-                for (unsigned int i = 0; i < length; i++){
-                    rate.whole = supportedFreqs[i];
-                    audioStream->addAvailableFormat(&format, &rate, &rate);
+                if (hw->is_edsp){
+                    debug("kXAudioEngine[%p] The current sound card in an E-MU e-dsp or similar (using the same architecture), using hardware support for sampling rathes rather than the software resampler\n",this);
                     
-                    //debug("kXAudioEngine[%p] Added sampling rate: %u at %u bits\n",this, rate.whole, format.fBitDepth);
+                    length = (hama_experimental) ? 6 : 2;
+                    
+                }else{
+                    //support for custom sampling rates for the software resampler
+                    if (custom_sampling_rate != sampling_rate)
+                        debug("kXAudioEngine[%p] Custom sampling rate: %u\n",this, (unsigned int)custom_sampling_rate);
                 }
-            }
+                
+                format.fBitWidth = bps;
+                
+                for (UInt8 d = 8; d <= format.fBitWidth; d += 8){
+                    format.fBitDepth = d;
+                    for (UInt8 i = 0; i < length; i++){
+                        rate.whole = supportedFreqs[i];
+                        audioStream->addAvailableFormat(&format, &rate, &rate);
+                        //debug("kXAudioEngine[%p] Added sampling rate: %u at %u bits\n",this, rate.whole, format.fBitDepth);
+                    }
+                }
+                
             
             // Finally, the IOAudioStream's current format needs to be indicated
             audioStream->setFormat(&format);
@@ -893,31 +901,25 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
             
             
             //not a real sampling rate support, but rather a pitch adjustment to sound right, this can work for the professional cards as well, but there is a better implementation for professional cards using the hama fpga, so it just uses that (BTW how does the windows driver for some edps cards support 192 khz?, i guess it uses some clock multiplyers or just this pitch trick, but it whould be nice to see the official creative source some day)
+            //if (audioStream->direction == kIOAudioStreamDirectionOutput){
+				if(newSampleRate->whole == 192000){
+					for(int i=0; i<n_channels;i++)
+					{
+						hw->voicetable[i].param.pitch_target  = 0xffff;
+					}
+				}else{
+					for(int i=0; i<n_channels;i++)
+					{
+						hw->voicetable[i].param.initial_pitch =(word)  kx_srToPitch(kx_sr_coeff(hw,newSampleRate->whole) >> 8);
+						hw->voicetable[i].param.pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,newSampleRate->whole));
+						hw->voicetable[i].sampling_rate = newSampleRate->whole;
+					}
+				}
+			//}else{
+				
+			//}
             
-            /*for(int i=0; i<n_channels;i++)
-            {
-                hw->voicetable[i].param.initial_pitch =  (word) kx_srToPitch(kx_sr_coeff(hw,newSampleRate->whole) >> 8);
-                hw->voicetable[i].param.pitch_target  =         kx_samplerate_to_linearpitch(kx_sr_coeff(hw,newSampleRate->whole));
-                hw->voicetable[i].sampling_rate       =         newSampleRate->whole;
-             }*/
-            
-            
-            //optimization tip: what is better? having 2 separated loops in the code or doing a branch operation for each loop cycle? performance-wise the first one is better, but for memory occupied by code, the latter one is better, luckly pcs nowdays doesn't have to warry about a few extra memory cells occupied by code, so we can just implement the best one for performance
-            
-            if(newSampleRate->whole == 192000){
-                for(int i=0; i<n_channels;i++)
-                {
-                    hw->voicetable[i].param.pitch_target  = 0xffff;
-                }
-            }else{
-                for(int i=0; i<n_channels;i++)
-                {
-                    hw->voicetable[i].param.initial_pitch =(word)  kx_srToPitch(kx_sr_coeff(hw,newSampleRate->whole) >> 8);
-                    hw->voicetable[i].param.pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,newSampleRate->whole));
-                    hw->voicetable[i].sampling_rate = newSampleRate->whole;
-                }
-            }
-            
+            //TODO: input sample rates switching
             
         }else{
             

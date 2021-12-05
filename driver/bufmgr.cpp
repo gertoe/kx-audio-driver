@@ -23,12 +23,13 @@
 
 #define n_pages(a) (((a)/KX_PAGE_SIZE)+(((a)%KX_PAGE_SIZE)?1:0))
 
-static int kx_bufmgr_alloc(kx_hw *hw,dword size,dword addr)
+static int kx_bufmgr_alloc(kx_hw *hw,dword size,dword addr_)
 {
+    const dword addr = correctEndianess32(addr_);
 	kx_pagetable_t *pagetable = hw->pagetable;
 	int index = 0;
 
-	int numpages = n_pages((int)size);
+	register word numpages = n_pages(size);
 
 	unsigned long flags=0;
 	kx_lock_acquire(hw,&hw->pt_lock, &flags);
@@ -64,7 +65,7 @@ static int kx_bufmgr_alloc(kx_hw *hw,dword size,dword addr)
 					pagetable[index + numpages].sz = pagetable[index].sz - numpages;
                                         // pagetable[index + numpages].usage should be '0'!
 
-				pagetable[index].sz = (word)numpages;
+				pagetable[index].sz = numpages;
 
 				pagetable[index].addr=addr;
 				pagetable[index].usage=1;
@@ -160,7 +161,7 @@ int kx_alloc_buffer(kx_hw *hw,int num)
 
 	kx_voice_buffer *buffer=&hw->voicetable[num].buffer;
 	dword pageindex, pagecount;
-	dword pages=n_pages(buffer->size);
+	dword pages = (dword)n_pages(buffer->size);
 
 	for(int t=0;t<16;t++) // try up to 16 times...
 	{
@@ -176,8 +177,8 @@ int kx_alloc_buffer(kx_hw *hw,int num)
 
     if(buffer->pageindex<0)
     {
-        		debug(DERR,"!! kx_alloc_buffer failed [size=%d] (addx failed)\n",buffer->size);
-        		return -1;
+			debug(DERR,"!! kx_alloc_buffer failed [size=%d] (addx failed)\n",buffer->size);
+			return -1;
     }
 
 	debug(DBUFF,"kx wdm debug: allocated pagetable space: %x\n",buffer->pageindex);
@@ -198,18 +199,18 @@ int kx_alloc_buffer(kx_hw *hw,int num)
 	  for(pagecount=0;pagecount<pages;pagecount++) 
 	  {
 			dword physical;
-
-            __int64 a;
-            hw->cb.get_physical(hw->cb.call_with,buffer,pagecount*PAGE_SIZE,&a);
-            physical=(dword)a;
+            hw->cb.get_physical(hw->cb.call_with,buffer,pagecount*PAGE_SIZE,&physical);
 
 			pageindex = buffer->pageindex + pagecount;
-			((dword *) hw->virtualpagetable.addr)[pageindex] = (physical << 1) | pageindex;
-
-			debug(DBUFF,"kx wdm debug: re-mapped logical: %p physical: %x index: %x\n",
+		  //((dword *) hw->virtualpagetable.addr)[pageindex] = correctEndianess32((physical << 1) | pageindex);
+			
+		  writeLE32(&((dword *) hw->virtualpagetable.addr)[pageindex], (physical << 1) | pageindex);
+		  
+			debug(DBUFF,"kx wdm debug: re-mapped logical: %p physical: %x index: %x value: %x\n",
 			  (byte *)buffer->addr+pagecount*PAGE_SIZE,
 			  physical,
-			  pageindex);
+			  pageindex,
+              ((dword *) hw->virtualpagetable.addr)[pageindex]);
 	  }
 	}
 
@@ -225,20 +226,22 @@ void kx_free_buffer(kx_hw *hw,int num)
 	}
 
 	kx_voice_buffer *buffer=&hw->voicetable[num].buffer;
+    
 	if(buffer->pageindex < 0)
 		return;
 
 	dword pagecount, pageindex;
 
-	dword pages=n_pages(buffer->size);
+	dword pages = n_pages(buffer->size);
 
 	if(hw->pagetable[buffer->pageindex].usage==1) // last one
 	{
         	for(pagecount=0;pagecount<pages;pagecount++) 
         	{
         			pageindex = buffer->pageindex + pagecount;
-        			((dword *) hw->virtualpagetable.addr)[pageindex] = (hw->silentpage.dma_handle << 1) | pageindex;
-        	}
+        			//((dword *) hw->virtualpagetable.addr)[pageindex] = correctEndianess32((hw->silentpage.dma_handle << 1) | pageindex);
+					writeLE32(&(((dword *) hw->virtualpagetable.addr)[pageindex]), (hw->silentpage.dma_handle << 1) | pagecount);
+			}
         }
 
 	kx_bufmgr_free(hw, buffer->pageindex);

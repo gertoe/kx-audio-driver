@@ -43,8 +43,36 @@
 #undef kx_lock_acquire
 #undef kx_lock_release
 
+__int64 correctEndianess64(const __int64 number){
+    return OSSwapHostToLittleInt64(number);
+}
+
+dword correctEndianess32(const dword number){
+    return OSSwapHostToLittleInt32(number);
+}
+
+word  correctEndianess16(const word  number){
+    return OSSwapHostToLittleInt16(number);
+}
+
+void writeLE32(dword* addr, const dword data){
+	OSWriteLittleInt32(addr, 0, data);
+}
+void writeLE16(word* addr, const word data){
+	OSWriteLittleInt16(addr, 0, data);
+}
+
+dword readLE32(const dword* addr){
+	return (dword)OSReadLittleInt32( (volatile void *) addr, 0);
+}
+
+word readLE16(const word* addr){
+	return (word)OSReadLittleInt16( (volatile void *) addr, 0);
+}
+
+
 #if defined(SYSTEM_IO)
-#if (defined(__ppc__) || defined(__arm__))
+#if !(defined(__i386__) || defined(__x86_64__) || defined(__LP64__)) || defined(PPC)
 
 dword inpd_System(const io_port_t port){
     register dword value = OSReadLittleInt32( (volatile void *) port, 0);
@@ -82,7 +110,7 @@ void outp_System(io_port_t port, const byte value){
     OSSynchronizeIO();
 }
 
-#elif defined(__i386__) || defined(__x86_64__)
+#elif defined(__i386__) || defined(__x86_64__) || defined(__LP64__) || defined(X86)
 
 dword inpd_System(const io_port_t port){
     dword value = 0;
@@ -177,6 +205,9 @@ void * kXAudioDevice::lmem_get_addr_func(void **lm,int offset,__int64 *physical)
 int kXAudioDevice::pci_alloc(struct memhandle *h, kx_cpu_cache_type_t cache_type)
 {
 #if defined(OLD_ALLOC)
+
+	#warning "Using old dma memory allocation method"
+
     IOPhysicalAddress physical;
     h->addr=IOMallocContiguous((vm_size_t)h->size,PAGE_SIZE,&physical);
     h->dma_handle = (dword)physical;
@@ -198,15 +229,22 @@ int kXAudioDevice::pci_alloc(struct memhandle *h, kx_cpu_cache_type_t cache_type
     
     h->desc->prepare();
     
-    h->addr = h->desc->getBytesNoCopy();
+    h->addr =              h->desc->getBytesNoCopy    ();
     h->dma_handle = (dword)h->desc->getPhysicalAddress();
 #endif
+    
+    //buffer cleaning
+    bzero((byte*)h->addr, h->size); 
+    
     return 0;
 }
 
 void kXAudioDevice::pci_free(struct memhandle *h)
 {
 #if defined(OLD_ALLOC)
+	
+	#warning "Using old dma memory allocation method"
+
     IOFreeContiguous(h->addr,h->size);
 #else
 	h->desc->release();
@@ -284,11 +322,10 @@ int kXAudioDevice::debug_func(int where,const char *__format, ... )
 	return 0;
 }
 
-void kXAudioDevice::get_physical(kx_voice_buffer *buff,int offset,__int64 *physical)
+void kXAudioDevice::get_physical(kx_voice_buffer *buff,const dword offset, dword *physical)
 {
-    //apparently this is needed to have the driver working somewhat correctly, so this warning will remain here
 	//*physical=(__int64)(buff->physical+offset);
-    (*physical)=(__int64)(buff->physical+offset);
+    (*physical)=(buff->physical+offset);
 }
 
 void kXAudioDevice::save_fpu_state(kx_fpu_state *state)

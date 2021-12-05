@@ -50,6 +50,7 @@ static NSArray *controls = NULL;
             @"spkMuted",	@"spk",
             @"rsLeft",		@"rsRight",		@"digLB"] retain];
 
+
     registers = [@{
         @"Master":  @[@AC97_REG_MASTER_VOL,	[NSValue valueWithPointer: &regMaster]],
         @"PCBeep":  @[@AC97_REG_PC_BEEP_VOL,[NSValue valueWithPointer: &regPCBeep]],

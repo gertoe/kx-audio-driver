@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "ED7AC415B0CDB5A70CC16AAC6EA0559D9CA7B493+++3DC8275",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "ED7AC415B0CDB5A70CC16AAC6EA0559D9CA7B493+++FF884A0" : 9223372036854775807,
+    "ED7AC415B0CDB5A70CC16AAC6EA0559D9CA7B493+++4F36562" : 9223372036854775807,
+    "ED7AC415B0CDB5A70CC16AAC6EA0559D9CA7B493+++3DC8275" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "B5B9DA3B-13F4-4A50-BDF7-324FB8C95891",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "ED7AC415B0CDB5A70CC16AAC6EA0559D9CA7B493+++FF884A0" : "..\/..\/..\/Users\/itztravelintime\/Documents\/GitHub\/kx-audio-driver",
+    "ED7AC415B0CDB5A70CC16AAC6EA0559D9CA7B493+++4F36562" : "..\/..\/..\/Users\/itztravelintime\/Documents\/GitHub\/kx-audio-driver",
+    "ED7AC415B0CDB5A70CC16AAC6EA0559D9CA7B493+++3DC8275" : "kx-audio-driver\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "10kx driver",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "macosx\/10kx driver.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ITzTravelInTime\/kx-audio-driver.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "ED7AC415B0CDB5A70CC16AAC6EA0559D9CA7B493+++3DC8275"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ITzTravelInTime\/kx-audio-driver.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "ED7AC415B0CDB5A70CC16AAC6EA0559D9CA7B493+++4F36562"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ITzTravelInTime\/kx-audio-driver.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "ED7AC415B0CDB5A70CC16AAC6EA0559D9CA7B493+++FF884A0"
+    }
+  ]
+}

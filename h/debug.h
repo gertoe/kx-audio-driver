@@ -25,9 +25,10 @@
 
 #pragma once
 
-#ifdef KX_DEBUG
+#if !defined(debug)
 
- #ifdef UNICODE
+#if defined(KX_DEBUG)
+ #if defined(UNICODE)
   void debug(const wchar_t *__format,...);
  #else
   void debug(const char *__format,...);
@@ -41,11 +42,15 @@
 
 #else
 
- #ifndef UNICODE
-  inline void debug(const char *,...) {}
+ #if !defined(UNICODE)
+ 
+  static void debug(const char *,...) {}
+  
  #else
-  inline void debug(const wchar_t *,...) {}
+  static void debug(const wchar_t *,...) {}
  #endif
+
+#endif
 
 #endif
 
