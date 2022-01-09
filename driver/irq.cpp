@@ -106,7 +106,7 @@ static inline int kx_record_irq_critical_handler(kx_hw *hw,int where)
 
              out = *outputs;
              for(ii = (int)user_size; --ii >= 0; )
-              *(out + ii) = *(input + ii*cnt);
+              *(out + ii) = correctEndianess16(*(input + ii*cnt)); //the card will write in ram as little endian so the endianees needs to be corrected
              outputs++;
              input++;
             }
@@ -152,7 +152,7 @@ static inline int kx_record_irq_critical_handler(kx_hw *hw,int where)
 
              out = *outputs;
              for(ii = (int)user_size; --ii >= 0; )
-              *(out + ii) = *(input + ii*cnt); // cnt is already <<=1
+              *(out + ii) = correctEndianess16(*(input + ii*cnt)); // cnt is already <<=1
              outputs++;
              input+=2; // skip next LSB
             }
@@ -192,7 +192,7 @@ static inline int kx_record_irq_critical_handler(kx_hw *hw,int where)
 
              out = *outputs;
              for(ii = (int)user_size; --ii >= 0; )
-              *(out + ii) = *(input + ii*cnt);
+              *(out + ii) = correctEndianess32(*(input + ii*cnt));
              outputs++;
              input++;
             }

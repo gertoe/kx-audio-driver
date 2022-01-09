@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 42;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -47,7 +47,6 @@
 		44212D8D0DECBF5100E06065 /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
 		44D7FC1D0E3E9E0F00612F22 /* multichn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44D7FC1C0E3E9E0F00612F22 /* multichn.cpp */; };
 		C612EA4925ED12C70006C564 /* PPC.h in Headers */ = {isa = PBXBuildFile; fileRef = C612EA4825ED12C70006C564 /* PPC.h */; };
-		C612EA4A25ED12C70006C564 /* PPC.h in Headers */ = {isa = PBXBuildFile; fileRef = C612EA4825ED12C70006C564 /* PPC.h */; };
 		C612EA4B25ED12C70006C564 /* PPC.h in Headers */ = {isa = PBXBuildFile; fileRef = C612EA4825ED12C70006C564 /* PPC.h */; };
 		C612EA8125ED16130006C564 /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
 		C612EA8225ED16130006C564 /* AudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A224C3EFF42367911CA2CB7 /* AudioDevice.h */; };
@@ -342,10 +341,323 @@
 		C612EBA425ED16130006C564 /* multichn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44D7FC1C0E3E9E0F00612F22 /* multichn.cpp */; };
 		C612EBA525ED16130006C564 /* AudioClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A96CE90E8DEC1C004CB7A2 /* AudioClient.cpp */; };
 		C612EBC225ED1AFA0006C564 /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
-		C612EBC325ED1AFA0006C564 /* IOAudioBlitterLib.h in Headers */ = {isa = PBXBuildFile; fileRef = 17251D9817063EEC006D7687 /* IOAudioBlitterLib.h */; };
-		C612EBC425ED1AFA0006C564 /* IOAudioBlitterLibDispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 17251D9A17063EEC006D7687 /* IOAudioBlitterLibDispatch.h */; };
 		C612EBC625ED1AFA0006C564 /* AudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0117744B00710CA77F000001 /* AudioClip.cpp */; };
-		C612EBF425ED1B200006C564 /* libFloatLib_Libraryless.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C612EBCD25ED1AFA0006C564 /* libFloatLib_Libraryless.a */; };
+		C612EBF425ED1B200006C564 /* libAudioFloatLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C612EBCD25ED1AFA0006C564 /* libAudioFloatLib.a */; };
+		C613B8AD26299B0400C73208 /* frname.h in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.h */; };
+		C613B8AE26299B0400C73208 /* frname.h in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.h */; };
+		C613B8AF26299B0400C73208 /* frname.h in Sources */ = {isa = PBXBuildFile; fileRef = C613B8AC26299B0400C73208 /* frname.h */; };
+		C6A3360A262B502300E98427 /* defs.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374F51527B2C100B8C85C /* defs.h */; };
+		C6B69BAC261906B6008B711B /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
+		DD2CF6B8273AC91D004137AC /* PortableAudioClip.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2CF6B7273AC91D004137AC /* PortableAudioClip.h */; };
+		DD2CF6B9273AC91D004137AC /* PortableAudioClip.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2CF6B7273AC91D004137AC /* PortableAudioClip.h */; };
+		DD2CF6BA273AC91D004137AC /* PortableAudioClip.h in Headers */ = {isa = PBXBuildFile; fileRef = DD2CF6B7273AC91D004137AC /* PortableAudioClip.h */; };
+		DD360B1525EDF1CE006DECBA /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
+		DD360B1625EDF1CE006DECBA /* AudioDevice.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A224C3EFF42367911CA2CB7 /* AudioDevice.h */; };
+		DD360B1725EDF1CE006DECBA /* AudioEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 0117744E00710DAB7F000001 /* AudioEngine.h */; };
+		DD360B1825EDF1CE006DECBA /* AudioClient.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A96CEA0E8DEC1C004CB7A2 /* AudioClient.h */; };
+		DD360B1925EDF1CE006DECBA /* asio.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C51527B2C100B8C85C /* asio.h */; };
+		DD360B1A25EDF1CE006DECBA /* asiodrivers.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C61527B2C100B8C85C /* asiodrivers.h */; };
+		DD360B1B25EDF1CE006DECBA /* asiodrvr.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C71527B2C100B8C85C /* asiodrvr.h */; };
+		DD360B1C25EDF1CE006DECBA /* asiolist.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C81527B2C100B8C85C /* asiolist.h */; };
+		DD360B1D25EDF1CE006DECBA /* asiosys.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C91527B2C100B8C85C /* asiosys.h */; };
+		DD360B1E25EDF1CE006DECBA /* combase.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374CA1527B2C100B8C85C /* combase.h */; };
+		DD360B1F25EDF1CE006DECBA /* ginclude.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374CB1527B2C100B8C85C /* ginclude.h */; };
+		DD360B2025EDF1CE006DECBA /* iasiodrv.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374CC1527B2C100B8C85C /* iasiodrv.h */; };
+		DD360B2125EDF1CE006DECBA /* wxdebug.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374CD1527B2C100B8C85C /* wxdebug.h */; };
+		DD360B2225EDF1CE006DECBA /* BUFFER.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374CF1527B2C100B8C85C /* BUFFER.H */; };
+		DD360B2325EDF1CE006DECBA /* CEDIT.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374D01527B2C100B8C85C /* CEDIT.H */; };
+		DD360B2425EDF1CE006DECBA /* CEDITX.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374D11527B2C100B8C85C /* CEDITX.H */; };
+		DD360B2525EDF1CE006DECBA /* CMAXAFX.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374D21527B2C100B8C85C /* CMAXAFX.H */; };
+		DD360B2625EDF1CE006DECBA /* CMIDLIDS.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374D31527B2C100B8C85C /* CMIDLIDS.H */; };
+		DD360B2725EDF1CE006DECBA /* CODEMAX.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374D41527B2C100B8C85C /* CODEMAX.H */; };
+		DD360B2825EDF1CE006DECBA /* DEBUG.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374D51527B2C100B8C85C /* DEBUG.H */; };
+		DD360B2925EDF1CE006DECBA /* DRAGDROP.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374D61527B2C100B8C85C /* DRAGDROP.H */; };
+		DD360B2A25EDF1CE006DECBA /* EDITDLGS.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374D71527B2C100B8C85C /* EDITDLGS.H */; };
+		DD360B2B25EDF1CE006DECBA /* EDITSEL.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374D81527B2C100B8C85C /* EDITSEL.H */; };
+		DD360B2C25EDF1CE006DECBA /* EDITVIEW.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374D91527B2C100B8C85C /* EDITVIEW.H */; };
+		DD360B2D25EDF1CE006DECBA /* editx.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374DA1527B2C100B8C85C /* editx.h */; };
+		DD360B2E25EDF1CE006DECBA /* GLOBALSX.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374DB1527B2C100B8C85C /* GLOBALSX.H */; };
+		DD360B2F25EDF1CE006DECBA /* HKEYCTRL.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374DC1527B2C100B8C85C /* HKEYCTRL.H */; };
+		DD360B3025EDF1CE006DECBA /* hotkeyx.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374DD1527B2C100B8C85C /* hotkeyx.h */; };
+		DD360B3125EDF1CE006DECBA /* LANGX.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374DE1527B2C100B8C85C /* LANGX.H */; };
+		DD360B3225EDF1CE006DECBA /* MISC.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374DF1527B2C100B8C85C /* MISC.H */; };
+		DD360B3325EDF1CE006DECBA /* POSX.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374E01527B2C100B8C85C /* POSX.H */; };
+		DD360B3425EDF1CE006DECBA /* PRECOMP.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374E11527B2C100B8C85C /* PRECOMP.H */; };
+		DD360B3525EDF1CE006DECBA /* RANGEX.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374E21527B2C100B8C85C /* RANGEX.H */; };
+		DD360B3625EDF1CE006DECBA /* rectx.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374E31527B2C100B8C85C /* rectx.h */; };
+		DD360B3725EDF1CE006DECBA /* regexp.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374E41527B2C100B8C85C /* regexp.h */; };
+		DD360B3825EDF1CE006DECBA /* resource.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374E51527B2C100B8C85C /* resource.h */; };
+		DD360B3925EDF1CE006DECBA /* resource2.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374E61527B2C100B8C85C /* resource2.h */; };
+		DD360B3A25EDF1CE006DECBA /* UNDO.H in Headers */ = {isa = PBXBuildFile; fileRef = E84374E71527B2C100B8C85C /* UNDO.H */; };
+		DD360B3B25EDF1CE006DECBA /* credits.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374E81527B2C100B8C85C /* credits.h */; };
+		DD360B3C25EDF1CE006DECBA /* dane.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374EA1527B2C100B8C85C /* dane.h */; };
+		DD360B3D25EDF1CE006DECBA /* danesrc.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374EB1527B2C100B8C85C /* danesrc.h */; };
+		DD360B3E25EDF1CE006DECBA /* danestd.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374EC1527B2C100B8C85C /* danestd.h */; };
+		DD360B3F25EDF1CE006DECBA /* error.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374ED1527B2C100B8C85C /* error.h */; };
+		DD360B4025EDF1CE006DECBA /* imobj.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374EE1527B2C100B8C85C /* imobj.h */; };
+		DD360B4125EDF1CE006DECBA /* kxidsp.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374EF1527B2C100B8C85C /* kxidsp.h */; };
+		DD360B4225EDF1CE006DECBA /* langdef.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374F01527B2C100B8C85C /* langdef.h */; };
+		DD360B4325EDF1CE006DECBA /* parser.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374F11527B2C100B8C85C /* parser.h */; };
+		DD360B4425EDF1CE006DECBA /* rifxptxt.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374F21527B2C100B8C85C /* rifxptxt.h */; };
+		DD360B4525EDF1CE006DECBA /* scanner.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374F31527B2C100B8C85C /* scanner.h */; };
+		DD360B4625EDF1CE006DECBA /* debug.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374F41527B2C100B8C85C /* debug.h */; };
+		DD360B4725EDF1CE006DECBA /* defs.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374F51527B2C100B8C85C /* defs.h */; };
+		DD360B4825EDF1CE006DECBA /* ac3.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374F71527B2C100B8C85C /* ac3.h */; };
+		DD360B4925EDF1CE006DECBA /* calc.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374F81527B2C100B8C85C /* calc.h */; };
+		DD360B4A25EDF1CE006DECBA /* init.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374F91527B2C100B8C85C /* init.h */; };
+		DD360B4B25EDF1CE006DECBA /* irq.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374FA1527B2C100B8C85C /* irq.h */; };
+		DD360B4C25EDF1CE006DECBA /* kx.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374FB1527B2C100B8C85C /* kx.h */; };
+		DD360B4D25EDF1CE006DECBA /* list.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374FC1527B2C100B8C85C /* list.h */; };
+		DD360B4E25EDF1CE006DECBA /* math.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374FD1527B2C100B8C85C /* math.h */; };
+		DD360B4F25EDF1CE006DECBA /* os_mac.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374FE1527B2C100B8C85C /* os_mac.h */; };
+		DD360B5025EDF1CE006DECBA /* os_win.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374FF1527B2C100B8C85C /* os_win.h */; };
+		DD360B5125EDF1CE006DECBA /* pci.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375001527B2C100B8C85C /* pci.h */; };
+		DD360B5225EDF1CE006DECBA /* timer.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375011527B2C100B8C85C /* timer.h */; };
+		DD360B5325EDF1CE006DECBA /* voice.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375021527B2C100B8C85C /* voice.h */; };
+		DD360B5425EDF1CE006DECBA /* d3dapp.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375041527B2C100B8C85C /* d3dapp.h */; };
+		DD360B5525EDF1CE006DECBA /* d3dfile.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375051527B2C100B8C85C /* d3dfile.h */; };
+		DD360B5625EDF1CE006DECBA /* d3dfont.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375061527B2C100B8C85C /* d3dfont.h */; };
+		DD360B5725EDF1CE006DECBA /* d3dres.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375071527B2C100B8C85C /* d3dres.h */; };
+		DD360B5825EDF1CE006DECBA /* d3dutil.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375081527B2C100B8C85C /* d3dutil.h */; };
+		DD360B5925EDF1CE006DECBA /* ddutil.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375091527B2C100B8C85C /* ddutil.h */; };
+		DD360B5A25EDF1CE006DECBA /* didcfgview.h in Headers */ = {isa = PBXBuildFile; fileRef = E843750A1527B2C100B8C85C /* didcfgview.h */; };
+		DD360B5B25EDF1CE006DECBA /* diutil.h in Headers */ = {isa = PBXBuildFile; fileRef = E843750B1527B2C100B8C85C /* diutil.h */; };
+		DD360B5C25EDF1CE006DECBA /* dmutil.h in Headers */ = {isa = PBXBuildFile; fileRef = E843750C1527B2C100B8C85C /* dmutil.h */; };
+		DD360B5D25EDF1CE006DECBA /* dsutil.h in Headers */ = {isa = PBXBuildFile; fileRef = E843750D1527B2C100B8C85C /* dsutil.h */; };
+		DD360B5E25EDF1CE006DECBA /* dxutil.h in Headers */ = {isa = PBXBuildFile; fileRef = E843750E1527B2C100B8C85C /* dxutil.h */; };
+		DD360B5F25EDF1CE006DECBA /* netclient.h in Headers */ = {isa = PBXBuildFile; fileRef = E843750F1527B2C100B8C85C /* netclient.h */; };
+		DD360B6025EDF1CE006DECBA /* netclientres.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375101527B2C100B8C85C /* netclientres.h */; };
+		DD360B6125EDF1CE006DECBA /* netconnect.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375111527B2C100B8C85C /* netconnect.h */; };
+		DD360B6225EDF1CE006DECBA /* netconnectres.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375121527B2C100B8C85C /* netconnectres.h */; };
+		DD360B6325EDF1CE006DECBA /* netvoice.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375131527B2C100B8C85C /* netvoice.h */; };
+		DD360B6425EDF1CE006DECBA /* 3dl2.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375151527B2C100B8C85C /* 3dl2.h */; };
+		DD360B6525EDF1CE006DECBA /* 3dl2help.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375161527B2C100B8C85C /* 3dl2help.h */; };
+		DD360B6625EDF1CE006DECBA /* eax10.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375171527B2C100B8C85C /* eax10.h */; };
+		DD360B6725EDF1CE006DECBA /* eax20.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375181527B2C100B8C85C /* eax20.h */; };
+		DD360B6825EDF1CE006DECBA /* eax30.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375191527B2C100B8C85C /* eax30.h */; };
+		DD360B6925EDF1CE006DECBA /* eax_presets.h in Headers */ = {isa = PBXBuildFile; fileRef = E843751A1527B2C100B8C85C /* eax_presets.h */; };
+		DD360B6A25EDF1CE006DECBA /* AppReg.h in Headers */ = {isa = PBXBuildFile; fileRef = E843751C1527B2C100B8C85C /* AppReg.h */; };
+		DD360B6B25EDF1CE006DECBA /* gsif.h in Headers */ = {isa = PBXBuildFile; fileRef = E843751D1527B2C100B8C85C /* gsif.h */; };
+		DD360B6C25EDF1CE006DECBA /* GSIF2.H in Headers */ = {isa = PBXBuildFile; fileRef = E843751E1527B2C100B8C85C /* GSIF2.H */; };
+		DD360B6D25EDF1CE006DECBA /* GSIF_64BIT.H in Headers */ = {isa = PBXBuildFile; fileRef = E843751F1527B2C100B8C85C /* GSIF_64BIT.H */; };
+		DD360B6E25EDF1CE006DECBA /* GSIFNT.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375201527B2C100B8C85C /* GSIFNT.H */; };
+		DD360B6F25EDF1CE006DECBA /* GSSYSDEF.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375211527B2C100B8C85C /* GSSYSDEF.H */; };
+		DD360B7025EDF1CE006DECBA /* HWREG.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375221527B2C100B8C85C /* HWREG.H */; };
+		DD360B7125EDF1CE006DECBA /* HWSYSDEF.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375231527B2C100B8C85C /* HWSYSDEF.H */; };
+		DD360B7225EDF1CE006DECBA /* KEUTIL.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375241527B2C100B8C85C /* KEUTIL.H */; };
+		DD360B7325EDF1CE006DECBA /* kxgsif.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375251527B2C100B8C85C /* kxgsif.h */; };
+		DD360B7425EDF1CE006DECBA /* MIXER.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375261527B2C100B8C85C /* MIXER.H */; };
+		DD360B7525EDF1CE006DECBA /* NRegUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375271527B2C100B8C85C /* NRegUtil.h */; };
+		DD360B7625EDF1CE006DECBA /* 3DBar.h in Headers */ = {isa = PBXBuildFile; fileRef = E843752A1527B2C100B8C85C /* 3DBar.h */; };
+		DD360B7725EDF1CE006DECBA /* CMKnob.H in Headers */ = {isa = PBXBuildFile; fileRef = E843752B1527B2C100B8C85C /* CMKnob.H */; };
+		DD360B7825EDF1CE006DECBA /* StaticCounter.h in Headers */ = {isa = PBXBuildFile; fileRef = E843752C1527B2C100B8C85C /* StaticCounter.h */; };
+		DD360B7925EDF1CE006DECBA /* kBase.h in Headers */ = {isa = PBXBuildFile; fileRef = E843752D1527B2C100B8C85C /* kBase.h */; };
+		DD360B7A25EDF1CE006DECBA /* kButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E843752E1527B2C100B8C85C /* kButton.h */; };
+		DD360B7B25EDF1CE006DECBA /* kCheckButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E843752F1527B2C100B8C85C /* kCheckButton.h */; };
+		DD360B7C25EDF1CE006DECBA /* kCombo.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375301527B2C100B8C85C /* kCombo.h */; };
+		DD360B7D25EDF1CE006DECBA /* kDefs.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375311527B2C100B8C85C /* kDefs.h */; };
+		DD360B7E25EDF1CE006DECBA /* kDialog.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375321527B2C100B8C85C /* kDialog.h */; };
+		DD360B7F25EDF1CE006DECBA /* kGui.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375331527B2C100B8C85C /* kGui.h */; };
+		DD360B8025EDF1CE006DECBA /* kIndicator.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375341527B2C100B8C85C /* kIndicator.h */; };
+		DD360B8125EDF1CE006DECBA /* kKnob.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375351527B2C100B8C85C /* kKnob.h */; };
+		DD360B8225EDF1CE006DECBA /* kList.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375361527B2C100B8C85C /* kList.h */; };
+		DD360B8325EDF1CE006DECBA /* kLogo.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375371527B2C100B8C85C /* kLogo.h */; };
+		DD360B8425EDF1CE006DECBA /* kMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375381527B2C100B8C85C /* kMenu.h */; };
+		DD360B8525EDF1CE006DECBA /* kPeak.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375391527B2C100B8C85C /* kPeak.h */; };
+		DD360B8625EDF1CE006DECBA /* kProgress.h in Headers */ = {isa = PBXBuildFile; fileRef = E843753A1527B2C100B8C85C /* kProgress.h */; };
+		DD360B8725EDF1CE006DECBA /* kResource.h in Headers */ = {isa = PBXBuildFile; fileRef = E843753B1527B2C100B8C85C /* kResource.h */; };
+		DD360B8825EDF1CE006DECBA /* kSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = E843753C1527B2C100B8C85C /* kSettings.h */; };
+		DD360B8925EDF1CE006DECBA /* kSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = E843753D1527B2C100B8C85C /* kSlider.h */; };
+		DD360B8A25EDF1CE006DECBA /* kStatic.h in Headers */ = {isa = PBXBuildFile; fileRef = E843753E1527B2C100B8C85C /* kStatic.h */; };
+		DD360B8B25EDF1CE006DECBA /* kTextButton.h in Headers */ = {isa = PBXBuildFile; fileRef = E843753F1527B2C100B8C85C /* kTextButton.h */; };
+		DD360B8C25EDF1CE006DECBA /* kWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375401527B2C100B8C85C /* kWindow.h */; };
+		DD360B8D25EDF1CE006DECBA /* kxdialog.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375411527B2C100B8C85C /* kxdialog.h */; };
+		DD360B8E25EDF1CE006DECBA /* 8010.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375431527B2C100B8C85C /* 8010.h */; };
+		DD360B8F25EDF1CE006DECBA /* 8010x.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375441527B2C100B8C85C /* 8010x.h */; };
+		DD360B9025EDF1CE006DECBA /* ac97.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375451527B2C100B8C85C /* ac97.h */; };
+		DD360B9125EDF1CE006DECBA /* ecard.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375461527B2C100B8C85C /* ecard.h */; };
+		DD360B9225EDF1CE006DECBA /* emu.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375471527B2C100B8C85C /* emu.h */; };
+		DD360B9325EDF1CE006DECBA /* p16v.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375481527B2C100B8C85C /* p16v.h */; };
+		DD360B9425EDF1CE006DECBA /* p17v.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375491527B2C100B8C85C /* p17v.h */; };
+		DD360B9525EDF1CE006DECBA /* tina.h in Headers */ = {isa = PBXBuildFile; fileRef = E843754A1527B2C100B8C85C /* tina.h */; };
+		DD360B9625EDF1CE006DECBA /* i386.h in Headers */ = {isa = PBXBuildFile; fileRef = E843754B1527B2C100B8C85C /* i386.h */; };
+		DD360B9725EDF1CE006DECBA /* dsp.h in Headers */ = {isa = PBXBuildFile; fileRef = E843754D1527B2C100B8C85C /* dsp.h */; };
+		DD360B9825EDF1CE006DECBA /* dspnames.h in Headers */ = {isa = PBXBuildFile; fileRef = E843754E1527B2C100B8C85C /* dspnames.h */; };
+		DD360B9925EDF1CE006DECBA /* guids.h in Headers */ = {isa = PBXBuildFile; fileRef = E843754F1527B2C100B8C85C /* guids.h */; };
+		DD360B9A25EDF1CE006DECBA /* idane.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375501527B2C100B8C85C /* idane.h */; };
+		DD360B9B25EDF1CE006DECBA /* ikx.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375511527B2C100B8C85C /* ikx.h */; };
+		DD360B9C25EDF1CE006DECBA /* kString.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375521527B2C100B8C85C /* kString.h */; };
+		DD360B9D25EDF1CE006DECBA /* kx_ioctl.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375531527B2C100B8C85C /* kx_ioctl.h */; };
+		DD360B9E25EDF1CE006DECBA /* kxaddon.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375541527B2C100B8C85C /* kxaddon.h */; };
+		DD360B9F25EDF1CE006DECBA /* kxapi.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375551527B2C100B8C85C /* kxapi.h */; };
+		DD360BA025EDF1CE006DECBA /* kxcfg.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375561527B2C100B8C85C /* kxcfg.h */; };
+		DD360BA125EDF1CE006DECBA /* kxcompat.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375571527B2C100B8C85C /* kxcompat.h */; };
+		DD360BA225EDF1CE006DECBA /* kxi.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375581527B2C100B8C85C /* kxi.h */; };
+		DD360BA325EDF1CE006DECBA /* kxm.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375591527B2C100B8C85C /* kxm.h */; };
+		DD360BA425EDF1CE006DECBA /* kxmixer.h in Headers */ = {isa = PBXBuildFile; fileRef = E843755A1527B2C100B8C85C /* kxmixer.h */; };
+		DD360BA525EDF1CE006DECBA /* kxplugin.h in Headers */ = {isa = PBXBuildFile; fileRef = E843755B1527B2C100B8C85C /* kxplugin.h */; };
+		DD360BA625EDF1CE006DECBA /* kxplugingui.h in Headers */ = {isa = PBXBuildFile; fileRef = E843755C1527B2C100B8C85C /* kxplugingui.h */; };
+		DD360BA725EDF1CE006DECBA /* kxpm.h in Headers */ = {isa = PBXBuildFile; fileRef = E843755D1527B2C100B8C85C /* kxpm.h */; };
+		DD360BA825EDF1CE006DECBA /* mixernames.h in Headers */ = {isa = PBXBuildFile; fileRef = E843755E1527B2C100B8C85C /* mixernames.h */; };
+		DD360BA925EDF1CE006DECBA /* plgmath.h in Headers */ = {isa = PBXBuildFile; fileRef = E843755F1527B2C100B8C85C /* plgmath.h */; };
+		DD360BAA25EDF1CE006DECBA /* soundfont.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375601527B2C100B8C85C /* soundfont.h */; };
+		DD360BAB25EDF1CE006DECBA /* kdsound.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375621527B2C100B8C85C /* kdsound.h */; };
+		DD360BAC25EDF1CE006DECBA /* kx3d.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375631527B2C100B8C85C /* kx3d.h */; };
+		DD360BAD25EDF1CE006DECBA /* clear.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375661527B2C100B8C85C /* clear.h */; };
+		DD360BAE25EDF1CE006DECBA /* prepare.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375671527B2C100B8C85C /* prepare.h */; };
+		DD360BAF25EDF1CE006DECBA /* process.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375681527B2C100B8C85C /* process.h */; };
+		DD360BB025EDF1CE006DECBA /* license.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375691527B2C100B8C85C /* license.h */; };
+		DD360BB125EDF1CE006DECBA /* png.h in Headers */ = {isa = PBXBuildFile; fileRef = E843756B1527B2C100B8C85C /* png.h */; };
+		DD360BB225EDF1CE006DECBA /* pngasmrd.h in Headers */ = {isa = PBXBuildFile; fileRef = E843756C1527B2C100B8C85C /* pngasmrd.h */; };
+		DD360BB325EDF1CE006DECBA /* pngconf.h in Headers */ = {isa = PBXBuildFile; fileRef = E843756D1527B2C100B8C85C /* pngconf.h */; };
+		DD360BB425EDF1CE006DECBA /* archive.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843756F1527B2C100B8C85C /* archive.hpp */; };
+		DD360BB525EDF1CE006DECBA /* array.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375701527B2C100B8C85C /* array.hpp */; };
+		DD360BB625EDF1CE006DECBA /* cmddata.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375711527B2C100B8C85C /* cmddata.hpp */; };
+		DD360BB725EDF1CE006DECBA /* coder.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375721527B2C100B8C85C /* coder.hpp */; };
+		DD360BB825EDF1CE006DECBA /* compress.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375731527B2C100B8C85C /* compress.hpp */; };
+		DD360BB925EDF1CE006DECBA /* consio.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375741527B2C100B8C85C /* consio.hpp */; };
+		DD360BBA25EDF1CE006DECBA /* crc.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375751527B2C100B8C85C /* crc.hpp */; };
+		DD360BBB25EDF1CE006DECBA /* crypt.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375761527B2C100B8C85C /* crypt.hpp */; };
+		DD360BBC25EDF1CE006DECBA /* dll.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375771527B2C100B8C85C /* dll.hpp */; };
+		DD360BBD25EDF1CE006DECBA /* encname.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375781527B2C100B8C85C /* encname.hpp */; };
+		DD360BBE25EDF1CE006DECBA /* errhnd.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375791527B2C100B8C85C /* errhnd.hpp */; };
+		DD360BBF25EDF1CE006DECBA /* extinfo.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843757A1527B2C100B8C85C /* extinfo.hpp */; };
+		DD360BC025EDF1CE006DECBA /* extract.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843757B1527B2C100B8C85C /* extract.hpp */; };
+		DD360BC125EDF1CE006DECBA /* filcreat.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843757C1527B2C100B8C85C /* filcreat.hpp */; };
+		DD360BC225EDF1CE006DECBA /* file.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843757D1527B2C100B8C85C /* file.hpp */; };
+		DD360BC325EDF1CE006DECBA /* filefn.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843757E1527B2C100B8C85C /* filefn.hpp */; };
+		DD360BC425EDF1CE006DECBA /* filestr.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843757F1527B2C100B8C85C /* filestr.hpp */; };
+		DD360BC525EDF1CE006DECBA /* find.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375801527B2C100B8C85C /* find.hpp */; };
+		DD360BC625EDF1CE006DECBA /* getbits.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375811527B2C100B8C85C /* getbits.hpp */; };
+		DD360BC725EDF1CE006DECBA /* global.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375821527B2C100B8C85C /* global.hpp */; };
+		DD360BC825EDF1CE006DECBA /* headers.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375831527B2C100B8C85C /* headers.hpp */; };
+		DD360BC925EDF1CE006DECBA /* int64.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375841527B2C100B8C85C /* int64.hpp */; };
+		DD360BCA25EDF1CE006DECBA /* isnt.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375851527B2C100B8C85C /* isnt.hpp */; };
+		DD360BCB25EDF1CE006DECBA /* list.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375861527B2C100B8C85C /* list.hpp */; };
+		DD360BCC25EDF1CE006DECBA /* loclang.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375871527B2C100B8C85C /* loclang.hpp */; };
+		DD360BCD25EDF1CE006DECBA /* log.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375881527B2C100B8C85C /* log.hpp */; };
+		DD360BCE25EDF1CE006DECBA /* match.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375891527B2C100B8C85C /* match.hpp */; };
+		DD360BCF25EDF1CE006DECBA /* memfree.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843758A1527B2C100B8C85C /* memfree.hpp */; };
+		DD360BD025EDF1CE006DECBA /* model.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843758B1527B2C100B8C85C /* model.hpp */; };
+		DD360BD125EDF1CE006DECBA /* options.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843758C1527B2C100B8C85C /* options.hpp */; };
+		DD360BD225EDF1CE006DECBA /* os.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843758D1527B2C100B8C85C /* os.hpp */; };
+		DD360BD325EDF1CE006DECBA /* pathfn.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843758E1527B2C100B8C85C /* pathfn.hpp */; };
+		DD360BD425EDF1CE006DECBA /* rar.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843758F1527B2C100B8C85C /* rar.hpp */; };
+		DD360BD525EDF1CE006DECBA /* rardefs.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375901527B2C100B8C85C /* rardefs.hpp */; };
+		DD360BD625EDF1CE006DECBA /* rarfn.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375911527B2C100B8C85C /* rarfn.hpp */; };
+		DD360BD725EDF1CE006DECBA /* rarlang.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375921527B2C100B8C85C /* rarlang.hpp */; };
+		DD360BD825EDF1CE006DECBA /* raros.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375931527B2C100B8C85C /* raros.hpp */; };
+		DD360BD925EDF1CE006DECBA /* rartypes.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375941527B2C100B8C85C /* rartypes.hpp */; };
+		DD360BDA25EDF1CE006DECBA /* rarvm.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375951527B2C100B8C85C /* rarvm.hpp */; };
+		DD360BDB25EDF1CE006DECBA /* PPC.h in Headers */ = {isa = PBXBuildFile; fileRef = C612EA4825ED12C70006C564 /* PPC.h */; };
+		DD360BDC25EDF1CE006DECBA /* rawread.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375961527B2C100B8C85C /* rawread.hpp */; };
+		DD360BDD25EDF1CE006DECBA /* rdwrfn.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375971527B2C100B8C85C /* rdwrfn.hpp */; };
+		DD360BDE25EDF1CE006DECBA /* recvol.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375981527B2C100B8C85C /* recvol.hpp */; };
+		DD360BDF25EDF1CE006DECBA /* resource.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375991527B2C100B8C85C /* resource.hpp */; };
+		DD360BE025EDF1CE006DECBA /* rijndael.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843759A1527B2C100B8C85C /* rijndael.hpp */; };
+		DD360BE125EDF1CE006DECBA /* rs.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843759B1527B2C100B8C85C /* rs.hpp */; };
+		DD360BE225EDF1CE006DECBA /* savepos.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843759C1527B2C100B8C85C /* savepos.hpp */; };
+		DD360BE325EDF1CE006DECBA /* scantree.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843759D1527B2C100B8C85C /* scantree.hpp */; };
+		DD360BE425EDF1CE006DECBA /* sha1.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843759E1527B2C100B8C85C /* sha1.hpp */; };
+		DD360BE525EDF1CE006DECBA /* smallfn.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E843759F1527B2C100B8C85C /* smallfn.hpp */; };
+		DD360BE625EDF1CE006DECBA /* strfn.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375A01527B2C100B8C85C /* strfn.hpp */; };
+		DD360BE725EDF1CE006DECBA /* strlist.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375A11527B2C100B8C85C /* strlist.hpp */; };
+		DD360BE825EDF1CE006DECBA /* suballoc.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375A21527B2C100B8C85C /* suballoc.hpp */; };
+		DD360BE925EDF1CE006DECBA /* system.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375A31527B2C100B8C85C /* system.hpp */; };
+		DD360BEA25EDF1CE006DECBA /* timefn.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375A41527B2C100B8C85C /* timefn.hpp */; };
+		DD360BEB25EDF1CE006DECBA /* ulinks.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375A51527B2C100B8C85C /* ulinks.hpp */; };
+		DD360BEC25EDF1CE006DECBA /* unicode.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375A61527B2C100B8C85C /* unicode.hpp */; };
+		DD360BED25EDF1CE006DECBA /* unpack.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375A71527B2C100B8C85C /* unpack.hpp */; };
+		DD360BEE25EDF1CE006DECBA /* version.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375A81527B2C100B8C85C /* version.hpp */; };
+		DD360BEF25EDF1CE006DECBA /* volume.hpp in Headers */ = {isa = PBXBuildFile; fileRef = E84375A91527B2C100B8C85C /* volume.hpp */; };
+		DD360BF025EDF1CE006DECBA /* Common.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375AB1527B2C100B8C85C /* Common.h */; };
+		DD360BF125EDF1CE006DECBA /* Db.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375AC1527B2C100B8C85C /* Db.h */; };
+		DD360BF225EDF1CE006DECBA /* Fft.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375AD1527B2C100B8C85C /* Fft.h */; };
+		DD360BF325EDF1CE006DECBA /* kxrmaa.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375AE1527B2C100B8C85C /* kxrmaa.h */; };
+		DD360BF425EDF1CE006DECBA /* Sound.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375AF1527B2C100B8C85C /* Sound.h */; };
+		DD360BF525EDF1CE006DECBA /* Spdata.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375B01527B2C100B8C85C /* Spdata.h */; };
+		DD360BF625EDF1CE006DECBA /* sfArkDLL.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375B21527B2C100B8C85C /* sfArkDLL.h */; };
+		DD360BF725EDF1CE006DECBA /* SFCNVRT.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375B51527B2C100B8C85C /* SFCNVRT.H */; };
+		DD360BF825EDF1CE006DECBA /* SFDEVDTA.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375B61527B2C100B8C85C /* SFDEVDTA.H */; };
+		DD360BF925EDF1CE006DECBA /* SFDEVMAN.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375B71527B2C100B8C85C /* SFDEVMAN.H */; };
+		DD360BFA25EDF1CE006DECBA /* SFEDT32.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375B81527B2C100B8C85C /* SFEDT32.H */; };
+		DD360BFB25EDF1CE006DECBA /* SFEDTYPE.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375B91527B2C100B8C85C /* SFEDTYPE.H */; };
+		DD360BFC25EDF1CE006DECBA /* SFENUM.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375BA1527B2C100B8C85C /* SFENUM.H */; };
+		DD360BFD25EDF1CE006DECBA /* SFMAN.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375BB1527B2C100B8C85C /* SFMAN.H */; };
+		DD360BFE25EDF1CE006DECBA /* SFMANREG.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375BC1527B2C100B8C85C /* SFMANREG.H */; };
+		DD360BFF25EDF1CE006DECBA /* TLHELP32.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375BD1527B2C100B8C85C /* TLHELP32.H */; };
+		DD360C0025EDF1CE006DECBA /* vers.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375BE1527B2C100B8C85C /* vers.h */; };
+		DD360C0125EDF1CE006DECBA /* adapter.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375C01527B2C100B8C85C /* adapter.h */; };
+		DD360C0225EDF1CE006DECBA /* CDmaChannel.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375C11527B2C100B8C85C /* CDmaChannel.h */; };
+		DD360C0325EDF1CE006DECBA /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375C21527B2C100B8C85C /* common.h */; };
+		DD360C0425EDF1CE006DECBA /* minictrl.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375C31527B2C100B8C85C /* minictrl.h */; };
+		DD360C0525EDF1CE006DECBA /* minisynth.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375C41527B2C100B8C85C /* minisynth.h */; };
+		DD360C0625EDF1CE006DECBA /* minitopo.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375C51527B2C100B8C85C /* minitopo.h */; };
+		DD360C0725EDF1CE006DECBA /* miniuart.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375C61527B2C100B8C85C /* miniuart.h */; };
+		DD360C0825EDF1CE006DECBA /* miniwave.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375C71527B2C100B8C85C /* miniwave.h */; };
+		DD360C0925EDF1CE006DECBA /* miniwave_p16v.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375C81527B2C100B8C85C /* miniwave_p16v.h */; };
+		DD360C0A25EDF1CE006DECBA /* tbl_ctrl.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375C91527B2C100B8C85C /* tbl_ctrl.h */; };
+		DD360C0B25EDF1CE006DECBA /* tbl_synth.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375CA1527B2C100B8C85C /* tbl_synth.h */; };
+		DD360C0C25EDF1CE006DECBA /* tbl_topo.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375CB1527B2C100B8C85C /* tbl_topo.h */; };
+		DD360C0D25EDF1CE006DECBA /* tbl_uart.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375CC1527B2C100B8C85C /* tbl_uart.h */; };
+		DD360C0E25EDF1CE006DECBA /* tbl_wave.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375CD1527B2C100B8C85C /* tbl_wave.h */; };
+		DD360C0F25EDF1CE006DECBA /* tbl_wave_p16v.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375CE1527B2C100B8C85C /* tbl_wave_p16v.h */; };
+		DD360C1025EDF1CE006DECBA /* FRONTEND.H in Headers */ = {isa = PBXBuildFile; fileRef = E84375D01527B2C100B8C85C /* FRONTEND.H */; };
+		DD360C1125EDF1CE006DECBA /* deflate.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375D21527B2C100B8C85C /* deflate.h */; };
+		DD360C1225EDF1CE006DECBA /* infblock.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375D31527B2C100B8C85C /* infblock.h */; };
+		DD360C1325EDF1CE006DECBA /* infcodes.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375D41527B2C100B8C85C /* infcodes.h */; };
+		DD360C1425EDF1CE006DECBA /* inffast.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375D51527B2C100B8C85C /* inffast.h */; };
+		DD360C1525EDF1CE006DECBA /* inffixed.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375D61527B2C100B8C85C /* inffixed.h */; };
+		DD360C1625EDF1CE006DECBA /* inftrees.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375D71527B2C100B8C85C /* inftrees.h */; };
+		DD360C1725EDF1CE006DECBA /* infutil.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375D81527B2C100B8C85C /* infutil.h */; };
+		DD360C1825EDF1CE006DECBA /* trees.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375D91527B2C100B8C85C /* trees.h */; };
+		DD360C1925EDF1CE006DECBA /* unzip.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375DA1527B2C100B8C85C /* unzip.h */; };
+		DD360C1A25EDF1CE006DECBA /* zconf.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375DB1527B2C100B8C85C /* zconf.h */; };
+		DD360C1B25EDF1CE006DECBA /* zlib.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375DC1527B2C100B8C85C /* zlib.h */; };
+		DD360C1C25EDF1CE006DECBA /* zutil.h in Headers */ = {isa = PBXBuildFile; fileRef = E84375DD1527B2C100B8C85C /* zutil.h */; };
+		DD360C1E25EDF1CE006DECBA /* ac97.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3C00DE7A49D000769A3 /* ac97.cpp */; };
+		DD360C1F25EDF1CE006DECBA /* bufmgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3C10DE7A49D000769A3 /* bufmgr.cpp */; };
+		DD360C2025EDF1CE006DECBA /* calc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3C20DE7A49D000769A3 /* calc.cpp */; };
+		DD360C2125EDF1CE006DECBA /* dbdetect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3C40DE7A49D000769A3 /* dbdetect.cpp */; };
+		DD360C2225EDF1CE006DECBA /* dsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3CA0DE7A49D000769A3 /* dsp.cpp */; };
+		DD360C2325EDF1CE006DECBA /* ecard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3CB0DE7A49D000769A3 /* ecard.cpp */; };
+		DD360C2425EDF1CE006DECBA /* hal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3CD0DE7A49D000769A3 /* hal.cpp */; };
+		DD360C2525EDF1CE006DECBA /* init.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3CE0DE7A49D000769A3 /* init.cpp */; };
+		DD360C2625EDF1CE006DECBA /* irq.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3CF0DE7A49D000769A3 /* irq.cpp */; };
+		DD360C2725EDF1CE006DECBA /* microcode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3D10DE7A49D000769A3 /* microcode.cpp */; };
+		DD360C2825EDF1CE006DECBA /* midi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3D20DE7A49D000769A3 /* midi.cpp */; };
+		DD360C2925EDF1CE006DECBA /* mpu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3D30DE7A49D000769A3 /* mpu.cpp */; };
+		DD360C2A25EDF1CE006DECBA /* mtr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3D40DE7A49D000769A3 /* mtr.cpp */; };
+		DD360C2B25EDF1CE006DECBA /* p16v.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3D50DE7A49D000769A3 /* p16v.cpp */; };
+		DD360C2C25EDF1CE006DECBA /* pci.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3D60DE7A49D000769A3 /* pci.cpp */; };
+		DD360C2D25EDF1CE006DECBA /* rec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3D70DE7A49D000769A3 /* rec.cpp */; };
+		DD360C2E25EDF1CE006DECBA /* soundfont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3D80DE7A49D000769A3 /* soundfont.cpp */; };
+		DD360C2F25EDF1CE006DECBA /* state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3DA0DE7A49D000769A3 /* state.cpp */; };
+		DD360C3025EDF1CE006DECBA /* StdAfx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3DB0DE7A49D000769A3 /* StdAfx.cpp */; };
+		DD360C3125EDF1CE006DECBA /* synth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3DC0DE7A49D000769A3 /* synth.cpp */; };
+		DD360C3225EDF1CE006DECBA /* timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3DD0DE7A49D000769A3 /* timer.cpp */; };
+		DD360C3325EDF1CE006DECBA /* voice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3DE0DE7A49D000769A3 /* voice.cpp */; };
+		DD360C3425EDF1CE006DECBA /* wave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE3DF0DE7A49D000769A3 /* wave.cpp */; };
+		DD360C3525EDF1CE006DECBA /* AudioDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A224C3FFF42367911CA2CB7 /* AudioDevice.cpp */; };
+		DD360C3625EDF1CE006DECBA /* AudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0117744F00710DAB7F000001 /* AudioEngine.cpp */; };
+		DD360C3725EDF1CE006DECBA /* Compat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 449EE4590DE7A807000769A3 /* Compat.cpp */; };
+		DD360C3825EDF1CE006DECBA /* multichn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44D7FC1C0E3E9E0F00612F22 /* multichn.cpp */; };
+		DD360C3925EDF1CE006DECBA /* AudioClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A96CE90E8DEC1C004CB7A2 /* AudioClient.cpp */; };
+		DD360C4325EDF1D0006DECBA /* cedebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 449EE2410DE799E7000769A3 /* cedebug.h */; };
+		DD360C4525EDF1D0006DECBA /* AudioClip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0117744B00710CA77F000001 /* AudioClip.cpp */; };
+		DD360C4A25EDF203006DECBA /* IOAudioBlitterLib.h in Headers */ = {isa = PBXBuildFile; fileRef = 17251D9817063EEC006D7687 /* IOAudioBlitterLib.h */; };
+		DD360C4B25EDF203006DECBA /* IOAudioBlitterLibDispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 17251D9A17063EEC006D7687 /* IOAudioBlitterLibDispatch.h */; };
+		DD360C4C25EDF210006DECBA /* IOAudioBlitterLib.c in Sources */ = {isa = PBXBuildFile; fileRef = 17251D9717063EEC006D7687 /* IOAudioBlitterLib.c */; };
+		DD360C4D25EDF210006DECBA /* IOAudioBlitterLibDispatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17251D9917063EEC006D7687 /* IOAudioBlitterLibDispatch.cpp */; };
+		DD360C4E25EDF210006DECBA /* IOAudioBlitterLibX86.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 17251D9B17063EEC006D7687 /* IOAudioBlitterLibX86.cpp */; };
+		DD360C5125EDF244006DECBA /* libFloatLib_Updated.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD360C4925EDF1D0006DECBA /* libFloatLib_Updated.a */; };
+		DD6EE29C275C1FD700BAB794 /* interface-osx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD6EE29B275C1FD700BAB794 /* interface-osx.cpp */; };
+		DDA39A7026132BBD00008BFD /* kxctrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A6D9A00E908C080083971C /* kxctrl.cpp */; };
+		DDA39A7126132BBD00008BFD /* parse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A532530E91D9D40077BCD8 /* parse.cpp */; };
+		DDA39A7326132BBD00008BFD /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
+		DDA39A9926132D4D00008BFD /* edspctrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A6D9C20E908EC50083971C /* edspctrl.cpp */; };
+		DDA39A9A26132D4D00008BFD /* edsplib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A6D9C30E908EC50083971C /* edsplib.cpp */; };
+		DDA39A9C26132D4D00008BFD /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
 		E84375DE1527B2C100B8C85C /* asio.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C51527B2C100B8C85C /* asio.h */; };
 		E84375E11527B2C100B8C85C /* asiodrivers.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C61527B2C100B8C85C /* asiodrivers.h */; };
 		E84375E41527B2C100B8C85C /* asiodrvr.h in Headers */ = {isa = PBXBuildFile; fileRef = E84374C71527B2C100B8C85C /* asiodrvr.h */; };
@@ -744,7 +1056,6 @@
 		E8A6D9F30E9090610083971C /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
 		E8A96CEC0E8DEC1C004CB7A2 /* AudioClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E8A96CE90E8DEC1C004CB7A2 /* AudioClient.cpp */; };
 		E8A96CED0E8DEC1C004CB7A2 /* AudioClient.h in Headers */ = {isa = PBXBuildFile; fileRef = E8A96CEA0E8DEC1C004CB7A2 /* AudioClient.h */; };
-		E8D8958610687D9E006F33DC /* kXAPI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */; };
 		E8D8958C10687E07006F33DC /* kxac97-main.icns in Resources */ = {isa = PBXBuildFile; fileRef = E8D8958B10687E07006F33DC /* kxac97-main.icns */; };
 		E8D8959610687E87006F33DC /* mute-off.tif in Resources */ = {isa = PBXBuildFile; fileRef = E8D8958E10687E87006F33DC /* mute-off.tif */; };
 		E8D8959710687E87006F33DC /* mute-on.tif in Resources */ = {isa = PBXBuildFile; fileRef = E8D8958F10687E87006F33DC /* mute-on.tif */; };
@@ -785,12 +1096,61 @@
 			remoteGlobalIDString = 44212C1A0DECB61B00E06065;
 			remoteInfo = FloatLib;
 		};
-		C612EBF225ED1B1A0006C564 /* PBXContainerItemProxy */ = {
+		DD140B13273576EB000F909D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = C612EBC025ED1AFA0006C564;
 			remoteInfo = FloatLib_Libraryless;
+		};
+		DD360C4F25EDF239006DECBA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DD360C4125EDF1D0006DECBA;
+			remoteInfo = FloatLib_Updated;
+		};
+		DD889EB525ED3CF300A2D924 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C612EBC025ED1AFA0006C564;
+			remoteInfo = FloatLib_Libraryless;
+		};
+		DDA39A6E26132BBD00008BFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E8A3E96D0E8F20FE005D3692;
+			remoteInfo = kXAPI;
+		};
+		DDA39A8026132BEA00008BFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C612EA7D25ED16130006C564;
+			remoteInfo = kXAudioDriver_LibraryLess;
+		};
+		DDA39A9526132D4D00008BFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E8A3E96D0E8F20FE005D3692;
+			remoteInfo = kXAPI;
+		};
+		DDA39AA226132D7600008BFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C612EA7D25ED16130006C564;
+			remoteInfo = kXAudioDriver_LibraryLess;
+		};
+		DDA39AA426132D7A00008BFD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DDA39A6A26132BBD00008BFD;
+			remoteInfo = kxctrl_libraryless;
 		};
 		E84378F41527C03200B8C85C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -906,7 +1266,7 @@
 		1A224C3EFF42367911CA2CB7 /* AudioDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AudioDevice.h; path = kext/AudioDevice.h; sourceTree = "<group>"; };
 		1A224C3FFF42367911CA2CB7 /* AudioDevice.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AudioDevice.cpp; path = kext/AudioDevice.cpp; sourceTree = "<group>"; };
 		44212BE20DECB47E00E06065 /* kXAudioDriver.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver.kext; sourceTree = BUILT_PRODUCTS_DIR; };
-		44212BE30DECB47E00E06065 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = kext/Info.plist; sourceTree = "<group>"; };
+		44212BE30DECB47E00E06065 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = kext/Info.plist; sourceTree = "<group>"; };
 		44212C1B0DECB61B00E06065 /* libFloatLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		449EE2410DE799E7000769A3 /* cedebug.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = cedebug.h; path = kext/cedebug.h; sourceTree = "<group>"; };
 		449EE3C00DE7A49D000769A3 /* ac97.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ac97.cpp; path = ../driver/ac97.cpp; sourceTree = "<group>"; };
@@ -934,10 +1294,20 @@
 		449EE3DF0DE7A49D000769A3 /* wave.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = wave.cpp; path = ../driver/wave.cpp; sourceTree = "<group>"; };
 		449EE4590DE7A807000769A3 /* Compat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Compat.cpp; path = kext/Compat.cpp; sourceTree = "<group>"; };
 		44D7FC1C0E3E9E0F00612F22 /* multichn.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = multichn.cpp; path = ../driver/multichn.cpp; sourceTree = "<group>"; };
+		C60063722613AB3300367C27 /* install.command */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = install.command; sourceTree = "<group>"; };
 		C612EA4825ED12C70006C564 /* PPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PPC.h; sourceTree = "<group>"; };
 		C612EBAB25ED16130006C564 /* kXAudioDriver_LibraryLess.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver_LibraryLess.kext; sourceTree = BUILT_PRODUCTS_DIR; };
-		C612EBAC25ED16130006C564 /* kXAudioDriver copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "kXAudioDriver copy-Info.plist"; path = "/Users/pietrocaruso/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver copy-Info.plist"; sourceTree = "<absolute>"; };
-		C612EBCD25ED1AFA0006C564 /* libFloatLib_Libraryless.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatLib_Libraryless.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C612EBAC25ED16130006C564 /* kXAudioDriver copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "kXAudioDriver copy-Info.plist"; path = "/Users/pietrocaruso/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver copy-Info.plist"; sourceTree = "<absolute>"; };
+		C612EBCD25ED1AFA0006C564 /* libAudioFloatLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAudioFloatLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		C613B8AC26299B0400C73208 /* frname.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = frname.h; path = ../driver/frname.h; sourceTree = "<group>"; };
+		DD2CF6B7273AC91D004137AC /* PortableAudioClip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PortableAudioClip.h; sourceTree = "<group>"; };
+		DD360C3F25EDF1CE006DECBA /* kXAudioDriver_Updated.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver_Updated.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD360C4025EDF1CE006DECBA /* kXAudioDriver_LibraryLess copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "kXAudioDriver_LibraryLess copy2-Info.plist"; path = "/Users/itztravelintime/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver_LibraryLess copy2-Info.plist"; sourceTree = "<absolute>"; };
+		DD360C4925EDF1D0006DECBA /* libFloatLib_Updated.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatLib_Updated.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD5FC8CC25ED49BA000DD663 /* kXAudioDriver_LibraryLess copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "kXAudioDriver_LibraryLess copy-Info.plist"; path = "/Users/itztravelintime/Documents/GitHub/kx-audio-driver/macosx/kXAudioDriver_LibraryLess copy-Info.plist"; sourceTree = "<absolute>"; };
+		DD6EE29B275C1FD700BAB794 /* interface-osx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "interface-osx.cpp"; path = "../kxapi/interface-osx.cpp"; sourceTree = SOURCE_ROOT; };
+		DDA39A7626132BBD00008BFD /* kxctrl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kxctrl; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDA39A9F26132D4D00008BFD /* edspctrl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = edspctrl; sourceTree = BUILT_PRODUCTS_DIR; };
 		E84374C51527B2C100B8C85C /* asio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asio.h; sourceTree = "<group>"; };
 		E84374C61527B2C100B8C85C /* asiodrivers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asiodrivers.h; sourceTree = "<group>"; };
 		E84374C71527B2C100B8C85C /* asiodrvr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asiodrvr.h; sourceTree = "<group>"; };
@@ -1230,7 +1600,7 @@
 		E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = kXAPI.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8A3E97C0E8F21E7005D3692 /* interface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = interface.cpp; path = ../kxapi/interface.cpp; sourceTree = "<group>"; };
 		E8A3EA1E0E8F2735005D3692 /* kX Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kX Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8A3EA200E8F2735005D3692 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = kxmanager/Info.plist; sourceTree = "<group>"; };
+		E8A3EA200E8F2735005D3692 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = kxmanager/Info.plist; sourceTree = "<group>"; };
 		E8A3EA630E8F27A3005D3692 /* kX Manager_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "kX Manager_Prefix.pch"; path = "kxmanager/kX Manager_Prefix.pch"; sourceTree = "<group>"; };
 		E8A3EA640E8F27AF005D3692 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = kxmanager/main.mm; sourceTree = "<group>"; };
 		E8A3EA6B0E8F27F4005D3692 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -1239,7 +1609,7 @@
 		E8A3EA6F0E8F27F4005D3692 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		E8A3EFF00E8F2913005D3692 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		E8A3EFF10E8F2913005D3692 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
-		E8A3F0500E8F2D6C005D3692 /* manager.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = manager.xib; path = kxmanager/manager.xib; sourceTree = "<group>"; };
+		E8A3F0500E8F2D6C005D3692 /* manager.xib */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.xib; name = manager.xib; path = kxmanager/manager.xib; sourceTree = "<group>"; };
 		E8A3F07E0E8F3507005D3692 /* kxmanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kxmanager.h; path = kxmanager/kxmanager.h; sourceTree = "<group>"; };
 		E8A3F07F0E8F3507005D3692 /* kxmanager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = kxmanager.mm; path = kxmanager/kxmanager.mm; sourceTree = "<group>"; };
 		E8A532530E91D9D40077BCD8 /* parse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = parse.cpp; path = ../kxctrl/parse.cpp; sourceTree = "<group>"; };
@@ -1273,7 +1643,7 @@
 		E8D8955B10687C8C006F33DC /* RoundedBox.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RoundedBox.mm; path = kxac97/RoundedBox.mm; sourceTree = "<group>"; };
 		E8D8956310687CAB006F33DC /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = kxac97/main.m; sourceTree = "<group>"; };
 		E8D8957D10687D6E006F33DC /* kX AC97.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kX AC97.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8D8957F10687D6E006F33DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = kxac97/Info.plist; sourceTree = "<group>"; };
+		E8D8957F10687D6E006F33DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = kxac97/Info.plist; sourceTree = "<group>"; };
 		E8D8958B10687E07006F33DC /* kxac97-main.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "kxac97-main.icns"; path = "kxac97/kxac97-main.icns"; sourceTree = "<group>"; };
 		E8D8958E10687E87006F33DC /* mute-off.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "mute-off.tif"; path = "kxac97/mute-off.tif"; sourceTree = "<group>"; };
 		E8D8958F10687E87006F33DC /* mute-on.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "mute-on.tif"; path = "kxac97/mute-on.tif"; sourceTree = "<group>"; };
@@ -1281,8 +1651,8 @@
 		E8D8959110687E87006F33DC /* gain-on.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "gain-on.tif"; path = "kxac97/gain-on.tif"; sourceTree = "<group>"; };
 		E8D8959210687E87006F33DC /* linked.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = linked.tif; path = kxac97/linked.tif; sourceTree = "<group>"; };
 		E8D8959310687E87006F33DC /* unlinked.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = unlinked.tif; path = kxac97/unlinked.tif; sourceTree = "<group>"; };
-		E8D8959410687E87006F33DC /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainMenu.xib; path = kxac97/MainMenu.xib; sourceTree = "<group>"; };
-		E8D8959510687E87006F33DC /* Ac97.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Ac97.xib; path = kxac97/Ac97.xib; sourceTree = "<group>"; };
+		E8D8959410687E87006F33DC /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.xib; name = MainMenu.xib; path = kxac97/MainMenu.xib; sourceTree = "<group>"; };
+		E8D8959510687E87006F33DC /* Ac97.xib */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.xib; name = Ac97.xib; path = kxac97/Ac97.xib; sourceTree = "<group>"; };
 		E8D89C7A1068842D006F33DC /* kxac97_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kxac97_Prefix.pch; path = kxac97/kxac97_Prefix.pch; sourceTree = "<group>"; };
 		E8DD9A8E0EA2F21F009342A3 /* compile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = compile.cpp; path = ../kxapi/compile.cpp; sourceTree = "<group>"; };
 		E8DD9A8F0EA2F21F009342A3 /* dane.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dane.cpp; path = ../kxapi/dane.cpp; sourceTree = "<group>"; };
@@ -1320,7 +1690,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C612EBF425ED1B200006C564 /* libFloatLib_Libraryless.a in Frameworks */,
+				C612EBF425ED1B200006C564 /* libAudioFloatLib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1328,6 +1698,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD360C3B25EDF1CE006DECBA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD360C5125EDF244006DECBA /* libFloatLib_Updated.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD360C4625EDF1D0006DECBA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDA39A7226132BBD00008BFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDA39A7326132BBD00008BFD /* kXAPI.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDA39A9B26132D4D00008BFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDA39A9C26132D4D00008BFD /* kXAPI.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1371,10 +1772,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E8D8958610687D9E006F33DC /* kXAPI.dylib in Frameworks */,
 				E8A581DE108948FB00104EEB /* Cocoa.framework in Frameworks */,
 				E8A581E01089490100104EEB /* AppKit.framework in Frameworks */,
 				E8A581E21089491200104EEB /* Foundation.framework in Frameworks */,
+				C6B69BAC261906B6008B711B /* kXAPI.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1392,6 +1793,9 @@
 				E8A581DF1089490100104EEB /* AppKit.framework */,
 				E8A581E11089491200104EEB /* Foundation.framework */,
 				C612EBAC25ED16130006C564 /* kXAudioDriver copy-Info.plist */,
+				DD5FC8CC25ED49BA000DD663 /* kXAudioDriver_LibraryLess copy-Info.plist */,
+				DD360C4025EDF1CE006DECBA /* kXAudioDriver_LibraryLess copy2-Info.plist */,
+				C60063722613AB3300367C27 /* install.command */,
 			);
 			name = SampleAudioDriver;
 			sourceTree = "<group>";
@@ -1407,7 +1811,11 @@
 				E8A6D9B60E908E940083971C /* edspctrl */,
 				E8D8957D10687D6E006F33DC /* kX AC97.app */,
 				C612EBAB25ED16130006C564 /* kXAudioDriver_LibraryLess.kext */,
-				C612EBCD25ED1AFA0006C564 /* libFloatLib_Libraryless.a */,
+				C612EBCD25ED1AFA0006C564 /* libAudioFloatLib.a */,
+				DD360C3F25EDF1CE006DECBA /* kXAudioDriver_Updated.kext */,
+				DD360C4925EDF1D0006DECBA /* libFloatLib_Updated.a */,
+				DDA39A7626132BBD00008BFD /* kxctrl */,
+				DDA39A9F26132D4D00008BFD /* edspctrl */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1459,6 +1867,7 @@
 				449EE3C40DE7A49D000769A3 /* dbdetect.cpp */,
 				449EE3CA0DE7A49D000769A3 /* dsp.cpp */,
 				449EE3CB0DE7A49D000769A3 /* ecard.cpp */,
+				C613B8AC26299B0400C73208 /* frname.h */,
 				449EE3CD0DE7A49D000769A3 /* hal.cpp */,
 				449EE3CE0DE7A49D000769A3 /* init.cpp */,
 				449EE3CF0DE7A49D000769A3 /* irq.cpp */,
@@ -1993,6 +2402,7 @@
 				E8DD9A910EA2F21F009342A3 /* parse.cpp */,
 				E8DD9A920EA2F21F009342A3 /* rifx.cpp */,
 				E8A3E97C0E8F21E7005D3692 /* interface.cpp */,
+				DD6EE29B275C1FD700BAB794 /* interface-osx.cpp */,
 				E8A2CCD1108FFAA4007B1176 /* interface-win.cpp */,
 				E8DD9A9A0EA2F24A009342A3 /* stdafx.h */,
 				E8DD9BEE0EA2FBB8009342A3 /* kstring.cpp */,
@@ -2058,8 +2468,8 @@
 			isa = PBXGroup;
 			children = (
 				44212BE30DECB47E00E06065 /* Info.plist */,
-				E8A96CE90E8DEC1C004CB7A2 /* AudioClient.cpp */,
 				E8A96CEA0E8DEC1C004CB7A2 /* AudioClient.h */,
+				E8A96CE90E8DEC1C004CB7A2 /* AudioClient.cpp */,
 				449EE2410DE799E7000769A3 /* cedebug.h */,
 				1A224C3EFF42367911CA2CB7 /* AudioDevice.h */,
 				1A224C3FFF42367911CA2CB7 /* AudioDevice.cpp */,
@@ -2067,6 +2477,7 @@
 				0117744F00710DAB7F000001 /* AudioEngine.cpp */,
 				0117744B00710CA77F000001 /* AudioClip.cpp */,
 				449EE4590DE7A807000769A3 /* Compat.cpp */,
+				DD2CF6B7273AC91D004137AC /* PortableAudioClip.h */,
 			);
 			name = kext;
 			sourceTree = "<group>";
@@ -2124,6 +2535,7 @@
 				44212D8D0DECBF5100E06065 /* cedebug.h in Headers */,
 				17251D9D17063EEC006D7687 /* IOAudioBlitterLib.h in Headers */,
 				17251D9F17063EEC006D7687 /* IOAudioBlitterLibDispatch.h in Headers */,
+				DD2CF6B8273AC91D004137AC /* PortableAudioClip.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2674,8 +3086,289 @@
 			buildActionMask = 2147483647;
 			files = (
 				C612EBC225ED1AFA0006C564 /* cedebug.h in Headers */,
-				C612EBC325ED1AFA0006C564 /* IOAudioBlitterLib.h in Headers */,
-				C612EBC425ED1AFA0006C564 /* IOAudioBlitterLibDispatch.h in Headers */,
+				DD2CF6B9273AC91D004137AC /* PortableAudioClip.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD360B1425EDF1CE006DECBA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD360B1525EDF1CE006DECBA /* cedebug.h in Headers */,
+				DD360B1625EDF1CE006DECBA /* AudioDevice.h in Headers */,
+				DD360B1725EDF1CE006DECBA /* AudioEngine.h in Headers */,
+				DD360B1825EDF1CE006DECBA /* AudioClient.h in Headers */,
+				DD360B1925EDF1CE006DECBA /* asio.h in Headers */,
+				DD360B1A25EDF1CE006DECBA /* asiodrivers.h in Headers */,
+				DD360B1B25EDF1CE006DECBA /* asiodrvr.h in Headers */,
+				DD360B1C25EDF1CE006DECBA /* asiolist.h in Headers */,
+				DD360B1D25EDF1CE006DECBA /* asiosys.h in Headers */,
+				DD360B1E25EDF1CE006DECBA /* combase.h in Headers */,
+				DD360B1F25EDF1CE006DECBA /* ginclude.h in Headers */,
+				DD360B2025EDF1CE006DECBA /* iasiodrv.h in Headers */,
+				DD360B2125EDF1CE006DECBA /* wxdebug.h in Headers */,
+				DD360B2225EDF1CE006DECBA /* BUFFER.H in Headers */,
+				DD360B2325EDF1CE006DECBA /* CEDIT.H in Headers */,
+				DD360B2425EDF1CE006DECBA /* CEDITX.H in Headers */,
+				DD360B2525EDF1CE006DECBA /* CMAXAFX.H in Headers */,
+				DD360B2625EDF1CE006DECBA /* CMIDLIDS.H in Headers */,
+				DD360B2725EDF1CE006DECBA /* CODEMAX.H in Headers */,
+				DD360B2825EDF1CE006DECBA /* DEBUG.H in Headers */,
+				DD360B2925EDF1CE006DECBA /* DRAGDROP.H in Headers */,
+				DD360B2A25EDF1CE006DECBA /* EDITDLGS.H in Headers */,
+				DD360B2B25EDF1CE006DECBA /* EDITSEL.H in Headers */,
+				DD360B2C25EDF1CE006DECBA /* EDITVIEW.H in Headers */,
+				DD360B2D25EDF1CE006DECBA /* editx.h in Headers */,
+				DD360B2E25EDF1CE006DECBA /* GLOBALSX.H in Headers */,
+				DD360B2F25EDF1CE006DECBA /* HKEYCTRL.H in Headers */,
+				DD360B3025EDF1CE006DECBA /* hotkeyx.h in Headers */,
+				DD360B3125EDF1CE006DECBA /* LANGX.H in Headers */,
+				DD360B3225EDF1CE006DECBA /* MISC.H in Headers */,
+				DD360B3325EDF1CE006DECBA /* POSX.H in Headers */,
+				DD360B3425EDF1CE006DECBA /* PRECOMP.H in Headers */,
+				DD360B3525EDF1CE006DECBA /* RANGEX.H in Headers */,
+				DD360B3625EDF1CE006DECBA /* rectx.h in Headers */,
+				DD360B3725EDF1CE006DECBA /* regexp.h in Headers */,
+				DD360B3825EDF1CE006DECBA /* resource.h in Headers */,
+				DD360B3925EDF1CE006DECBA /* resource2.h in Headers */,
+				DD360B3A25EDF1CE006DECBA /* UNDO.H in Headers */,
+				DD360B3B25EDF1CE006DECBA /* credits.h in Headers */,
+				DD360B3C25EDF1CE006DECBA /* dane.h in Headers */,
+				DD360B3D25EDF1CE006DECBA /* danesrc.h in Headers */,
+				DD360B3E25EDF1CE006DECBA /* danestd.h in Headers */,
+				DD360B3F25EDF1CE006DECBA /* error.h in Headers */,
+				DD360B4025EDF1CE006DECBA /* imobj.h in Headers */,
+				DD360B4125EDF1CE006DECBA /* kxidsp.h in Headers */,
+				DD360B4225EDF1CE006DECBA /* langdef.h in Headers */,
+				DD360B4325EDF1CE006DECBA /* parser.h in Headers */,
+				DD360B4425EDF1CE006DECBA /* rifxptxt.h in Headers */,
+				DD360B4525EDF1CE006DECBA /* scanner.h in Headers */,
+				DD360B4625EDF1CE006DECBA /* debug.h in Headers */,
+				DD360B4725EDF1CE006DECBA /* defs.h in Headers */,
+				DD360B4825EDF1CE006DECBA /* ac3.h in Headers */,
+				DD360B4925EDF1CE006DECBA /* calc.h in Headers */,
+				DD360B4A25EDF1CE006DECBA /* init.h in Headers */,
+				DD360B4B25EDF1CE006DECBA /* irq.h in Headers */,
+				DD360B4C25EDF1CE006DECBA /* kx.h in Headers */,
+				DD360B4D25EDF1CE006DECBA /* list.h in Headers */,
+				DD360B4E25EDF1CE006DECBA /* math.h in Headers */,
+				DD360B4F25EDF1CE006DECBA /* os_mac.h in Headers */,
+				DD360B5025EDF1CE006DECBA /* os_win.h in Headers */,
+				DD360B5125EDF1CE006DECBA /* pci.h in Headers */,
+				DD360B5225EDF1CE006DECBA /* timer.h in Headers */,
+				DD360B5325EDF1CE006DECBA /* voice.h in Headers */,
+				DD360B5425EDF1CE006DECBA /* d3dapp.h in Headers */,
+				DD360B5525EDF1CE006DECBA /* d3dfile.h in Headers */,
+				DD360B5625EDF1CE006DECBA /* d3dfont.h in Headers */,
+				DD360B5725EDF1CE006DECBA /* d3dres.h in Headers */,
+				DD360B5825EDF1CE006DECBA /* d3dutil.h in Headers */,
+				DD360B5925EDF1CE006DECBA /* ddutil.h in Headers */,
+				DD360B5A25EDF1CE006DECBA /* didcfgview.h in Headers */,
+				DD360B5B25EDF1CE006DECBA /* diutil.h in Headers */,
+				DD360B5C25EDF1CE006DECBA /* dmutil.h in Headers */,
+				DD360B5D25EDF1CE006DECBA /* dsutil.h in Headers */,
+				DD360B5E25EDF1CE006DECBA /* dxutil.h in Headers */,
+				DD360B5F25EDF1CE006DECBA /* netclient.h in Headers */,
+				DD360B6025EDF1CE006DECBA /* netclientres.h in Headers */,
+				DD360B6125EDF1CE006DECBA /* netconnect.h in Headers */,
+				DD360B6225EDF1CE006DECBA /* netconnectres.h in Headers */,
+				DD360B6325EDF1CE006DECBA /* netvoice.h in Headers */,
+				DD360B6425EDF1CE006DECBA /* 3dl2.h in Headers */,
+				DD360B6525EDF1CE006DECBA /* 3dl2help.h in Headers */,
+				DD360B6625EDF1CE006DECBA /* eax10.h in Headers */,
+				DD360B6725EDF1CE006DECBA /* eax20.h in Headers */,
+				DD360B6825EDF1CE006DECBA /* eax30.h in Headers */,
+				DD360B6925EDF1CE006DECBA /* eax_presets.h in Headers */,
+				DD360B6A25EDF1CE006DECBA /* AppReg.h in Headers */,
+				DD360B6B25EDF1CE006DECBA /* gsif.h in Headers */,
+				DD360B6C25EDF1CE006DECBA /* GSIF2.H in Headers */,
+				DD360B6D25EDF1CE006DECBA /* GSIF_64BIT.H in Headers */,
+				DD360B6E25EDF1CE006DECBA /* GSIFNT.H in Headers */,
+				DD360B6F25EDF1CE006DECBA /* GSSYSDEF.H in Headers */,
+				DD360B7025EDF1CE006DECBA /* HWREG.H in Headers */,
+				DD360B7125EDF1CE006DECBA /* HWSYSDEF.H in Headers */,
+				DD360B7225EDF1CE006DECBA /* KEUTIL.H in Headers */,
+				DD360B7325EDF1CE006DECBA /* kxgsif.h in Headers */,
+				DD360B7425EDF1CE006DECBA /* MIXER.H in Headers */,
+				DD360B7525EDF1CE006DECBA /* NRegUtil.h in Headers */,
+				DD360B7625EDF1CE006DECBA /* 3DBar.h in Headers */,
+				DD360B7725EDF1CE006DECBA /* CMKnob.H in Headers */,
+				DD360B7825EDF1CE006DECBA /* StaticCounter.h in Headers */,
+				DD360B7925EDF1CE006DECBA /* kBase.h in Headers */,
+				DD360B7A25EDF1CE006DECBA /* kButton.h in Headers */,
+				DD360B7B25EDF1CE006DECBA /* kCheckButton.h in Headers */,
+				DD360B7C25EDF1CE006DECBA /* kCombo.h in Headers */,
+				DD360B7D25EDF1CE006DECBA /* kDefs.h in Headers */,
+				DD360B7E25EDF1CE006DECBA /* kDialog.h in Headers */,
+				DD360B7F25EDF1CE006DECBA /* kGui.h in Headers */,
+				DD360B8025EDF1CE006DECBA /* kIndicator.h in Headers */,
+				DD360B8125EDF1CE006DECBA /* kKnob.h in Headers */,
+				DD360B8225EDF1CE006DECBA /* kList.h in Headers */,
+				DD360B8325EDF1CE006DECBA /* kLogo.h in Headers */,
+				DD360B8425EDF1CE006DECBA /* kMenu.h in Headers */,
+				DD360B8525EDF1CE006DECBA /* kPeak.h in Headers */,
+				DD360B8625EDF1CE006DECBA /* kProgress.h in Headers */,
+				DD360B8725EDF1CE006DECBA /* kResource.h in Headers */,
+				DD360B8825EDF1CE006DECBA /* kSettings.h in Headers */,
+				DD360B8925EDF1CE006DECBA /* kSlider.h in Headers */,
+				DD360B8A25EDF1CE006DECBA /* kStatic.h in Headers */,
+				DD360B8B25EDF1CE006DECBA /* kTextButton.h in Headers */,
+				DD360B8C25EDF1CE006DECBA /* kWindow.h in Headers */,
+				DD360B8D25EDF1CE006DECBA /* kxdialog.h in Headers */,
+				DD360B8E25EDF1CE006DECBA /* 8010.h in Headers */,
+				DD360B8F25EDF1CE006DECBA /* 8010x.h in Headers */,
+				DD360B9025EDF1CE006DECBA /* ac97.h in Headers */,
+				DD360B9125EDF1CE006DECBA /* ecard.h in Headers */,
+				DD360B9225EDF1CE006DECBA /* emu.h in Headers */,
+				DD360B9325EDF1CE006DECBA /* p16v.h in Headers */,
+				DD360B9425EDF1CE006DECBA /* p17v.h in Headers */,
+				DD360B9525EDF1CE006DECBA /* tina.h in Headers */,
+				DD360B9625EDF1CE006DECBA /* i386.h in Headers */,
+				DD360B9725EDF1CE006DECBA /* dsp.h in Headers */,
+				DD360B9825EDF1CE006DECBA /* dspnames.h in Headers */,
+				DD360B9925EDF1CE006DECBA /* guids.h in Headers */,
+				DD360B9A25EDF1CE006DECBA /* idane.h in Headers */,
+				DD360B9B25EDF1CE006DECBA /* ikx.h in Headers */,
+				DD360B9C25EDF1CE006DECBA /* kString.h in Headers */,
+				DD360B9D25EDF1CE006DECBA /* kx_ioctl.h in Headers */,
+				DD360B9E25EDF1CE006DECBA /* kxaddon.h in Headers */,
+				DD360B9F25EDF1CE006DECBA /* kxapi.h in Headers */,
+				DD360BA025EDF1CE006DECBA /* kxcfg.h in Headers */,
+				DD360BA125EDF1CE006DECBA /* kxcompat.h in Headers */,
+				DD360BA225EDF1CE006DECBA /* kxi.h in Headers */,
+				DD360BA325EDF1CE006DECBA /* kxm.h in Headers */,
+				DD360BA425EDF1CE006DECBA /* kxmixer.h in Headers */,
+				DD360BA525EDF1CE006DECBA /* kxplugin.h in Headers */,
+				DD360BA625EDF1CE006DECBA /* kxplugingui.h in Headers */,
+				DD360BA725EDF1CE006DECBA /* kxpm.h in Headers */,
+				DD360BA825EDF1CE006DECBA /* mixernames.h in Headers */,
+				DD360BA925EDF1CE006DECBA /* plgmath.h in Headers */,
+				DD360BAA25EDF1CE006DECBA /* soundfont.h in Headers */,
+				DD360BAB25EDF1CE006DECBA /* kdsound.h in Headers */,
+				DD360BAC25EDF1CE006DECBA /* kx3d.h in Headers */,
+				DD360BAD25EDF1CE006DECBA /* clear.h in Headers */,
+				DD360BAE25EDF1CE006DECBA /* prepare.h in Headers */,
+				DD360BAF25EDF1CE006DECBA /* process.h in Headers */,
+				DD360BB025EDF1CE006DECBA /* license.h in Headers */,
+				DD360BB125EDF1CE006DECBA /* png.h in Headers */,
+				DD360BB225EDF1CE006DECBA /* pngasmrd.h in Headers */,
+				DD360BB325EDF1CE006DECBA /* pngconf.h in Headers */,
+				DD360BB425EDF1CE006DECBA /* archive.hpp in Headers */,
+				DD360BB525EDF1CE006DECBA /* array.hpp in Headers */,
+				DD360BB625EDF1CE006DECBA /* cmddata.hpp in Headers */,
+				DD360BB725EDF1CE006DECBA /* coder.hpp in Headers */,
+				DD360BB825EDF1CE006DECBA /* compress.hpp in Headers */,
+				DD360BB925EDF1CE006DECBA /* consio.hpp in Headers */,
+				DD360BBA25EDF1CE006DECBA /* crc.hpp in Headers */,
+				DD360BBB25EDF1CE006DECBA /* crypt.hpp in Headers */,
+				DD360BBC25EDF1CE006DECBA /* dll.hpp in Headers */,
+				DD360BBD25EDF1CE006DECBA /* encname.hpp in Headers */,
+				DD360BBE25EDF1CE006DECBA /* errhnd.hpp in Headers */,
+				DD360BBF25EDF1CE006DECBA /* extinfo.hpp in Headers */,
+				DD360BC025EDF1CE006DECBA /* extract.hpp in Headers */,
+				DD360BC125EDF1CE006DECBA /* filcreat.hpp in Headers */,
+				DD360BC225EDF1CE006DECBA /* file.hpp in Headers */,
+				DD360BC325EDF1CE006DECBA /* filefn.hpp in Headers */,
+				DD360BC425EDF1CE006DECBA /* filestr.hpp in Headers */,
+				DD360BC525EDF1CE006DECBA /* find.hpp in Headers */,
+				DD360BC625EDF1CE006DECBA /* getbits.hpp in Headers */,
+				DD360BC725EDF1CE006DECBA /* global.hpp in Headers */,
+				DD360BC825EDF1CE006DECBA /* headers.hpp in Headers */,
+				DD360BC925EDF1CE006DECBA /* int64.hpp in Headers */,
+				DD360BCA25EDF1CE006DECBA /* isnt.hpp in Headers */,
+				DD360BCB25EDF1CE006DECBA /* list.hpp in Headers */,
+				DD360BCC25EDF1CE006DECBA /* loclang.hpp in Headers */,
+				DD360BCD25EDF1CE006DECBA /* log.hpp in Headers */,
+				DD360BCE25EDF1CE006DECBA /* match.hpp in Headers */,
+				DD360BCF25EDF1CE006DECBA /* memfree.hpp in Headers */,
+				DD360BD025EDF1CE006DECBA /* model.hpp in Headers */,
+				DD360BD125EDF1CE006DECBA /* options.hpp in Headers */,
+				DD360BD225EDF1CE006DECBA /* os.hpp in Headers */,
+				DD360BD325EDF1CE006DECBA /* pathfn.hpp in Headers */,
+				DD360BD425EDF1CE006DECBA /* rar.hpp in Headers */,
+				DD360BD525EDF1CE006DECBA /* rardefs.hpp in Headers */,
+				DD360BD625EDF1CE006DECBA /* rarfn.hpp in Headers */,
+				DD360BD725EDF1CE006DECBA /* rarlang.hpp in Headers */,
+				DD360BD825EDF1CE006DECBA /* raros.hpp in Headers */,
+				DD360BD925EDF1CE006DECBA /* rartypes.hpp in Headers */,
+				DD360BDA25EDF1CE006DECBA /* rarvm.hpp in Headers */,
+				DD360BDB25EDF1CE006DECBA /* PPC.h in Headers */,
+				DD360BDC25EDF1CE006DECBA /* rawread.hpp in Headers */,
+				DD360BDD25EDF1CE006DECBA /* rdwrfn.hpp in Headers */,
+				DD360BDE25EDF1CE006DECBA /* recvol.hpp in Headers */,
+				DD360BDF25EDF1CE006DECBA /* resource.hpp in Headers */,
+				DD360BE025EDF1CE006DECBA /* rijndael.hpp in Headers */,
+				DD360BE125EDF1CE006DECBA /* rs.hpp in Headers */,
+				DD360BE225EDF1CE006DECBA /* savepos.hpp in Headers */,
+				DD360BE325EDF1CE006DECBA /* scantree.hpp in Headers */,
+				DD360BE425EDF1CE006DECBA /* sha1.hpp in Headers */,
+				DD360BE525EDF1CE006DECBA /* smallfn.hpp in Headers */,
+				DD360BE625EDF1CE006DECBA /* strfn.hpp in Headers */,
+				DD360BE725EDF1CE006DECBA /* strlist.hpp in Headers */,
+				DD360BE825EDF1CE006DECBA /* suballoc.hpp in Headers */,
+				DD360BE925EDF1CE006DECBA /* system.hpp in Headers */,
+				DD360BEA25EDF1CE006DECBA /* timefn.hpp in Headers */,
+				DD360BEB25EDF1CE006DECBA /* ulinks.hpp in Headers */,
+				DD360BEC25EDF1CE006DECBA /* unicode.hpp in Headers */,
+				DD360BED25EDF1CE006DECBA /* unpack.hpp in Headers */,
+				DD360BEE25EDF1CE006DECBA /* version.hpp in Headers */,
+				DD360BEF25EDF1CE006DECBA /* volume.hpp in Headers */,
+				DD360BF025EDF1CE006DECBA /* Common.h in Headers */,
+				DD360BF125EDF1CE006DECBA /* Db.h in Headers */,
+				DD360BF225EDF1CE006DECBA /* Fft.h in Headers */,
+				DD360BF325EDF1CE006DECBA /* kxrmaa.h in Headers */,
+				DD360BF425EDF1CE006DECBA /* Sound.h in Headers */,
+				DD360BF525EDF1CE006DECBA /* Spdata.h in Headers */,
+				DD360BF625EDF1CE006DECBA /* sfArkDLL.h in Headers */,
+				DD360BF725EDF1CE006DECBA /* SFCNVRT.H in Headers */,
+				DD360BF825EDF1CE006DECBA /* SFDEVDTA.H in Headers */,
+				DD360BF925EDF1CE006DECBA /* SFDEVMAN.H in Headers */,
+				DD360BFA25EDF1CE006DECBA /* SFEDT32.H in Headers */,
+				DD360BFB25EDF1CE006DECBA /* SFEDTYPE.H in Headers */,
+				DD360BFC25EDF1CE006DECBA /* SFENUM.H in Headers */,
+				DD360BFD25EDF1CE006DECBA /* SFMAN.H in Headers */,
+				DD360BFE25EDF1CE006DECBA /* SFMANREG.H in Headers */,
+				DD360BFF25EDF1CE006DECBA /* TLHELP32.H in Headers */,
+				DD360C0025EDF1CE006DECBA /* vers.h in Headers */,
+				DD360C0125EDF1CE006DECBA /* adapter.h in Headers */,
+				DD360C0225EDF1CE006DECBA /* CDmaChannel.h in Headers */,
+				DD360C0325EDF1CE006DECBA /* common.h in Headers */,
+				DD360C0425EDF1CE006DECBA /* minictrl.h in Headers */,
+				DD360C0525EDF1CE006DECBA /* minisynth.h in Headers */,
+				DD360C0625EDF1CE006DECBA /* minitopo.h in Headers */,
+				DD360C0725EDF1CE006DECBA /* miniuart.h in Headers */,
+				DD360C0825EDF1CE006DECBA /* miniwave.h in Headers */,
+				DD360C0925EDF1CE006DECBA /* miniwave_p16v.h in Headers */,
+				DD360C0A25EDF1CE006DECBA /* tbl_ctrl.h in Headers */,
+				DD360C0B25EDF1CE006DECBA /* tbl_synth.h in Headers */,
+				DD360C0C25EDF1CE006DECBA /* tbl_topo.h in Headers */,
+				DD360C0D25EDF1CE006DECBA /* tbl_uart.h in Headers */,
+				DD360C0E25EDF1CE006DECBA /* tbl_wave.h in Headers */,
+				DD360C0F25EDF1CE006DECBA /* tbl_wave_p16v.h in Headers */,
+				DD360C1025EDF1CE006DECBA /* FRONTEND.H in Headers */,
+				DD360C1125EDF1CE006DECBA /* deflate.h in Headers */,
+				DD360C1225EDF1CE006DECBA /* infblock.h in Headers */,
+				DD360C1325EDF1CE006DECBA /* infcodes.h in Headers */,
+				DD360C1425EDF1CE006DECBA /* inffast.h in Headers */,
+				DD360C1525EDF1CE006DECBA /* inffixed.h in Headers */,
+				DD360C1625EDF1CE006DECBA /* inftrees.h in Headers */,
+				DD360C1725EDF1CE006DECBA /* infutil.h in Headers */,
+				DD360C1825EDF1CE006DECBA /* trees.h in Headers */,
+				DD360C1925EDF1CE006DECBA /* unzip.h in Headers */,
+				DD360C1A25EDF1CE006DECBA /* zconf.h in Headers */,
+				DD360C1B25EDF1CE006DECBA /* zlib.h in Headers */,
+				DD360C1C25EDF1CE006DECBA /* zutil.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD360C4225EDF1D0006DECBA /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD360C4A25EDF203006DECBA /* IOAudioBlitterLib.h in Headers */,
+				DD360C4B25EDF203006DECBA /* IOAudioBlitterLibDispatch.h in Headers */,
+				DD360C4325EDF1D0006DECBA /* cedebug.h in Headers */,
+				DD2CF6BA273AC91D004137AC /* PortableAudioClip.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2683,7 +3376,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C612EA4A25ED12C70006C564 /* PPC.h in Headers */,
+				C6A3360A262B502300E98427 /* defs.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2861,15 +3554,18 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C612EBA925ED16130006C564 /* Build configuration list for PBXNativeTarget "kXAudioDriver_LibraryLess" */;
 			buildPhases = (
+				C60063512613AA3B00367C27 /* ShellScript */,
 				C612EA8025ED16130006C564 /* Headers */,
-				C612EB8925ED16130006C564 /* Sources */,
 				C612EBA625ED16130006C564 /* Resources */,
+				C612EB8925ED16130006C564 /* Sources */,
 				C612EBA725ED16130006C564 /* Frameworks */,
+				C600634D2613AA2400367C27 /* Rez */,
+				C600634B2613AA0900367C27 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C612EBF325ED1B1A0006C564 /* PBXTargetDependency */,
+				DD889EB625ED3CF300A2D924 /* PBXTargetDependency */,
 			);
 			name = kXAudioDriver_LibraryLess;
 			productName = kXAudioDriver;
@@ -2883,6 +3579,7 @@
 				C612EBC125ED1AFA0006C564 /* Headers */,
 				C612EBC525ED1AFA0006C564 /* Sources */,
 				C612EBCA25ED1AFA0006C564 /* Frameworks */,
+				C600634C2613AA2400367C27 /* Rez */,
 			);
 			buildRules = (
 			);
@@ -2890,8 +3587,82 @@
 			);
 			name = FloatLib_Libraryless;
 			productName = FloatLib;
-			productReference = C612EBCD25ED1AFA0006C564 /* libFloatLib_Libraryless.a */;
+			productReference = C612EBCD25ED1AFA0006C564 /* libAudioFloatLib.a */;
 			productType = "com.apple.product-type.library.static";
+		};
+		DD360B1125EDF1CE006DECBA /* kXAudioDriver_Updated */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD360C3D25EDF1CE006DECBA /* Build configuration list for PBXNativeTarget "kXAudioDriver_Updated" */;
+			buildPhases = (
+				DD360B1425EDF1CE006DECBA /* Headers */,
+				DD360C1D25EDF1CE006DECBA /* Sources */,
+				DD360C3A25EDF1CE006DECBA /* Resources */,
+				DD360C3B25EDF1CE006DECBA /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DD360C5025EDF239006DECBA /* PBXTargetDependency */,
+			);
+			name = kXAudioDriver_Updated;
+			productName = kXAudioDriver;
+			productReference = DD360C3F25EDF1CE006DECBA /* kXAudioDriver_Updated.kext */;
+			productType = "com.apple.product-type.kernel-extension.iokit";
+		};
+		DD360C4125EDF1D0006DECBA /* FloatLib_Updated */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD360C4725EDF1D0006DECBA /* Build configuration list for PBXNativeTarget "FloatLib_Updated" */;
+			buildPhases = (
+				DD360C4225EDF1D0006DECBA /* Headers */,
+				DD360C4425EDF1D0006DECBA /* Sources */,
+				DD360C4625EDF1D0006DECBA /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FloatLib_Updated;
+			productName = FloatLib;
+			productReference = DD360C4925EDF1D0006DECBA /* libFloatLib_Updated.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		DDA39A6A26132BBD00008BFD /* kxctrl_libraryless */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDA39A7426132BBD00008BFD /* Build configuration list for PBXNativeTarget "kxctrl_libraryless" */;
+			buildPhases = (
+				DDA39A6F26132BBD00008BFD /* Sources */,
+				DDA39A7226132BBD00008BFD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DD140B14273576EB000F909D /* PBXTargetDependency */,
+				DDA39A8126132BEA00008BFD /* PBXTargetDependency */,
+				DDA39A6D26132BBD00008BFD /* PBXTargetDependency */,
+			);
+			name = kxctrl_libraryless;
+			productName = kxctrl;
+			productReference = DDA39A7626132BBD00008BFD /* kxctrl */;
+			productType = "com.apple.product-type.tool";
+		};
+		DDA39A9126132D4D00008BFD /* edspctrl_libraryless */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDA39A9D26132D4D00008BFD /* Build configuration list for PBXNativeTarget "edspctrl_libraryless" */;
+			buildPhases = (
+				DDA39A9826132D4D00008BFD /* Sources */,
+				DDA39A9B26132D4D00008BFD /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DDA39A9426132D4D00008BFD /* PBXTargetDependency */,
+				DDA39AA326132D7600008BFD /* PBXTargetDependency */,
+				DDA39AA526132D7A00008BFD /* PBXTargetDependency */,
+			);
+			name = edspctrl_libraryless;
+			productName = edspctrl;
+			productReference = DDA39A9F26132D4D00008BFD /* edspctrl */;
+			productType = "com.apple.product-type.tool";
 		};
 		E8A3E96D0E8F20FE005D3692 /* kXAPI */ = {
 			isa = PBXNativeTarget;
@@ -3000,8 +3771,8 @@
 				ORGANIZATIONNAME = "kX Project";
 			};
 			buildConfigurationList = E84281580B8E825C0042E2D2 /* Build configuration list for PBXProject "10kx driver" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				English,
@@ -3020,6 +3791,10 @@
 				E8D8957C10687D6E006F33DC /* kX AC97 */,
 				C612EA7D25ED16130006C564 /* kXAudioDriver_LibraryLess */,
 				C612EBC025ED1AFA0006C564 /* FloatLib_Libraryless */,
+				DDA39A6A26132BBD00008BFD /* kxctrl_libraryless */,
+				DDA39A9126132D4D00008BFD /* edspctrl_libraryless */,
+				DD360B1125EDF1CE006DECBA /* kXAudioDriver_Updated */,
+				DD360C4125EDF1D0006DECBA /* FloatLib_Updated */,
 			);
 		};
 /* End PBXProject section */
@@ -3033,6 +3808,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		C612EBA625ED16130006C564 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD360C3A25EDF1CE006DECBA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3065,11 +3847,58 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXRezBuildPhase section */
+		C600634C2613AA2400367C27 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C600634D2613AA2400367C27 /* Rez */ = {
+			isa = PBXRezBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXRezBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C600634B2613AA0900367C27 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "script=\"${SYSTEM_DEVELOPER_DIR}/ProjectBuilder Extras/Kernel Extension Support/KEXTPostprocess\";\nif [ -x \"$script\" ]; then\n    . \"$script\"\nfi\nfind \"${BUILT_PRODUCTS_DIR}/kXAudioDriver_LibraryLess.kext\" -type d -exec /bin/chmod 0755 {} \\;\nfind \"${BUILT_PRODUCTS_DIR}/kXAudioDriver_LibraryLess.kext\" -type f -exec /bin/chmod 0644 {} \\;\ncp ${SRCROOT}/install.command ${BUILT_PRODUCTS_DIR}";
+		};
+		C60063512613AA3B00367C27 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "script=\"${SYSTEM_DEVELOPER_DIR}/ProjectBuilder Extras/Kernel Extension Support/KEXTPreprocess\";\nif [ -x \"$script\" ]; then\n    . \"$script\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		44212BDE0DECB47E00E06065 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C613B8AD26299B0400C73208 /* frname.h in Sources */,
 				44212C280DECB75500E06065 /* ac97.cpp in Sources */,
 				44212C290DECB75500E06065 /* bufmgr.cpp in Sources */,
 				44212C2A0DECB75500E06065 /* calc.cpp in Sources */,
@@ -3116,6 +3945,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C613B8AE26299B0400C73208 /* frname.h in Sources */,
 				C612EB8A25ED16130006C564 /* ac97.cpp in Sources */,
 				C612EB8B25ED16130006C564 /* bufmgr.cpp in Sources */,
 				C612EB8C25ED16130006C564 /* calc.cpp in Sources */,
@@ -3155,6 +3985,71 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DD360C1D25EDF1CE006DECBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C613B8AF26299B0400C73208 /* frname.h in Sources */,
+				DD360C1E25EDF1CE006DECBA /* ac97.cpp in Sources */,
+				DD360C1F25EDF1CE006DECBA /* bufmgr.cpp in Sources */,
+				DD360C2025EDF1CE006DECBA /* calc.cpp in Sources */,
+				DD360C2125EDF1CE006DECBA /* dbdetect.cpp in Sources */,
+				DD360C2225EDF1CE006DECBA /* dsp.cpp in Sources */,
+				DD360C2325EDF1CE006DECBA /* ecard.cpp in Sources */,
+				DD360C2425EDF1CE006DECBA /* hal.cpp in Sources */,
+				DD360C2525EDF1CE006DECBA /* init.cpp in Sources */,
+				DD360C2625EDF1CE006DECBA /* irq.cpp in Sources */,
+				DD360C2725EDF1CE006DECBA /* microcode.cpp in Sources */,
+				DD360C2825EDF1CE006DECBA /* midi.cpp in Sources */,
+				DD360C2925EDF1CE006DECBA /* mpu.cpp in Sources */,
+				DD360C2A25EDF1CE006DECBA /* mtr.cpp in Sources */,
+				DD360C2B25EDF1CE006DECBA /* p16v.cpp in Sources */,
+				DD360C2C25EDF1CE006DECBA /* pci.cpp in Sources */,
+				DD360C2D25EDF1CE006DECBA /* rec.cpp in Sources */,
+				DD360C2E25EDF1CE006DECBA /* soundfont.cpp in Sources */,
+				DD360C2F25EDF1CE006DECBA /* state.cpp in Sources */,
+				DD360C3025EDF1CE006DECBA /* StdAfx.cpp in Sources */,
+				DD360C3125EDF1CE006DECBA /* synth.cpp in Sources */,
+				DD360C3225EDF1CE006DECBA /* timer.cpp in Sources */,
+				DD360C3325EDF1CE006DECBA /* voice.cpp in Sources */,
+				DD360C3425EDF1CE006DECBA /* wave.cpp in Sources */,
+				DD360C3525EDF1CE006DECBA /* AudioDevice.cpp in Sources */,
+				DD360C3625EDF1CE006DECBA /* AudioEngine.cpp in Sources */,
+				DD360C3725EDF1CE006DECBA /* Compat.cpp in Sources */,
+				DD360C3825EDF1CE006DECBA /* multichn.cpp in Sources */,
+				DD360C3925EDF1CE006DECBA /* AudioClient.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD360C4425EDF1D0006DECBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD360C4C25EDF210006DECBA /* IOAudioBlitterLib.c in Sources */,
+				DD360C4D25EDF210006DECBA /* IOAudioBlitterLibDispatch.cpp in Sources */,
+				DD360C4E25EDF210006DECBA /* IOAudioBlitterLibX86.cpp in Sources */,
+				DD360C4525EDF1D0006DECBA /* AudioClip.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDA39A6F26132BBD00008BFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDA39A7026132BBD00008BFD /* kxctrl.cpp in Sources */,
+				DDA39A7126132BBD00008BFD /* parse.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDA39A9826132D4D00008BFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDA39A9926132D4D00008BFD /* edspctrl.cpp in Sources */,
+				DDA39A9A26132D4D00008BFD /* edsplib.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E8A3E96B0E8F20FE005D3692 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3173,6 +4068,7 @@
 				E8DD9A970EA2F21F009342A3 /* parse.cpp in Sources */,
 				E8DD9AA70EA2F370009342A3 /* danestd.cpp in Sources */,
 				E8DD9AA80EA2F370009342A3 /* error.cpp in Sources */,
+				DD6EE29C275C1FD700BAB794 /* interface-osx.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3221,10 +4117,45 @@
 			target = 44212C1A0DECB61B00E06065 /* FloatLib */;
 			targetProxy = 44212CA20DECBABC00E06065 /* PBXContainerItemProxy */;
 		};
-		C612EBF325ED1B1A0006C564 /* PBXTargetDependency */ = {
+		DD140B14273576EB000F909D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C612EBC025ED1AFA0006C564 /* FloatLib_Libraryless */;
-			targetProxy = C612EBF225ED1B1A0006C564 /* PBXContainerItemProxy */;
+			targetProxy = DD140B13273576EB000F909D /* PBXContainerItemProxy */;
+		};
+		DD360C5025EDF239006DECBA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DD360C4125EDF1D0006DECBA /* FloatLib_Updated */;
+			targetProxy = DD360C4F25EDF239006DECBA /* PBXContainerItemProxy */;
+		};
+		DD889EB625ED3CF300A2D924 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C612EBC025ED1AFA0006C564 /* FloatLib_Libraryless */;
+			targetProxy = DD889EB525ED3CF300A2D924 /* PBXContainerItemProxy */;
+		};
+		DDA39A6D26132BBD00008BFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E8A3E96D0E8F20FE005D3692 /* kXAPI */;
+			targetProxy = DDA39A6E26132BBD00008BFD /* PBXContainerItemProxy */;
+		};
+		DDA39A8126132BEA00008BFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C612EA7D25ED16130006C564 /* kXAudioDriver_LibraryLess */;
+			targetProxy = DDA39A8026132BEA00008BFD /* PBXContainerItemProxy */;
+		};
+		DDA39A9426132D4D00008BFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E8A3E96D0E8F20FE005D3692 /* kXAPI */;
+			targetProxy = DDA39A9526132D4D00008BFD /* PBXContainerItemProxy */;
+		};
+		DDA39AA326132D7600008BFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C612EA7D25ED16130006C564 /* kXAudioDriver_LibraryLess */;
+			targetProxy = DDA39AA226132D7600008BFD /* PBXContainerItemProxy */;
+		};
+		DDA39AA526132D7A00008BFD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DDA39A6A26132BBD00008BFD /* kxctrl_libraryless */;
+			targetProxy = DDA39AA426132D7A00008BFD /* PBXContainerItemProxy */;
 		};
 		E84378F51527C03200B8C85C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -3287,7 +4218,7 @@
 		44212BE50DECB47E00E06065 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2.20b0;
@@ -3303,13 +4234,13 @@
 				GCC_VERSION = "";
 				INFOPLIST_FILE = kext/Info.plist;
 				KERNEL_MODULE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.kXProject.driver.kXAudioDriver;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = kXAudioDriver;
 				SDKROOT = macosx;
-				VALID_ARCHS = x86_64;
+				VALID_ARCHS = "x86_64 i386";
 				WRAPPER_EXTENSION = kext;
 			};
 			name = Deployment;
@@ -3317,7 +4248,7 @@
 		44212C1D0DECB66900E06065 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_X86_VECTOR_INSTRUCTIONS = sse4.1;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -3337,7 +4268,7 @@
 				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
 				KERNEL_MODULE = YES;
 				LIBRARY_STYLE = STATIC;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				MODULE_IOKIT = YES;
 				PRODUCT_NAME = FloatLib;
 				SDKROOT = macosx;
@@ -3348,7 +4279,165 @@
 		C612EBAA25ED16130006C564 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = ppc;
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 2.20b0;
+				DEAD_CODE_STRIPPING = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ALTIVEC_EXTENSIONS = NO;
+				GCC_DEBUGGING_SYMBOLS = used;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_MODEL_PPC64 = NO;
+				GCC_MODEL_TUNING = G4;
+				GCC_ONE_BYTE_BOOL = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_1)",
+					KX_INTERNAL,
+					"KX_DEBUG_FUNC=hw->cb.debug_func",
+					KX_DEBUG,
+					KX_LIBLESS,
+				);
+				GCC_VERSION = 3.3;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
+				GCC_WARN_PROTOTYPE_CONVERSION = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				INFOPLIST_FILE = "kXAudioDriver_LibraryLess copy-Info.plist";
+				KERNEL_MODULE = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\\\"$(SRCROOT)/build/Deployment\\\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MODULE_IOKIT = YES;
+				MODULE_NAME = com.kXProject.driver.kXAudioDriver;
+				MODULE_VERSION = 2.2.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-DDEBUG";
+				OTHER_REZFLAGS = "";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SEPARATE_STRIP = NO;
+				SEPARATE_SYMBOL_EDIT = NO;
+				SKIP_INSTALL = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = debugging;
+				USER_HEADER_SEARCH_PATHS = "../h/**";
+				VALID_ARCHS = "ppc x86_64 i386 ppc7400";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				WRAPPER_EXTENSION = kext;
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		C612EBCC25ED1AFA0006C564 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = ppc;
+				DEAD_CODE_STRIPPING = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				GCC_DEBUGGING_SYMBOLS = used;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_KERNEL_DEVELOPMENT = YES;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_MODEL_PPC64 = NO;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"KERNEL_PRIVATE=1",
+					"KERNEL=1",
+					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_1)",
+					KX_INTERNAL,
+					"KX_DEBUG_FUNC=hw->cb.debug_func",
+					KX_DEBUG,
+					KX_LIBLESS,
+					DRIVER_PRIVATE,
+					APPLE,
+					NeXT,
+				);
+				GCC_VERSION = 3.3;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = NO;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = NO;
+				GCC_WARN_PROTOTYPE_CONVERSION = NO;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = NO;
+				GCC_WARN_UNKNOWN_PRAGMAS = NO;
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = NO;
+				GCC_WARN_UNUSED_VARIABLE = NO;
+				GENERATE_MASTER_OBJECT_FILE = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers",
+					"$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers/bsd",
+				);
+				LD_GENERATE_MAP_FILE = YES;
+				LIBRARY_STYLE = STATIC;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MODULE_VERSION = "";
+				OTHER_CFLAGS = (
+					"-nostdinc",
+					"-finline",
+					"-fno-keep-inline-functions",
+					"-force_cpusubtype_ALL",
+					"-mlong-branch",
+					"-fcheck-new",
+					"-findirect-virtual-calls",
+					"-static",
+				);
+				OTHER_LIBTOOL_FLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				PRODUCT_NAME = AudioFloatLib;
+				REZ_EXECUTABLE = YES;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SEPARATE_SYMBOL_EDIT = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
+				STRIP_STYLE = debugging;
+				USER_HEADER_SEARCH_PATHS = "../h/**";
+				VALID_ARCHS = "ppc7400 ppc x86_64 i386";
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		DD360C3E25EDF1CE006DECBA /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2.20b0;
@@ -3362,23 +4451,23 @@
 					KX_DEBUG,
 				);
 				GCC_VERSION = "";
-				INFOPLIST_FILE = "kXAudioDriver copy-Info.plist";
+				INFOPLIST_FILE = "kXAudioDriver_LibraryLess copy2-Info.plist";
 				KERNEL_MODULE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.kXProject.driver.kXAudioDriver;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				VALID_ARCHS = x86_64;
+				VALID_ARCHS = "x86_64 i386";
 				WRAPPER_EXTENSION = kext;
 			};
 			name = Deployment;
 		};
-		C612EBCC25ED1AFA0006C564 /* Deployment */ = {
+		DD360C4825EDF1D0006DECBA /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				CLANG_X86_VECTOR_INSTRUCTIONS = sse4.1;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -3393,7 +4482,6 @@
 					KX_INTERNAL,
 					"KX_DEBUG_FUNC=hw->cb.debug_func",
 					KX_DEBUG,
-					KX_LIBLESS,
 				);
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
@@ -3401,9 +4489,34 @@
 				LIBRARY_STYLE = STATIC;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MODULE_IOKIT = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				VALID_ARCHS = "x86_64 i386";
+			};
+			name = Deployment;
+		};
+		DDA39A7526132BBD00008BFD /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = ppc;
+				GCC_VERSION = 4.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				PRODUCT_NAME = kxctrl;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				VALID_ARCHS = "ppc x86_64 i386";
+			};
+			name = Deployment;
+		};
+		DDA39A9E26132D4D00008BFD /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = ppc;
+				GCC_VERSION = 4.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				PRODUCT_NAME = edspctrl;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				VALID_ARCHS = "ppc x86_64 i386";
 			};
 			name = Deployment;
 		};
@@ -3430,7 +4543,7 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_PREPROCESS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				MODULE_VERSION = 2.00b0;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = ../h;
@@ -3441,13 +4554,15 @@
 		E8A3E96F0E8F20FE005D3692 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = ppc;
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_VERSION = 4.0;
 				INSTALL_PATH = "@executable_path";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = kXAPI;
-				SDKROOT = macosx;
-				VALID_ARCHS = "x86_64 i386";
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				VALID_ARCHS = "ppc x86_64 i386";
 			};
 			name = Deployment;
 		};
@@ -3465,9 +4580,10 @@
 		E8A6D9870E908BA50083971C /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				PRODUCT_NAME = kxctrl;
-				VALID_ARCHS = "x86_64 i386";
+				SDKROOT = "";
+				VALID_ARCHS = "ppc x86_64 i386";
 			};
 			name = Deployment;
 		};
@@ -3486,13 +4602,15 @@
 		E8D8958010687D6E006F33DC /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = kxac97/kxac97_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INFOPLIST_FILE = kxac97/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = "";
 				PRODUCT_NAME = "kX AC97";
+				SDKROOT = macosx;
 			};
 			name = Deployment;
 		};
@@ -3527,6 +4645,38 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C612EBCC25ED1AFA0006C564 /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		DD360C3D25EDF1CE006DECBA /* Build configuration list for PBXNativeTarget "kXAudioDriver_Updated" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD360C3E25EDF1CE006DECBA /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		DD360C4725EDF1D0006DECBA /* Build configuration list for PBXNativeTarget "FloatLib_Updated" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD360C4825EDF1D0006DECBA /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		DDA39A7426132BBD00008BFD /* Build configuration list for PBXNativeTarget "kxctrl_libraryless" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDA39A7526132BBD00008BFD /* Deployment */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Deployment;
+		};
+		DDA39A9D26132D4D00008BFD /* Build configuration list for PBXNativeTarget "edspctrl_libraryless" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDA39A9E26132D4D00008BFD /* Deployment */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Deployment;

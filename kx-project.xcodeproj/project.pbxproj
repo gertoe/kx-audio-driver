@@ -3,10 +3,52 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
+		C6DFCA3925F3C6CF00C55263 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E89CA31818882F74001C2E11 /* 10kx driver.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C612EBAB25ED16130006C564;
+			remoteInfo = kXAudioDriver_LibraryLess;
+		};
+		C6DFCA3B25F3C6CF00C55263 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E89CA31818882F74001C2E11 /* 10kx driver.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C612EBCD25ED1AFA0006C564;
+			remoteInfo = FloatLib_Libraryless;
+		};
+		C6DFCA3D25F3C6CF00C55263 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E89CA31818882F74001C2E11 /* 10kx driver.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DD360C3F25EDF1CE006DECBA;
+			remoteInfo = kXAudioDriver_Updated;
+		};
+		C6DFCA3F25F3C6CF00C55263 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E89CA31818882F74001C2E11 /* 10kx driver.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DD360C4925EDF1D0006DECBA;
+			remoteInfo = FloatLib_Updated;
+		};
+		DD94A9842613F34100FCF61F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E89CA31818882F74001C2E11 /* 10kx driver.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DDA39A7626132BBD00008BFD;
+			remoteInfo = kxctrl_libraryless;
+		};
+		DD94A9862613F34100FCF61F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E89CA31818882F74001C2E11 /* 10kx driver.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DDA39A9F26132D4D00008BFD;
+			remoteInfo = edspctrl_libraryless;
+		};
 		E89CA5AB18882F7A001C2E11 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E89CA31818882F74001C2E11 /* 10kx driver.xcodeproj */;
@@ -5894,6 +5936,12 @@
 				E89CA5B418882F7A001C2E11 /* edspctrl */,
 				E89CA5B618882F7A001C2E11 /* kX Manager.app */,
 				E89CA5B818882F7A001C2E11 /* kX AC97.app */,
+				C6DFCA3A25F3C6CF00C55263 /* kXAudioDriver_LibraryLess.kext */,
+				C6DFCA3C25F3C6CF00C55263 /* libAudioFloatLib.a */,
+				DD94A9852613F34100FCF61F /* kxctrl */,
+				DD94A9872613F34100FCF61F /* edspctrl */,
+				C6DFCA3E25F3C6CF00C55263 /* kXAudioDriver_Updated.kext */,
+				C6DFCA4025F3C6CF00C55263 /* libFloatLib_Updated.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -6727,7 +6775,7 @@
 				LastUpgradeCheck = 0500;
 			};
 			buildConfigurationList = E89C9AAC18882F13001C2E11 /* Build configuration list for PBXProject "kx-project" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -6748,6 +6796,48 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		C6DFCA3A25F3C6CF00C55263 /* kXAudioDriver_LibraryLess.kext */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = kXAudioDriver_LibraryLess.kext;
+			remoteRef = C6DFCA3925F3C6CF00C55263 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C6DFCA3C25F3C6CF00C55263 /* libAudioFloatLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAudioFloatLib.a;
+			remoteRef = C6DFCA3B25F3C6CF00C55263 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C6DFCA3E25F3C6CF00C55263 /* kXAudioDriver_Updated.kext */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = kXAudioDriver_Updated.kext;
+			remoteRef = C6DFCA3D25F3C6CF00C55263 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C6DFCA4025F3C6CF00C55263 /* libFloatLib_Updated.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFloatLib_Updated.a;
+			remoteRef = C6DFCA3F25F3C6CF00C55263 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DD94A9852613F34100FCF61F /* kxctrl */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = kxctrl;
+			remoteRef = DD94A9842613F34100FCF61F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DD94A9872613F34100FCF61F /* edspctrl */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = edspctrl;
+			remoteRef = DD94A9862613F34100FCF61F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		E89CA5AC18882F7A001C2E11 /* kXAudioDriver.kext */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;

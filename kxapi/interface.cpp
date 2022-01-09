@@ -30,10 +30,17 @@
     #define api_alloc(a) LocalAlloc(LMEM_FIXED|LMEM_ZEROINIT,(a))
     #define api_free(a) LocalFree((HLOCAL)(a))
 #elif defined(__APPLE__)
-    #include "interface-osx.cpp"
+    //#include "interface-osx.cpp"
     #define api_alloc(a) malloc(a)
     #define api_free(a) free(a)
 #endif
+
+#if !defined(GetLastError)
+	static int GetLastError(void){
+		return 0;
+	}
+#endif
+
 
 iKX* iKX::create(int id)
 {
@@ -1973,12 +1980,12 @@ int iKX::upload_fpga_firmware(byte *data,int size)
         int first=1;
         int ret=0;
         
-        /*
+        
         dword crc=0x0055aa55;
         for(int i=0;i<size;i++)
             crc=crc+data[i]*i;
         printf("=== size: %d; crc=%08x\n",size,crc);
-        */
+        
         
         while(size>0)
         {

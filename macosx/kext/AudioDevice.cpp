@@ -49,8 +49,6 @@ bool kXAudioDevice::init(OSDictionary *dictionary)
     
     IOLog("\n\n** Please don't support any scammers asking you to pay for a hackintosh installation, those people are most likely ignorants, and you will loose a lot of money and probably end up with a bad or poorly done installation. Hackintoshing is about freedom so let it be free for enyone **\n\n");
     
-
-    
     pciDevice=NULL;
     deviceMap=NULL;
     hw=NULL;
@@ -74,14 +72,18 @@ bool kXAudioDevice::initHardware(IOService *provider)
     bool result = false;
     IOWorkLoop *workLoop_=NULL;
     
+	#if !defined(USE_TIGER_IPC)
     char tmp[KXBootArgValueLength];
-    
+    #endif
+	
     //this is a driver-disable security switch
     //we need this because we can screw up way too mutch sometimes
+	#if !defined(USE_TIGER_IPC)
     if (PE_parse_boot_argn("-kxoff", tmp, KXBootArgValueLength)){
         debug(DBGCLASS"[%p] Driver disabled by disable boot arg\n",this);
         return false;
     }
+	#endif
     
     debug(DBGCLASS"[%p]::initHardware(%p)\n", this, provider);
     
@@ -152,13 +154,23 @@ bool kXAudioDevice::initHardware(IOService *provider)
         goto Done;
     }
     
-    debug(DBGCLASS"[%p]::initHardware: I/O range @0x%x (%08lx) mapped into %08x [up to %08x]\n",
+	#if !defined(USE_TIGER_IPC)
+	debug(DBGCLASS"[%p]::initHardware: I/O range @0x%x (%08lx) mapped into %08x [up to %08x] addr %08x\n",
+          this,
+          kIOPCIConfigBaseAddress0,
+          (unsigned long)deviceMap->getPhysicalAddress(),
+          (unsigned) deviceMap->getVirtualAddress(),
+          (unsigned int)(deviceMap->getVirtualAddress()+deviceMap->getLength()-1),
+		  (unsigned) deviceMap->getAddress());
+	#else
+	debug(DBGCLASS"[%p]::initHardware: I/O range @0x%x (%08lx) mapped into %08x [up to %08x]\n",
           this,
           kIOPCIConfigBaseAddress0,
           (unsigned long)deviceMap->getPhysicalAddress(),
           (unsigned) deviceMap->getVirtualAddress(),
           (unsigned int)(deviceMap->getVirtualAddress()+deviceMap->getLength()-1));
-    
+    #endif
+	
     // Enable the PCI memory access - the kernel will panic if this isn't done before accessing the
     // mapped registers
     pciDevice->setMemoryEnable(true);
@@ -174,7 +186,14 @@ bool kXAudioDevice::initHardware(IOService *provider)
     
     cb.call_with=this;
     cb.irql=0x0; // unused
-    cb.io_base=deviceMap->getPhysicalAddress();
+    
+    //#if defined(SYSTEM_IO) && (defined(__ppc__) || defined(__arm__))
+    cb.io_base = (io_port_t)deviceMap->getVirtualAddress(); //reccomended for x86 too by the apple documentation
+    //#else
+    //cb.io_base = (io_port_t)deviceMap->getPhysicalAddress();
+    //#endif
+	
+	cb.actual_io_base = port;
     
     cb.device=dev_id;
     cb.subsys=subsys_id;
@@ -204,7 +223,8 @@ bool kXAudioDevice::initHardware(IOService *provider)
     kx_defaults(NULL,&cb);
     
     int ret;
-    ret=kx_init(&hw,&cb,0);
+    
+	ret=kx_init(&hw,&cb,0);
     
     if(ret || hw==NULL)
     {
@@ -280,6 +300,7 @@ Done:
         }
         
         pciDevice=NULL;
+        
     }
     
     return result;
@@ -496,8 +517,6 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
     }
     
     kx_lock_release(hw,&hw->dsp_lock,&flags);
-    
-    
     
     kx_set_dsp_register(hw,prolog_pgm,"in0vol",0x2000*65535);
     kx_set_dsp_register(hw,prolog_pgm,"in1vol",0x2000*65535);
@@ -2097,4 +2116,16 @@ IOReturn kXAudioDevice::performPowerStateChange(IOAudioDevicePowerState oldPower
     
     return result;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

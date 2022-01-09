@@ -37,8 +37,14 @@ typedef unsigned char byte;
     typedef long long __int64;
 #endif
 
+#define X86
+
 #ifdef KX_INTERNAL
- #ifndef CONIO_USAGE
+
+#define SYSTEM_IO
+//#define OLD_ALLOC
+
+#if !defined(CONIO_USAGE) && !defined(SYSTEM_IO)
 
 #ifdef _MSC_VER
 // MS Visual C specific code

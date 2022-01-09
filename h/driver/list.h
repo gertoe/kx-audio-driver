@@ -74,6 +74,7 @@ static __inline void list_del(struct list *item)
 #define for_each_list_entry(pos, head) \
         for (pos = (head)->next; pos != (head); pos = pos->next)
 
+//TODO: potentially not ppc-friendly
 #define list_item(ptr, type, member) \
 	((type *)((uintptr_t)(ptr)-(uintptr_t)(&((type *)0)->member)))
 

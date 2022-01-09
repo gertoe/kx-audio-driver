@@ -29,6 +29,8 @@
 #undef debug
 #include "cedebug.h"
 
+#if 1 //!defined(__ppc__)
+
 #define super IOUserClient
 OSDefineMetaClassAndStructors( kXUserClient , IOUserClient );
 
@@ -39,6 +41,11 @@ enum {
 };
 
 #if defined(USE_TIGER_IPC)
+
+enum { 
+    kIOUCVariableStructureSize = 0xffffffff 
+};
+
 const IOExternalMethod kXUserClient::sMethods[kNumMethods] = 
 {
 	{   // kClientOpen
@@ -336,3 +343,5 @@ IOReturn kXUserClient::StructIStructO(const void* inStruct, void* outStruct,uint
     
     return result;
 }
+
+#endif /* __ppc__ */

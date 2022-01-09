@@ -16,8 +16,10 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-//i don't really get why he used all those references while he just needed a reference to the kx object
-int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, const unsigned int chiprev,
+#include "kx.h"
+
+//i don't really get why he used all those references while he just needed a reference to the kx object - ITzTravelIntime
+/*int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, const unsigned int chiprev,
 						 char *tmp_str,
 						 unsigned char &is_51,
 						 unsigned char &has_surdac,
@@ -32,8 +34,8 @@ int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, c
 						 char &lack_ac97,
 						 unsigned char &is_zsnb,
 						 unsigned char &is_cardbus);
-
-int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, const unsigned int chiprev,
+*/
+static int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, const unsigned int chiprev,
 		char *tmp_str,
 		unsigned char &is_51,
 		unsigned char &has_surdac,
@@ -432,7 +434,7 @@ int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, c
        {
         //strncpy(tmp_str,"SB0360 10k2",KX_MAX_STRING); // audigy2 ZS Platinum Pro + sb290
            //expensive stuff
-           strncpy(tmp_str,"SB Audigy 2 ZS",KX_MAX_STRING);
+           strncpy(tmp_str,"SB Audigy 2 ZS Platinum Pro",KX_MAX_STRING);
            
         is_a2ex=1;
        }
@@ -533,18 +535,18 @@ int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, c
 
      case 0x40021102:
        if(!is_k8)
-        strncpy(tmp_str,"E-0404 10k2",KX_MAX_STRING); // [111]
+        strncpy(tmp_str,"E-0404 [10k2 Variant]",KX_MAX_STRING); // [111]
        else
-        strncpy(tmp_str,"E-0404 10k8",KX_MAX_STRING); // [120]
+        strncpy(tmp_str,"E-0404 [10k8 Variant]",KX_MAX_STRING); // [120]
 
        is_edsp=1;
        lack_ac97=1;
        break;
      case 0x40031102:
        if(!is_k8)
-        strncpy(tmp_str,"E-1010 10k2",KX_MAX_STRING); // [112]
+        strncpy(tmp_str,"E-1010 [10k2 Variant]",KX_MAX_STRING); // [112]
        else
-        strncpy(tmp_str,"E-1010 10k8",KX_MAX_STRING); // [121]
+        strncpy(tmp_str,"E-1010 [10k8 Variant]",KX_MAX_STRING); // [121]
 
        is_edsp=1;
        lack_ac97=1;
@@ -552,53 +554,53 @@ int kx_get_friendly_name(const unsigned int device, const unsigned int subsys, c
      case 0x40041102: // [123]
        if(is_k8)
        {
-        strncpy(tmp_str,"EM8960 10k8",KX_MAX_STRING); // EM8960: 1010 PCI
+        strncpy(tmp_str,"EM8960",KX_MAX_STRING); // EM8960: 1010 PCI 10k8
         is_edsp=1;
         lack_ac97=1;
        }
        else
        {
-        strncpy(tmp_str,"Un4004 10k2",KX_MAX_STRING); // ??
+        strncpy(tmp_str,"Un4004",KX_MAX_STRING); // ?? 10k2
        }
        break;
      case 0x40051102:
          if(is_k8)
          {
-             //strncpy(tmp_str,"EM8984 10k8",KX_MAX_STRING); // EM8984: 0404 PCIe
+             //strncpy(tmp_str,"EM8984 10k8",KX_MAX_STRING); // EM8984: 0404 PCIe 10k8
              
-             strncpy(tmp_str,"E-0404 PCIe 10k8",KX_MAX_STRING);
+             strncpy(tmp_str,"E-0404 PCIe",KX_MAX_STRING);
              
              is_edsp=1;
              lack_ac97=1;
          }
          else
          {
-             strncpy(tmp_str,"Un4005 10k2",KX_MAX_STRING); // ??
+             strncpy(tmp_str,"Un4005",KX_MAX_STRING); // ?? 10k2
          }
          break;
      case 0x40071102: // EM8982 - 1010 ('PCIe' series)
        {
         if(is_k8)
         {
-       	 strncpy(tmp_str,"EM8982 10k8",KX_MAX_STRING);
+       	 strncpy(tmp_str,"EM8982",KX_MAX_STRING); //10k8
        	 is_edsp=1;
        	 lack_ac97=1;
        	}
        	else
-       	 strncpy(tmp_str,"Un4007 10k2",KX_MAX_STRING);
+       	 strncpy(tmp_str,"Un4007",KX_MAX_STRING); //10k2
        }
        break;
 
      case 0x42011102: // [122]
-       strncpy(tmp_str,"EM8950 10k8",KX_MAX_STRING); // 1616 CardBus v2
+       strncpy(tmp_str,"EM8950",KX_MAX_STRING); // 1616 CardBus v2 10k2
        is_edsp=1;
        lack_ac97=1;
        is_cardbus=1;
        break;
 
      default:
-         //if you are in this case you own some really wired sound cards
-       strncpy(tmp_str,"kX audio driver",KX_MAX_STRING);
+         //if you are in this case you own a really wired sound card
+       strncpy(tmp_str,"kX audio driver generic",KX_MAX_STRING);
        ret=-1;
        break;
  }

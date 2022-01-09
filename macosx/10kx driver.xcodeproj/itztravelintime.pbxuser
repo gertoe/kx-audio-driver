@@ -1,0 +1,695 @@
+// !$*UTF8*$!
+{
+	0117744B00710CA77F000001 /* AudioClip.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {853, 4550}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 942}";
+		};
+	};
+	0117744F00710DAB7F000001 /* AudioEngine.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1080, 15624}}";
+			sepNavSelRange = "{13119, 0}";
+			sepNavVisRange = "{12636, 1086}";
+			sepNavWindowFrame = "{{38, 474}, {750, 558}}";
+		};
+	};
+	089C1669FE841209C02AAC07 /* Project object */ = {
+		activeArchitecturePreference = ppc7400;
+		activeBuildConfigurationName = Deployment;
+		activeExecutable = DDA39A7726132BBD00008BFD /* kxctrl_libraryless */;
+		activeTarget = C612EA7D25ED16130006C564 /* kXAudioDriver_LibraryLess */;
+		breakpoints = (
+			DD96D5782613521700899784 /* edsplib.cpp:154 */,
+			DD96D57A2613522300899784 /* edsplib.cpp:135 */,
+		);
+		codeSenseManager = DD8CEBA92613277100F028C7 /* Code sense */;
+		executables = (
+			DD8CEB862613274900F028C7 /* kxctrl */,
+			DD8CEB872613274900F028C7 /* edspctrl */,
+			DD8CEB882613274900F028C7 /* kX Manager */,
+			DD8CEB892613274900F028C7 /* kX AC97 */,
+			DDA39A7726132BBD00008BFD /* kxctrl_libraryless */,
+			DDA39AA026132D4D00008BFD /* edspctrl_libraryless */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					843,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					803,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 639184373;
+			PBXWorkspaceStateSaveDate = 639184373;
+		};
+		perUserProjectItems = {
+			DD33277326192E0C00D5DAC3 /* PBXTextBookmark */ = DD33277326192E0C00D5DAC3 /* PBXTextBookmark */;
+			DD33277626192E1000D5DAC3 /* PBXTextBookmark */ = DD33277626192E1000D5DAC3 /* PBXTextBookmark */;
+			DD33277726192E1000D5DAC3 /* PBXTextBookmark */ = DD33277726192E1000D5DAC3 /* PBXTextBookmark */;
+			DD33277D26192FDD00D5DAC3 /* PBXTextBookmark */ = DD33277D26192FDD00D5DAC3 /* PBXTextBookmark */;
+			DD7EBC9C261337740055CE68 /* PBXTextBookmark */ = DD7EBC9C261337740055CE68 /* PBXTextBookmark */;
+			DD7EBC9D261337740055CE68 /* PBXTextBookmark */ = DD7EBC9D261337740055CE68 /* PBXTextBookmark */;
+			DD7EBC9E261337740055CE68 /* PBXTextBookmark */ = DD7EBC9E261337740055CE68 /* PBXTextBookmark */;
+			DD7EBC9F261337740055CE68 /* PBXTextBookmark */ = DD7EBC9F261337740055CE68 /* PBXTextBookmark */;
+			DD7EBCA0261337740055CE68 /* PBXTextBookmark */ = DD7EBCA0261337740055CE68 /* PBXTextBookmark */;
+			DD7EBCA1261337740055CE68 /* PBXTextBookmark */ = DD7EBCA1261337740055CE68 /* PBXTextBookmark */;
+			DD9143C826191EB100E7BF37 /* PBXTextBookmark */ = DD9143C826191EB100E7BF37 /* PBXTextBookmark */;
+			DD96D5912613586200899784 /* PBXTextBookmark */ = DD96D5912613586200899784 /* PBXTextBookmark */;
+			DD96D5922613586200899784 /* PBXTextBookmark */ = DD96D5922613586200899784 /* PBXTextBookmark */;
+			DD96D5942613586200899784 /* PBXTextBookmark */ = DD96D5942613586200899784 /* PBXTextBookmark */;
+			DDB6F79526192B6E00C64544 /* PBXTextBookmark */ = DDB6F79526192B6E00C64544 /* PBXTextBookmark */;
+			DDE8CDB726135D2800CFEEFC /* PBXTextBookmark */ = DDE8CDB726135D2800CFEEFC /* PBXTextBookmark */;
+			DDE8CDB826135D2800CFEEFC /* PBXTextBookmark */ = DDE8CDB826135D2800CFEEFC /* PBXTextBookmark */;
+			DDE8CDCF26135F0F00CFEEFC /* PBXTextBookmark */ = DDE8CDCF26135F0F00CFEEFC /* PBXTextBookmark */;
+			DDE8CDD026135F0F00CFEEFC /* PBXTextBookmark */ = DDE8CDD026135F0F00CFEEFC /* PBXTextBookmark */;
+			DDE8CDD226135F0F00CFEEFC /* PBXTextBookmark */ = DDE8CDD226135F0F00CFEEFC /* PBXTextBookmark */;
+		};
+		sourceControlManager = DD8CEBA82613277100F028C7 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	44212BE10DECB47E00E06065 /* kXAudioDriver */ = {
+		activeExec = 0;
+	};
+	44212C1A0DECB61B00E06065 /* FloatLib */ = {
+		activeExec = 0;
+	};
+	449EE3CA0DE7A49D000769A3 /* dsp.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {915, 44538}}";
+			sepNavSelRange = "{66702, 0}";
+			sepNavVisRange = "{66312, 664}";
+		};
+	};
+	449EE3CE0DE7A49D000769A3 /* init.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {845, 13585}}";
+			sepNavSelRange = "{4339, 20}";
+			sepNavVisRange = "{4148, 593}";
+		};
+	};
+	449EE4590DE7A807000769A3 /* Compat.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {853, 4368}}";
+			sepNavSelRange = "{4312, 0}";
+			sepNavVisRange = "{3991, 652}";
+		};
+	};
+	C60063722613AB3300367C27 /* install.command */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1021, 455}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1317}";
+		};
+	};
+	C612EA7D25ED16130006C564 /* kXAudioDriver_LibraryLess */ = {
+		activeExec = 0;
+	};
+	C612EBC025ED1AFA0006C564 /* FloatLib_Libraryless */ = {
+		activeExec = 0;
+	};
+	DD0BB35F261925C70062484A /* locks.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = locks.h;
+		path = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/Kernel.framework/Headers/machine/locks.h;
+		sourceTree = "<absolute>";
+	};
+	DD33277326192E0C00D5DAC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Command /usr/bin/gcc-3.3 failed with exit code 1";
+		fRef = 0117744B00710CA77F000001 /* AudioClip.cpp */;
+		rLen = 0;
+		rLoc = 0;
+		rType = 1;
+	};
+	DD33277626192E1000D5DAC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 0117744F00710DAB7F000001 /* AudioEngine.cpp */;
+		name = "AudioEngine.cpp: 393";
+		rLen = 0;
+		rLoc = 13119;
+		rType = 0;
+		vrLen = 1086;
+		vrLoc = 12636;
+	};
+	DD33277726192E1000D5DAC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 0117744F00710DAB7F000001 /* AudioEngine.cpp */;
+		name = "AudioEngine.cpp: 393";
+		rLen = 0;
+		rLoc = 13119;
+		rType = 0;
+		vrLen = 1086;
+		vrLoc = 12636;
+	};
+	DD33277D26192FDD00D5DAC3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 0117744B00710CA77F000001 /* AudioClip.cpp */;
+		name = "AudioClip.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1116;
+		vrLoc = 0;
+	};
+	DD360B1125EDF1CE006DECBA /* kXAudioDriver_Updated */ = {
+		activeExec = 0;
+	};
+	DD360C4125EDF1D0006DECBA /* FloatLib_Updated */ = {
+		activeExec = 0;
+	};
+	DD7EBC9C261337740055CE68 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E8DD9A8E0EA2F21F009342A3 /* compile.cpp */;
+		name = "compile.cpp: 30";
+		rLen = 0;
+		rLoc = 992;
+		rType = 0;
+		vrLen = 355;
+		vrLoc = 4449;
+	};
+	DD7EBC9D261337740055CE68 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E8A6D9C60E908EC50083971C /* emu0404_netlist.h */;
+		name = "emu0404_netlist.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1651;
+		vrLoc = 0;
+	};
+	DD7EBC9E261337740055CE68 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E8A6D9C90E908EC50083971C /* hana_netlist.h */;
+		name = "hana_netlist.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1658;
+		vrLoc = 0;
+	};
+	DD7EBC9F261337740055CE68 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E8A6D9CA0E908EC50083971C /* micro_dock_netlist.h */;
+		name = "micro_dock_netlist.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1701;
+		vrLoc = 0;
+	};
+	DD7EBCA0261337740055CE68 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E8A6D9C50E908EC50083971C /* emu.h */;
+		name = "emu.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 779;
+		vrLoc = 0;
+	};
+	DD7EBCA1261337740055CE68 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E8A6D9C40E908EC50083971C /* edsplib.h */;
+		name = "edsplib.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1233;
+		vrLoc = 0;
+	};
+	DD8CEB862613274900F028C7 /* kxctrl */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = kxctrl;
+		sourceDirectories = (
+		);
+	};
+	DD8CEB872613274900F028C7 /* edspctrl */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = edspctrl;
+		sourceDirectories = (
+		);
+	};
+	DD8CEB882613274900F028C7 /* kX Manager */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = "kX Manager";
+		sourceDirectories = (
+		);
+	};
+	DD8CEB892613274900F028C7 /* kX AC97 */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = "kX AC97";
+		sourceDirectories = (
+		);
+	};
+	DD8CEBA82613277100F028C7 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	DD8CEBA92613277100F028C7 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	DD9143C826191EB100E7BF37 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = C60063722613AB3300367C27 /* install.command */;
+		name = "install.command: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1317;
+		vrLoc = 0;
+	};
+	DD96D5782613521700899784 /* edsplib.cpp:154 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = E8A6D9C30E908EC50083971C /* edsplib.cpp */;
+		functionName = "upload_card_firmware(iKX *ikx)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 154;
+		modificationTime = 638801093.6082829;
+		state = 0;
+	};
+	DD96D57A2613522300899784 /* edsplib.cpp:135 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = E8A6D9C30E908EC50083971C /* edsplib.cpp */;
+		functionName = "upload_card_firmware(iKX *ikx)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 135;
+		modificationTime = 638801093.608403;
+		state = 0;
+	};
+	DD96D5912613586200899784 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E8A6D9C20E908EC50083971C /* edspctrl.cpp */;
+		name = "edspctrl.cpp: 93";
+		rLen = 0;
+		rLoc = 2734;
+		rType = 0;
+		vrLen = 878;
+		vrLoc = 2564;
+	};
+	DD96D5922613586200899784 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD96D5932613586200899784 /* interface-osx.cpp */;
+		name = "interface-osx.cpp: 146";
+		rLen = 0;
+		rLoc = 4079;
+		rType = 0;
+		vrLen = 1110;
+		vrLoc = 4140;
+	};
+	DD96D5932613586200899784 /* interface-osx.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = "interface-osx.cpp";
+		path = "/Users/itztravelintime/Desktop/kx-audio-driver/kxapi/interface-osx.cpp";
+		sourceTree = "<absolute>";
+	};
+	DD96D5942613586200899784 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E8A3E97C0E8F21E7005D3692 /* interface.cpp */;
+		name = "interface.cpp: 2072";
+		rLen = 0;
+		rLoc = 51032;
+		rType = 0;
+		vrLen = 648;
+		vrLoc = 50713;
+	};
+	DDA39A6A26132BBD00008BFD /* kxctrl_libraryless */ = {
+		activeExec = 0;
+		executables = (
+			DDA39A7726132BBD00008BFD /* kxctrl_libraryless */,
+		);
+	};
+	DDA39A7726132BBD00008BFD /* kxctrl_libraryless */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = kxctrl_libraryless;
+		sourceDirectories = (
+		);
+	};
+	DDA39A9126132D4D00008BFD /* edspctrl_libraryless */ = {
+		activeExec = 0;
+		executables = (
+			DDA39AA026132D4D00008BFD /* edspctrl_libraryless */,
+		);
+	};
+	DDA39AA026132D4D00008BFD /* edspctrl_libraryless */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = edspctrl_libraryless;
+		savedGlobals = {
+		};
+		sourceDirectories = (
+		);
+		variableFormatDictionary = {
+		};
+	};
+	DDB6F79526192B6E00C64544 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD0BB35F261925C70062484A /* locks.h */;
+		name = "locks.h: 38";
+		rLen = 0;
+		rLoc = 1529;
+		rType = 0;
+		vrLen = 1274;
+		vrLoc = 328;
+	};
+	DDE8CDB526135D2500CFEEFC /* init.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = init.cpp;
+		path = "/Users/itztravelintime/Desktop/kx-audio-driver/driver/init.cpp";
+		sourceTree = "<absolute>";
+	};
+	DDE8CDB726135D2800CFEEFC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E8A6D9C30E908EC50083971C /* edsplib.cpp */;
+		name = "edsplib.cpp: 291";
+		rLen = 0;
+		rLoc = 8243;
+		rType = 0;
+		vrLen = 1477;
+		vrLoc = 13590;
+	};
+	DDE8CDB826135D2800CFEEFC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = E84374F91527B2C100B8C85C /* init.h */;
+		name = "init.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1332;
+		vrLoc = 0;
+	};
+	DDE8CDCF26135F0F00CFEEFC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DDE8CDB526135D2500CFEEFC /* init.cpp */;
+		name = "init.cpp: 160";
+		rLen = 20;
+		rLoc = 4339;
+		rType = 0;
+		vrLen = 1135;
+		vrLoc = 3676;
+	};
+	DDE8CDD026135F0F00CFEEFC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DDE8CDD126135F0F00CFEEFC /* frname.cpp */;
+		name = "frname.cpp: 512";
+		rLen = 0;
+		rLoc = 16996;
+		rType = 0;
+		vrLen = 1022;
+		vrLoc = 17716;
+	};
+	DDE8CDD126135F0F00CFEEFC /* frname.cpp */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = frname.cpp;
+		path = "/Users/itztravelintime/Desktop/kx-audio-driver/driver/frname.cpp";
+		sourceTree = "<absolute>";
+	};
+	DDE8CDD226135F0F00CFEEFC /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 449EE4590DE7A807000769A3 /* Compat.cpp */;
+		name = "Compat.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1389;
+		vrLoc = 0;
+	};
+	E84374F91527B2C100B8C85C /* init.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1084, 585}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1332}";
+		};
+	};
+	E8A3E96D0E8F20FE005D3692 /* kXAPI */ = {
+		activeExec = 0;
+	};
+	E8A3E97C0E8F21E7005D3692 /* interface.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1084, 28080}}";
+			sepNavSelRange = "{51032, 0}";
+			sepNavVisRange = "{50713, 648}";
+		};
+	};
+	E8A3EA1D0E8F2735005D3692 /* kX Manager */ = {
+		activeExec = 0;
+		executables = (
+			DD8CEB882613274900F028C7 /* kX Manager */,
+		);
+	};
+	E8A6D9840E908BA40083971C /* kxctrl */ = {
+		activeExec = 0;
+		executables = (
+			DD8CEB862613274900F028C7 /* kxctrl */,
+		);
+	};
+	E8A6D9B50E908E940083971C /* edspctrl */ = {
+		activeExec = 0;
+		executables = (
+			DD8CEB872613274900F028C7 /* edspctrl */,
+		);
+	};
+	E8A6D9C20E908EC50083971C /* edspctrl.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1084, 1612}}";
+			sepNavSelRange = "{2734, 0}";
+			sepNavVisRange = "{2564, 878}";
+		};
+	};
+	E8A6D9C30E908EC50083971C /* edsplib.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1084, 8216}}";
+			sepNavSelRange = "{8243, 0}";
+			sepNavVisRange = "{13590, 1477}";
+		};
+	};
+	E8A6D9C40E908EC50083971C /* edsplib.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {853, 490}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1233}";
+		};
+	};
+	E8A6D9C50E908EC50083971C /* emu.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {853, 490}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 779}";
+		};
+	};
+	E8A6D9C60E908EC50083971C /* emu0404_netlist.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {853, 89583}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1651}";
+		};
+	};
+	E8A6D9C90E908EC50083971C /* hana_netlist.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {853, 128310}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1658}";
+			sepNavWindowFrame = "{{15, 495}, {750, 558}}";
+		};
+	};
+	E8A6D9CA0E908EC50083971C /* micro_dock_netlist.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {853, 89544}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1701}";
+		};
+	};
+	E8A96CE90E8DEC1C004CB7A2 /* AudioClient.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {853, 4563}}";
+			sepNavSelRange = "{1138, 0}";
+			sepNavVisRange = "{859, 454}";
+		};
+	};
+	E8D8955810687C8C006F33DC /* Ac97Controller.mm */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {853, 2613}}";
+			sepNavSelRange = "{1168, 0}";
+			sepNavVisRange = "{750, 602}";
+		};
+	};
+	E8D8957C10687D6E006F33DC /* kX AC97 */ = {
+		activeExec = 0;
+		executables = (
+			DD8CEB892613274900F028C7 /* kX AC97 */,
+		);
+	};
+	E8DD9A8E0EA2F21F009342A3 /* compile.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {586, 12467}}";
+			sepNavSelRange = "{992, 0}";
+			sepNavVisRange = "{4449, 355}";
+		};
+	};
+}

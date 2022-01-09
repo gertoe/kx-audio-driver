@@ -22,6 +22,8 @@
 #ifndef PCI_H_
 #define PCI_H_
 
+#if !defined(SYSTEM_IO)
+
 // PCI Configuration space registers
 // (note: linux-style naming convention for compatibility)
 #define PCI_DEVID       0x0000
@@ -39,5 +41,7 @@ KX_API(int, pcibios_read_config_byte(byte bus, byte device_fn,byte where, byte *
 KX_API(int, pcibios_read_config_word (byte bus,byte device_fn, byte where, word *value));
 KX_API(int, pcibios_write_config_byte (byte bus, byte device_fn,byte where, byte value));
 KX_API(int, pcibios_write_config_word (byte bus, byte device_fn,byte where, word value));
+
+#endif
 
 #endif
