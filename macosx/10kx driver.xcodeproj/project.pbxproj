@@ -4861,6 +4861,7 @@
 					KX_INTERNAL,
 					"KX_DEBUG_FUNC=hw->cb.debug_func",
 					KX_DEBUG,
+					SYSTEM_IO,
 				);
 				GCC_VERSION = "";
 				INFOPLIST_FILE = kext/Info.plist;

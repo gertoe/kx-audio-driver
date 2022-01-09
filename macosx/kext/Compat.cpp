@@ -72,7 +72,7 @@ word readLE16(const word* addr){
 
 
 #if defined(SYSTEM_IO)
-#if !(defined(__i386__) || defined(__x86_64__) || defined(__LP64__)) || defined(PPC)
+#if !(defined(__i386__) || defined(__x86_64__) || defined(X86)) || defined(PPC)
 
 dword inpd_System(const io_port_t port){
     register dword value = OSReadLittleInt32( (volatile void *) port, 0);
@@ -110,7 +110,7 @@ void outp_System(io_port_t port, const byte value){
     OSSynchronizeIO();
 }
 
-#elif defined(__i386__) || defined(__x86_64__) || defined(__LP64__) || defined(X86)
+#elif defined(__i386__) || defined(__x86_64__) || defined(X86)
 
 dword inpd_System(const io_port_t port){
     dword value = 0;

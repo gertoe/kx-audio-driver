@@ -22,7 +22,7 @@
 #ifndef DEFS_H_
 #define DEFS_H_
 
-#if defined(i386) || defined(I386) || defined(IX86) || defined(__I386__) || defined(_IX86) || defined(_M_IX86) || defined(AMD64) || defined(__x86_64__) || defined(__i386__) || defined(__LP64__)
+#if defined(i386) || defined(I386) || defined(IX86) || defined(__I386__) || defined(_IX86) || defined(_M_IX86) || defined(AMD64) || defined(__x86_64__) || defined(__i386__)
     #include "i386.h"
 #elif defined(__PPC__) || defined(__ppc__) || defined(_ARCH_PPC) || defined(__POWERPC__) || defined(__powerpc) || defined(__powerpc__)
     #include "PPC.h"
@@ -30,7 +30,7 @@
     #error "Unknown processor architecture"
 #endif
 
-#if defined(SYSTEM_IO) && !(defined(__x86_64__) || defined(__i386__) || defined(__LP64__))
+#if defined(SYSTEM_IO) && !(defined(__x86_64__) || defined(__i386__) || defined(X86))
 typedef volatile byte* io_port_t; //volatile char*
 #else
 typedef word io_port_t;
