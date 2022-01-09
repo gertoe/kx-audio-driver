@@ -90,15 +90,15 @@ fi
 echo "Installing a fresh copy of the driver ..."
 
 
-cp -R kXAudioDriver_LibraryLess.kext /System/Library/Extensions/
+cp -R kXAudioDriver_PPC.kext /System/Library/Extensions/
 
-find /System/Library/Extensions/kXAudioDriver_LibraryLess.kext -type d -exec /bin/chmod 0755 {} \;
-find /System/Library/Extensions/kXAudioDriver_LibraryLess.kext -type f -exec /bin/chmod 0744 {} \;
-chmod -R 755        /System/Library/Extensions/kXAudioDriver_LibraryLess.kext
-chown -R root:wheel /System/Library/Extensions/kXAudioDriver_LibraryLess.kext
+find /System/Library/Extensions/kXAudioDriver_PPC.kext -type d -exec /bin/chmod 0755 {} \;
+find /System/Library/Extensions/kXAudioDriver_PPC.kext -type f -exec /bin/chmod 0744 {} \;
+chmod -R 755        /System/Library/Extensions/kXAudioDriver_PPC.kext
+chown -R root:wheel /System/Library/Extensions/kXAudioDriver_PPC.kext
 touch /System/Library/Extensions
 
-kextload -t /System/Library/Extensions/kXAudioDriver_LibraryLess.kext
+kextload -t /System/Library/Extensions/kXAudioDriver_PPC.kext
 
 echo "Installation finished - enjoy! ITzTravelInTime"
 

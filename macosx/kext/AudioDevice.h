@@ -55,7 +55,7 @@
 
 #define kx_allocation_mask ((0x000000007FFFFFFFULL) & (~((PAGE_SIZE) - 1)))
 
-#define USE_TIGER_IPC
+//#define USE_TIGER_IPC
 
 struct kXRequest;
 

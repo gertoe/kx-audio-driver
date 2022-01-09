@@ -106,21 +106,39 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
     maxSampleIndex = (firstSampleFrame + numSampleFrames) * streamFormat->fNumChannels;
     startSampleIndex = (firstSampleFrame * streamFormat->fNumChannels);
     
+	
     if (bps==32){
-		/*
-		if (streamFormat->fBitDepth == 8){
-			Float32ToSInt8Aligned32_optimized( (const float *)mixBuf, (SInt32 *)sampleBuf, maxSampleIndex, startSampleIndex);
-		}else if (streamFormat->fBitDepth == 16){
+	
+	//IOLog("detectted bit depth: %u\n", streamFormat->fBitDepth);
+	
+	switch(streamFormat->fBitDepth){
+		case 8:
+			//IOLog("Defaulting to 8 bit playback routines\n");
+			//Float32ToSInt8Aligned32_optimized( (const float *)mixBuf, (SInt32 *)sampleBuf, maxSampleIndex, startSampleIndex); //playback noise
+			//break;
+		case 16:
+			//IOLog("Defaulting to 16 bit playback routines\n");
 			Float32ToSInt16Aligned32_optimized( (const float *)mixBuf, (SInt32 *)sampleBuf, maxSampleIndex, startSampleIndex);
-		}else if (streamFormat->fBitDepth == 24){
-			Float32ToSInt24Unpacked_optimized( (const float *)mixBuf, (SInt32 *)sampleBuf, maxSampleIndex, startSampleIndex);
-		}else{
+			break;
+		//case 24:
+			//IOLog("Defaulting to 24 bit playback routines\n");
+			//Float32ToSInt24Unpacked_optimized( (const float *)mixBuf, (SInt32 *)sampleBuf, maxSampleIndex, startSampleIndex); //occasional artifacts
+			//break;
+		//case 32:
+		default:
+			//IOLog("Defaulting to 32 bit playback routines\n");
 			Float32ToSInt32_optimized( (const float *)mixBuf, (SInt32 *)sampleBuf, maxSampleIndex, startSampleIndex);
-		}*/
+			break;
+	}
 		
-		Float32ToSInt8Aligned32_optimized( (const float *)mixBuf, (SInt32 *)sampleBuf, maxSampleIndex, startSampleIndex);
+	//Float32ToSInt32_optimized( (const float *)mixBuf, (SInt32 *)sampleBuf, maxSampleIndex, startSampleIndex);
+		
     }else if (bps ==16){
-        Float32ToSInt16_optimized( (const float *)mixBuf, (SInt16*)sampleBuf, maxSampleIndex, startSampleIndex);
+		//if (streamFormat->fBitDepth == 16){
+			Float32ToSInt16_optimized( (const float *)mixBuf, (SInt16*)sampleBuf, maxSampleIndex, startSampleIndex);
+		//}else{
+		//	Float32ToSInt8Aligned16_optimized( (const float *)mixBuf, (SInt16*)sampleBuf, maxSampleIndex, startSampleIndex);
+		//}
     }
     
 #endif
@@ -185,7 +203,7 @@ IOReturn kXAudioEngine::convertInputSamples(const void *sampleBuf, void *destBuf
     
     if(bps==32){
         SInt32 *inputBuf;
-        SInt32 inputSample;
+        float inputSample;
     
         // Determine the starting point for our input conversion
         inputBuf = &(((SInt32 *)sampleBuf)[firstSampleFrame * streamFormat->fNumChannels]);
@@ -193,11 +211,11 @@ IOReturn kXAudioEngine::convertInputSamples(const void *sampleBuf, void *destBuf
         // Loop through each sample and scale and convert them
         for (UInt32 i = 0; i < numSamplesLeft; i++) {
             // Fetch the SInt32 input sample
-            inputSample = *inputBuf;
+            inputSample = (float)((SInt32)correctEndianess32(*inputBuf));
         
             // Scale that sample to a range of -1.0 to 1.0, convert to float and store in the destination buffer
             // at the proper location
-            *floatDestBuf = (SInt32)correctEndianess32((UInt32)(inputSample * ( inputSample>=0 ? clipPosMulDiv24 : clipNegMulDiv24 )));
+            *floatDestBuf = clamp(inputSample * ( (clipPosMulDiv32 * (inputSample > 0)) + (clipNegMulDiv32  * (inputSample < 0)) ) );
 			
             // Move on to the next sample
             ++inputBuf;
@@ -206,7 +224,7 @@ IOReturn kXAudioEngine::convertInputSamples(const void *sampleBuf, void *destBuf
         
     }else if(bps==16){
         SInt16 *inputBuf;
-        SInt16 inputSample;
+        float inputSample;
         
         // Determine the starting point for our input conversion
         inputBuf = &(((SInt16 *)sampleBuf)[firstSampleFrame * streamFormat->fNumChannels]);
@@ -215,12 +233,12 @@ IOReturn kXAudioEngine::convertInputSamples(const void *sampleBuf, void *destBuf
         for (UInt32 i = 0; i < numSamplesLeft; i++) {
             
             // Fetch the SInt16 input sample
-            inputSample = *inputBuf;
+            inputSample = (float)((SInt16)correctEndianess16(*inputBuf));
             
             // Scale that sample to a range of -1.0 to 1.0, convert to float and store in the destination buffer
             // at the proper location
                 
-            (*floatDestBuf) = (SInt16)correctEndianess16((UInt16)(inputSample * ( inputSample>=0 ? clipPosMulDiv16 : clipNegMulDiv16 )));
+            *floatDestBuf = clamp(inputSample * ( (clipPosMulDiv16 * (inputSample > 0)) + (clipNegMulDiv16 * (inputSample < 0)) ) );
             
             // Move on to the next sample
             ++inputBuf;

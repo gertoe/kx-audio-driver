@@ -14,21 +14,21 @@
 
 #define KX_VERSION_DWORD		0x51003553
 #ifdef KX_DEBUG
- #define KX_DRIVER_VERSION_STR		"5.40.00.0 - debug"
+ #define KX_DRIVER_VERSION_STR		"5.50.00.0 - debug"
 #else
- #define KX_DRIVER_VERSION_STR		"5.40.00.0"
+ #define KX_DRIVER_VERSION_STR		"5.50.00.0"
 #endif
-#define KX_DRIVER_VERSION		5,40,0,0
-#define KX_DRIVER_VERSION_		5.40.0.0
+#define KX_DRIVER_VERSION		5,50,0,0
+#define KX_DRIVER_VERSION_		5.50.0.0
 #ifdef KX_DEBUG
- #define KX_VERSION_STR			"5, 40, 00, 0 - debug"
+ #define KX_VERSION_STR			"5, 50, 00, 0 - debug"
 #else
- #define KX_VERSION_STR			"5, 40, 00, 0"
+ #define KX_VERSION_STR			"5, 50, 00, 0"
 #endif
-#define KX_COPYRIGHT_STR		"Copyright © Eugene Gavrilov, 2001-2020. All rights reserved. Mod By Alejandro, ITzTravelInTime, BiOM"
+#define KX_COPYRIGHT_STR		"Copyright (c) Eugene Gavrilov, 2001-2021. Mod By Alejandro, ITzTravelInTime, BiOM. PowerPC port by ITzTravelInTime."
 
-#define KX_COPYRIGHT_STR_R		"Copyright © Eugene Gavrilov, 2001-2020. Mod By Alejandro, ITzTravelInTime, BiOM"
-#define KX_COPYRIGHT_YEARS		"2001-2020"
+#define KX_COPYRIGHT_STR_R		"Copyright (c) Eugene Gavrilov, 2001-2021. Mod By Alejandro, ITzTravelInTime, BiOM. PowerPC port by ITzTravelInTime."
+#define KX_COPYRIGHT_YEARS		"2001-2021"
 
 #define KX_COMPANY_NAME			"Eugene Gavrilov, Mod By Alejandro, ITzTravelInTime, BiOM"
 

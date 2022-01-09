@@ -46,6 +46,7 @@
 		 regVideo, regAux, regDac, regRecSel, regRec, regGp;
 
     iKX *kx;
+    NSDictionary *registers;
 }
 
 - (void)setDevice:(int)value;

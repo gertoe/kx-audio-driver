@@ -678,10 +678,14 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
             
             //we need to add our supported sample rates now
             rate.fraction = 0;
-            
+				
+				{
+				
+				const bool isInput = (direction==kIOAudioStreamDirectionInput);
+				
                 //we don't have to worry about repetitions of sampleing rates here, because the os already takes care of that by not considering duplicates
                 const UInt32 supportedFreqs[] = {44100, 48000, 88200, 96000, 176400, 192000, 7000, 8000, 9600, 11025, 12000, 16000, 18900, 22050, 24000, 32000, 37800, 44056, 49716, 64000, custom_sampling_rate, sampling_rate};
-                UInt8 length = sizeof(supportedFreqs) / sizeof(*supportedFreqs);
+                UInt8 length = isInput ?  2 : (sizeof(supportedFreqs) / sizeof(*supportedFreqs));
                 
                 if (hw->is_edsp){
                     debug("kXAudioEngine[%p] The current sound card in an E-MU e-dsp or similar (using the same architecture), using hardware support for sampling rathes rather than the software resampler\n",this);
@@ -696,16 +700,23 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 
                 format.fBitWidth = bps;
                 
-                for (UInt8 d = 8; d <= format.fBitWidth; d += 8){
+				{
+				
+				UInt8 d     = isInput ? bps : 8; 
+				UInt8 start = isInput ? 1   : 0; 
+				
+                for (/*UInt8 d = 8*/; d <= bps; d += 8){
                     format.fBitDepth = d;
-                    for (UInt8 i = 0; i < length; i++){
+                    for (UInt8 i = start; i < length; i++){
                         rate.whole = supportedFreqs[i];
                         audioStream->addAvailableFormat(&format, &rate, &rate);
-                        //debug("kXAudioEngine[%p] Added sampling rate: %u at %u bits\n",this, rate.whole, format.fBitDepth);
+                        //debug("kXAudioEngine[%p] Added sampling rate: %u at %u bits. is input? %u \n",this, rate.whole, format.fBitDepth, isInput);
                     }
                 }
+				
+				}
                 
-            
+				}
             // Finally, the IOAudioStream's current format needs to be indicated
             audioStream->setFormat(&format);
             

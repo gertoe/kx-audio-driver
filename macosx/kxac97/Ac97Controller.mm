@@ -30,6 +30,7 @@
 @implementation Ac97Controller
 
 @synthesize kx;
+
 @synthesize registers;
 
 static NSArray *controls = NULL;
