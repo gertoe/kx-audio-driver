@@ -22,8 +22,8 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-#ifndef _0kx_driver_VectorAudioClip_h
-#define _0kx_driver_VectorAudioClip_h
+#ifndef _10kx_driver_VectorAudioClip_h
+#define _10kx_driver_VectorAudioClip_h
 
 #include "defs.h"
 #include "AudioEngine.h"
@@ -32,6 +32,8 @@
 //#include <TargetConditionals.h>
 #include <libkern/OSTypes.h>
 #include <libkern/OSByteOrder.h>
+
+//#define NO_ASM
 
 static const float clipMax = 1.0f;
 static const float clipMin = -1.0f;
@@ -63,13 +65,13 @@ static const float clipNegMulDiv32 = 1 / clipNegMul32;
 
 static inline SInt32 FloatToInt32(const double val){
 
-#if !defined(PPC)
+#if !defined(PPC) || defined(NO_ASM)
     static const double maxInt32 = 2147483648.0;	// 1 << 31
 	static const double round = 128.0;
 	static const double max32 = maxInt32 - 1.0 - round;
 #endif
     
-#if defined(PPC)
+#if defined(PPC) && !defined(NO_ASM)
 	SInt32 i;
 	union {
 		double	d;
@@ -78,8 +80,8 @@ static inline SInt32 FloatToInt32(const double val){
     
 	// fctiw rounds, doesn't truncate towards zero like fctiwz
 	__asm__ ("fctiw %0, %1" 
-			 /* outputs:  */ : "=f" (u.d) 
-			 /* inputs:   */ : "f" (val));
+			 : "=f" (u.d) 
+			 : "f" (val));
     
 	i = u.i[1];
 	return i;
@@ -102,16 +104,17 @@ static inline SInt32 FloatToInt32(const double val){
 }
 
 static inline double fabs(const double val){
-    
-#if defined(PPC)
+ 
+#if defined(PPC) && !defined(NO_ASM)
 	double d;
     
 	__asm__ ("fabs %0, %1" 
-			 /* outputs:  */ : "=f" (d) 
-			 /* inputs:   */ : "f" (val));
+			 : "=f" (d)
+			 : "f" (val));
     
 	return d;
-#else
+#else 
+	
     return val * ((val > 0) - (val < 0));
 #endif
     
@@ -140,14 +143,14 @@ static void Float32ToSInt32_portable( const float* floatMixBuf, SInt32* destBuf,
     // Loop through the mix/sample buffers one sample at a time and perform the clip and conversion operations
     for (sampleIndex = start; sampleIndex < end; sampleIndex++){
         // Fetch the floating point mix sample
-        inSample = clamp(floatMixBuf[sampleIndex]);
+        inSample = (clamp(floatMixBuf[sampleIndex]) * clipPosMul32) + 128;
 				
         // Scale the -1.0 to 1.0 range to the appropriate scale for signed 32-bit samples and then
         // convert to SInt32 and store in the hardware sample buffer
-		destBuf[sampleIndex] = (SInt32)correctEndianess32( FloatToInt32( inSample * clipPosMul32 + 128 ) ); //more lightweight
-		
-		
-		//destBuf[sampleIndex] = (SInt32)correctEndianess32( FloatToInt32( inSample * ( (clipPosMul32 * (inSample > 0)) + (clipNegMul32  * (inSample < 0)) ) ) );  //experimental more accurate variant
+		//destBuf[sampleIndex] = (SInt32)correctEndianess32( FloatToInt32( inSample ) ); //more lightweight
+        
+        //writeLE32((UInt32*)&(destBuf[sampleIndex]), FloatToInt32( inSample ));
+        OSWriteLittleInt32(destBuf, sampleIndex * sizeof(*destBuf), FloatToInt32(inSample)); //better performance since we avoid using the shifter this way
     }
     
 }
@@ -159,12 +162,16 @@ static void Float32ToSInt16Aligned32_portable( const float* floatMixBuf, SInt32*
     // Loop through the mix/sample buffers one sample at a time and perform the clip and conversion operations
     for (sampleIndex = start; sampleIndex < end; sampleIndex++){
         // Fetch the floating point mix sample
-        inSample = clamp(floatMixBuf[sampleIndex]);
+        inSample = (clamp(floatMixBuf[sampleIndex]) * clipPosMul16);
         
-        // Scale the -1.0 to 1.0 range to the appropriate scale for signed 32-bit samples and then
-        // convert to SInt32 and store in the hardware sample buffer
+        // Scale the -1.0 to 1.0 range to the appropriate scale for signed 16-bit samples and then
+        // convert to SInt16, then shifts it up by 16 bits (to match the 32 bit range for the buffer) and store in the hardware sample buffer
 		
-        destBuf[sampleIndex] = (SInt32)correctEndianess32( ((SInt16)(inSample * clipPosMul16)) << 16 ); //no artifacts 16 bit aprrox.
+        //destBuf[sampleIndex] = (SInt32)correctEndianess32( ((SInt16)inSample) << 16 ); //no artifacts 16 bit aprrox.
+        
+        
+        //writeLE32((UInt32*)&(destBuf[sampleIndex]), ((SInt16)inSample) << 16 );
+        OSWriteLittleInt32(destBuf, sampleIndex * sizeof(*destBuf), ((SInt16)inSample) << 16);
     }
     
 }
@@ -173,15 +180,19 @@ static void Float32ToSInt16_portable( const float* floatMixBuf, SInt16* destBuf,
     
     register float inSample;
     register UInt32 sampleIndex;
+    //register UInt16* bufferPointer = (UInt16*)&(destBuf[start]);
     
     // Loop through the mix/sample buffers one sample at a time and perform the clip and conversion operations
     for (sampleIndex = start; sampleIndex < end; sampleIndex++){
         // Fetch the floating point mix sample
-        inSample = clamp(floatMixBuf[sampleIndex]);
+        inSample = (clamp(floatMixBuf[sampleIndex]) * clipPosMul16);
         
-        // Scale the -1.0 to 1.0 range to the appropriate scale for signed 32-bit samples and then
-        // convert to SInt32 and store in the hardware sample buffer
-        destBuf[sampleIndex] = (SInt16)correctEndianess16((UInt16)(inSample * clipPosMul16));
+        // Scale the -1.0 to 1.0 range to the appropriate scale for signed 16-bit samples and then
+        // convert to SInt16 and store in the hardware sample buffer
+        //destBuf[sampleIndex] = (SInt16)correctEndianess16((UInt16)(inSample));
+        
+        //writeLE16((UInt16*)&(destBuf[sampleIndex]), ((SInt16)inSample));
+        OSWriteLittleInt16(destBuf, sampleIndex * sizeof(*destBuf), (SInt16)inSample);
     }
 }
 

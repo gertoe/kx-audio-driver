@@ -36,7 +36,7 @@
 class kXAudioEngine : public IOAudioEngine
 {
     OSDeclareDefaultStructors(kXAudioEngine)
-public:    
+//public:    
     kx_hw	*hw;
 	int		n_frames;
 	int		bps;
@@ -70,13 +70,19 @@ public:
 	IOAudioStream *in_streams[MAX_CHANNELS_];
 	IOAudioStream *out_streams[MAX_CHANNELS_];
     
+    void dump_addr(void);
+    
+    virtual struct memhandle *my_alloc_contiguous(size_t size);
+    virtual void       my_free_contiguous(struct memhandle *desc, mach_vm_size_t size);
+    
+    virtual inline bool inRange(const long, const long, const long);
+    virtual inline UInt32 stringToNumber_dummy(const char *str);
+    
 public:
 
     virtual bool init(kx_hw *hw_);
     virtual void free();
 	virtual void free_all();
-	
-	void dump_addr(void);
     
     virtual bool initHardware(IOService *provider);
     virtual void stop(IOService *provider);
@@ -89,16 +95,10 @@ public:
     
     virtual UInt32 getCurrentSampleFrame();
 	
-	virtual struct memhandle *my_alloc_contiguous(size_t size);
-	virtual void       my_free_contiguous(struct memhandle *desc, mach_vm_size_t size);
-    
     virtual IOReturn performFormatChange(IOAudioStream *audioStream, const IOAudioStreamFormat *newFormat, const IOAudioSampleRate *newSampleRate);
 
     virtual IOReturn clipOutputSamples(const void *mixBuf, void *sampleBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
     virtual IOReturn convertInputSamples(const void *sampleBuf, void *destBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
-    
-    virtual inline bool inRange(const long, const long, const long);
-    virtual inline UInt32 stringToNumber_dummy(const char *str);
     
 };
 

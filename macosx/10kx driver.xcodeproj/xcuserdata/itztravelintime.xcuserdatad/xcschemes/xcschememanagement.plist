@@ -9,7 +9,17 @@
 			<key>orderHint</key>
 			<integer>6</integer>
 		</dict>
+		<key>FloatLib.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
+		</dict>
 		<key>FloatLib_Libraryless.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>FloatLib_Libraryless.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
@@ -17,19 +27,29 @@
 		<key>FloatLib_PPC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>6</integer>
 		</dict>
 		<key>edspctrl.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
-		<key>edspctrl_PPC.xcscheme_^#shared#^_</key>
+		<key>edspctrl.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>11</integer>
 		</dict>
+		<key>edspctrl_PPC.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
+		</dict>
 		<key>edspctrl_libraryless.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>edspctrl_libraryless.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
@@ -37,34 +57,59 @@
 		<key>kX AC97 PPC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>13</integer>
+			<integer>14</integer>
 		</dict>
 		<key>kX AC97.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
+		<key>kX AC97.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
 		<key>kX Manager.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>5</integer>
+		</dict>
+		<key>kX Manager.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>15</integer>
 		</dict>
 		<key>kXAPI.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>7</integer>
 		</dict>
+		<key>kXAPI.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>16</integer>
+		</dict>
 		<key>kXAPI_PPC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>12</integer>
+			<integer>9</integer>
 		</dict>
 		<key>kXAudioDriver.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
+		<key>kXAudioDriver.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
 		<key>kXAudioDriver_LibraryLess.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>kXAudioDriver_LibraryLess.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -72,19 +117,29 @@
 		<key>kXAudioDriver_PPC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>8</integer>
+			<integer>12</integer>
 		</dict>
 		<key>kxctrl.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
+		<key>kxctrl.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 		<key>kxctrl_PPC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>10</integer>
+			<integer>13</integer>
 		</dict>
 		<key>kxctrl_libraryless.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>kxctrl_libraryless.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
@@ -93,11 +148,6 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>44212BE10DECB47E00E06065</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>44212C1A0DECB61B00E06065</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -143,61 +193,6 @@
 			<true/>
 		</dict>
 		<key>DDA39A9126132D4D00008BFD</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DDC8BCA027856D7400C18665</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DDC8BDD427856D7700C18665</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DDC8BDDF27856D7A00C18665</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DDC8BDEE27856D7D00C18665</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DDC8BE042785715D00C18665</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DDE9F40227859161009B9A99</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E8A3E96D0E8F20FE005D3692</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E8A3EA1D0E8F2735005D3692</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E8A6D9840E908BA40083971C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E8A6D9B50E908E940083971C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E8D8957C10687D6E006F33DC</key>
 		<dict>
 			<key>primary</key>
 			<true/>

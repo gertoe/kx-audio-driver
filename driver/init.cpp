@@ -166,13 +166,15 @@ FOUND: // bus,dev,func contain right values
  hw->drum_channel=10;
 
  char tmp_str[KX_MAX_STRING];
+ char tmp_model_str[KX_MAX_STRING];
     
     //needed on older os x versions because the next code do not guaratee that the string is 0 terminated
     for (uint i = 0; i < KX_MAX_STRING; i++){
         tmp_str[i] = '\0';
+        tmp_model_str[i] = '\0';
     }
     
- kx_get_friendly_name(hw->pci_device,hw->pci_subsys,hw->pci_chiprev,tmp_str,
+ kx_get_friendly_name(hw->pci_device,hw->pci_subsys,hw->pci_chiprev,tmp_str, tmp_model_str,
                 hw->is_51,hw->has_surdac,
         hw->is_aps,hw->is_10k2,hw->is_a2,hw->is_a2ex,hw->is_k8,hw->is_a4,hw->is_edsp,
         hw->have_ac97,hw->lack_ac97,hw->is_zsnb,hw->is_cardbus);
@@ -186,6 +188,7 @@ FOUND: // bus,dev,func contain right values
  itoax(p,(size_t)(hw->port), (byte)(sizeof(hw->port)*2)); p+=(sizeof(hw->port)*2);
  *p++=']'; 
 	
+#if 0
 	if (sizeof(hw->port) != sizeof(word)){
 		
 		*p++=' ';
@@ -221,12 +224,14 @@ FOUND: // bus,dev,func contain right values
 #endif	
 	}
  
+#endif
 	
 	*p=0;
-    
 
  strncpy(hw->card_name,tmp_str,KX_MAX_STRING);
+ strncpy(hw->card_model_name,tmp_model_str,KX_MAX_STRING);
  debug(DLIB,"card name: '%s'\n",hw->card_name);
+ debug(DLIB,"card model name: '%s'\n",hw->card_model_name);
 
  if(hw->is_10k2) 
   hw->can_passthru=1;

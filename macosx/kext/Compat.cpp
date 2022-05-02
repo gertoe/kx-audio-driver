@@ -204,6 +204,7 @@ void * kXAudioDevice::lmem_get_addr_func(void **lm,int offset,__int64 *physical)
 
 int kXAudioDevice::pci_alloc(struct memhandle *h, kx_cpu_cache_type_t cache_type)
 {
+
 #if defined(OLD_ALLOC)
 
 	#warning "Using old dma memory allocation method"
@@ -215,6 +216,7 @@ int kXAudioDevice::pci_alloc(struct memhandle *h, kx_cpu_cache_type_t cache_type
     if (!(h->addr) || !(h->dma_handle))
         return -1;
 #else
+
     //h->addr=IOMallocContiguous(h->size,PAGE_SIZE,&phys_addr);
     mach_vm_address_t mask = kx_allocation_mask; //0x000000007FFFFFFFULL & ~(PAGE_SIZE - 1);
     

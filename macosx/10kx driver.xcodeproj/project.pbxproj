@@ -1322,6 +1322,13 @@
 			remoteGlobalIDString = C612EBC025ED1AFA0006C564;
 			remoteInfo = FloatLib_Libraryless;
 		};
+		DD9F1C0E281ED8F500795286 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DDC8BE042785715D00C18665;
+			remoteInfo = kXAPI_PPC;
+		};
 		DDA39A6E26132BBD00008BFD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
@@ -1356,13 +1363,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = DDA39A6A26132BBD00008BFD;
 			remoteInfo = kxctrl_libraryless;
-		};
-		DDE9F4A227859247009B9A99 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 089C1669FE841209C02AAC07 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E8A3E96D0E8F20FE005D3692;
-			remoteInfo = kXAPI;
 		};
 		E84378F41527C03200B8C85C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1534,6 +1534,7 @@
 		DDC8BDFE27856EC500C18665 /* kXAudioDriver.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = kXAudioDriver.plist; sourceTree = "<group>"; };
 		DDC8BE012785700700C18665 /* install_PPC.command */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = install_PPC.command; sourceTree = "<group>"; };
 		DDC8BE1B2785715D00C18665 /* kXAPI_PPC.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = kXAPI_PPC.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDD62AA9279E0ADF0098C9D6 /* kXAudioDriver64.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = kXAudioDriver64.plist; sourceTree = "<group>"; };
 		DDE9F49A27859161009B9A99 /* kX AC97 PPC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kX AC97 PPC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDE9F49B27859162009B9A99 /* kX_AC97_PPC.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = kX_AC97_PPC.plist; path = "/Volumes/usb/kexts_source/kx-audio-driver/macosx/kX_AC97_PPC.plist"; sourceTree = "<absolute>"; };
 		E84374C51527B2C100B8C85C /* asio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asio.h; sourceTree = "<group>"; };
@@ -2060,6 +2061,7 @@
 				DDC8BDFE27856EC500C18665 /* kXAudioDriver.plist */,
 				DDC8BDD327856D7400C18665 /* kXAudioDriver_PPC.plist */,
 				DDE9F49B27859162009B9A99 /* kX_AC97_PPC.plist */,
+				DDD62AA9279E0ADF0098C9D6 /* kXAudioDriver64.plist */,
 			);
 			name = SampleAudioDriver;
 			sourceTree = "<group>";
@@ -4142,7 +4144,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				DDE9F4A327859247009B9A99 /* PBXTargetDependency */,
+				DD9F1C0F281ED8F500795286 /* PBXTargetDependency */,
 			);
 			name = "kX AC97 PPC";
 			productName = kxac97;
@@ -4758,6 +4760,11 @@
 			target = C612EBC025ED1AFA0006C564 /* FloatLib_Libraryless */;
 			targetProxy = DD889EB525ED3CF300A2D924 /* PBXContainerItemProxy */;
 		};
+		DD9F1C0F281ED8F500795286 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DDC8BE042785715D00C18665 /* kXAPI_PPC */;
+			targetProxy = DD9F1C0E281ED8F500795286 /* PBXContainerItemProxy */;
+		};
 		DDA39A6D26132BBD00008BFD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E8A3E96D0E8F20FE005D3692 /* kXAPI */;
@@ -4782,11 +4789,6 @@
 			isa = PBXTargetDependency;
 			target = DDA39A6A26132BBD00008BFD /* kxctrl_libraryless */;
 			targetProxy = DDA39AA426132D7A00008BFD /* PBXContainerItemProxy */;
-		};
-		DDE9F4A327859247009B9A99 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E8A3E96D0E8F20FE005D3692 /* kXAPI */;
-			targetProxy = DDE9F4A227859247009B9A99 /* PBXContainerItemProxy */;
 		};
 		E84378F51527C03200B8C85C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4852,7 +4854,7 @@
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2.20b0;
+				CURRENT_PROJECT_VERSION = 2.3.0b0;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -4914,7 +4916,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 2.2.1b0;
+				CURRENT_PROJECT_VERSION = 2.3.0b0;
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ALTIVEC_EXTENSIONS = NO;
@@ -4948,7 +4950,7 @@
 				GCC_WARN_UNUSED_LABEL = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
 				GENERATE_MASTER_OBJECT_FILE = NO;
-				INFOPLIST_FILE = kXAudioDriver.plist;
+				INFOPLIST_FILE = kXAudioDriver64.plist;
 				KERNEL_MODULE = YES;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5039,9 +5041,7 @@
 				OTHER_CFLAGS = (
 					"-nostdinc",
 					"-finline",
-					"-fno-keep-inline-functions",
 					"-force_cpusubtype_ALL",
-					"-mlong-branch",
 					"-fcheck-new",
 					"-findirect-virtual-calls",
 					"-static",
@@ -5096,7 +5096,7 @@
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = ppc;
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 2.2.1b0;
+				CURRENT_PROJECT_VERSION = 2.3.0b0;
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ALTIVEC_EXTENSIONS = NO;
@@ -5147,7 +5147,7 @@
 				OTHER_REZFLAGS = "";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				SDKROOT = /Developer/SDKs/macosx10.4u.sdk;
 				SEPARATE_STRIP = NO;
 				SEPARATE_SYMBOL_EDIT = NO;
 				SKIP_INSTALL = NO;
@@ -5234,7 +5234,7 @@
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REZ_EXECUTABLE = YES;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				SDKROOT = /Developer/SDKs/macosx10.4u.sdk;
 				SEPARATE_SYMBOL_EDIT = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = debugging;
@@ -5259,7 +5259,7 @@
 				GCC_VERSION = 4.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				SDKROOT = /Developer/SDKs/macosx10.4u.sdk;
 				VALID_ARCHS = "ppc x86_64 i386";
 			};
 			name = Deployment;
@@ -5274,7 +5274,7 @@
 				GCC_VERSION = 4.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				SDKROOT = /Developer/SDKs/macosx10.4u.sdk;
 				VALID_ARCHS = "ppc x86_64 i386";
 			};
 			name = Deployment;
@@ -5292,7 +5292,7 @@
 				INSTALL_PATH = "@executable_path";
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				SDKROOT = /Developer/SDKs/macosx10.4u.sdk;
 				VALID_ARCHS = "ppc x86_64 i386";
 			};
 			name = Deployment;
@@ -5300,18 +5300,15 @@
 		DDE9F49927859161009B9A99 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					ppc64,
-				);
+				ARCHS = ppc;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = kxac97/kxac97_Prefix.pch;
-				GCC_VERSION = 3.3;
+				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = kX_AC97_PPC.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				SDKROOT = /Developer/SDKs/macosx10.4u.sdk;
 				VALID_ARCHS = "i386 x86_64 ppc ppc64";
 			};
 			name = Deployment;

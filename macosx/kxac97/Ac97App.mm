@@ -143,8 +143,9 @@
     
     NSDictionary *regs = [ac97 registers];
 
-    for (NSString *key in [regs allKeys])
+    for (NSString *key in [regs allKeys]){
         kx->ac97_write([regs[key][0] unsignedCharValue], [[card objectForKey:key] intValue]);
+	}
 }
 
 - (void)saveState:(iKX *)kx

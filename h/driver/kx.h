@@ -442,6 +442,7 @@ struct kx_hw
     byte is_a4;         // ??
 
     char card_name[KX_MAX_STRING];
+    char card_model_name[KX_MAX_STRING];
     char db_name[KX_MAX_STRING];
     dword hcfg_k1,hcfg_k2;
 

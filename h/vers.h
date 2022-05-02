@@ -14,16 +14,16 @@
 
 #define KX_VERSION_DWORD		0x51003553
 #ifdef KX_DEBUG
- #define KX_DRIVER_VERSION_STR		"5.50.00.0 - debug"
+ #define KX_DRIVER_VERSION_STR		"5.50.01.0 - debug"
 #else
- #define KX_DRIVER_VERSION_STR		"5.50.00.0"
+ #define KX_DRIVER_VERSION_STR		"5.50.01.0"
 #endif
 #define KX_DRIVER_VERSION		5,50,0,0
 #define KX_DRIVER_VERSION_		5.50.0.0
 #ifdef KX_DEBUG
- #define KX_VERSION_STR			"5, 50, 00, 0 - debug"
+ #define KX_VERSION_STR			"5, 50, 01, 0 - debug"
 #else
- #define KX_VERSION_STR			"5, 50, 00, 0"
+ #define KX_VERSION_STR			"5, 50, 01, 0"
 #endif
 #define KX_COPYRIGHT_STR		"Copyright (c) Eugene Gavrilov, 2001-2021. Mod By Alejandro, ITzTravelInTime, BiOM. PowerPC port by ITzTravelInTime."
 

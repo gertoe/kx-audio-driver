@@ -41,7 +41,7 @@ typedef unsigned char byte;
 
 #ifdef KX_INTERNAL
 
-#define SYSTEM_IO
+//#define SYSTEM_IO
 //#define OLD_ALLOC
 
 #if !defined(CONIO_USAGE) && !defined(SYSTEM_IO)

@@ -180,6 +180,7 @@ bool kXAudioDevice::initHardware(IOService *provider)
     //always give credits were the credits go
     setManufacturerName("Eugene Gavrilov, kX Project, Mod by Alejandro, ITzTravelInTime (Pietro Caruso), BiOM");
     setDeviceTransportType(kIOAudioDeviceTransportTypePCI);
+    //setDeviceCanBeDefault(kIOAudioDeviceCanBeDefaultInput | kIOAudioDeviceCanBeDefaultOutput | kIOAudioDeviceCanBeSystemOutput);
     
     kx_callbacks cb;
     memset(&cb,0,sizeof(cb));
@@ -244,19 +245,30 @@ bool kXAudioDevice::initHardware(IOService *provider)
     // re-set defaults based on hardware features
     kx_defaults(hw,NULL);
     
-    char device_name[KX_MAX_STRING];
-    //strncpy(device_name,"kX ",KX_MAX_STRING);
-    
-    for (uint i = 0; i < KX_MAX_STRING; i++){
-        device_name[i] = '\0';
+    {
+        char device_name[KX_MAX_STRING];
+        char device_model_name[KX_MAX_STRING];
+        //strncpy(device_name,"kX ",KX_MAX_STRING);
+        
+        for (uint i = 0; i < KX_MAX_STRING; i++){
+            device_name[i] = '\0';
+            device_model_name[i] = '\0';
+        }
+        
+        //strncat(device_name,hw->card_name,KX_MAX_STRING);
+        
+        strncpy(device_name, hw->card_name, KX_MAX_STRING);
+        strncpy(device_model_name, hw->card_model_name, KX_MAX_STRING);
+        
+        setDeviceName(device_name);
+        setDeviceModelName(device_model_name);
+        setDeviceShortName(device_model_name);
+        
     }
     
-    //strncat(device_name,hw->card_name,KX_MAX_STRING);
     
-    strncpy(device_name, hw->card_name, KX_MAX_STRING);
     
-    setDeviceName(device_name);
-    setDeviceShortName("kXAudio");
+    //setDeviceShortName("kXAudioDevice");
     
     // The interruptEventSource needs to be enabled to allow interrupts to start firing
     if(interruptEventSource)
@@ -266,7 +278,6 @@ bool kXAudioDevice::initHardware(IOService *provider)
     {
         goto Done;
     }
-    
     
     result = true;
     
@@ -371,6 +382,8 @@ void kXAudioDevice::free()
 
 bool kXAudioDevice::createAudioEngine()
 {
+    //static UInt32 instanceCount = 0;
+    
     bool result = false;
     kXAudioEngine *audioEngine = NULL;
     // IOAudioControl *control;
@@ -391,6 +404,13 @@ bool kXAudioDevice::createAudioEngine()
         goto Done;
     }
     
+    /*
+    audioEngine->setIndex(instanceCount);
+    instanceCount++;
+    
+	debug(DBGCLASS"[%p]::createAudioEngine() instance count %i \n", this, (int)instanceCount);
+    */
+    
     create_audio_controls(audioEngine);
     
     // Active the audio engine - this will cause the audio engine to have start() and initHardware() called on it
@@ -398,6 +418,7 @@ bool kXAudioDevice::createAudioEngine()
     activateAudioEngine(audioEngine);
     // Once the audio engine has been activated, release it so that when the driver gets terminated,
     // it gets freed
+    
     audioEngine->release();
     
     result = true;
