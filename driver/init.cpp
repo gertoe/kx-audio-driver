@@ -24,6 +24,7 @@
 
 const char *copyright=KX_COPYRIGHT_STR;
 
+/*
 static inline char itoax_s(dword v)
 //hex string conversion
 {
@@ -47,17 +48,13 @@ static inline void itoax(char *str, const size_t vall, const byte len)
 		shift -= 4;
 		mask = mask >> 4;
 	}
-	
-	/*
- *str=itoax_s((val&0xf000)>>12); str++;
- *str=itoax_s((val&0xf00)>>8); str++;
- *str=itoax_s((val&0xf0)>>4); str++;
- *str=itoax_s((val&0xf)); str++;
-	 */
-	
-	
-	
-}
+ 
+ //*str=itoax_s((val&0xf000)>>12); str++;
+ //*str=itoax_s((val&0xf00)>>8); str++;
+ //*str=itoax_s((val&0xf0)>>4); str++;
+ //*str=itoax_s((val&0xf)); str++;
+ 
+}*/
 
 // bus=0xff for autoscan PCI
 int pci_init(kx_hw *hw);

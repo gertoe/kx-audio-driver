@@ -250,20 +250,20 @@ bool kXAudioDevice::initHardware(IOService *provider)
         char device_model_name[KX_MAX_STRING];
         //strncpy(device_name,"kX ",KX_MAX_STRING);
         
-        for (uint i = 0; i < KX_MAX_STRING; i++){
-            device_name[i] = '\0';
-            device_model_name[i] = '\0';
-        }
+        bzero(device_name, KX_MAX_STRING);
+		bzero(device_model_name, KX_MAX_STRING);
         
         //strncat(device_name,hw->card_name,KX_MAX_STRING);
         
         strncpy(device_name, hw->card_name, KX_MAX_STRING);
         strncpy(device_model_name, hw->card_model_name, KX_MAX_STRING);
+		
+		device_name[KX_MAX_STRING - 1] = '\0';
+		device_model_name[KX_MAX_STRING - 1] = '\0';
         
         setDeviceName(device_name);
         setDeviceModelName(device_model_name);
         setDeviceShortName(device_model_name);
-        
     }
     
     
@@ -404,20 +404,16 @@ bool kXAudioDevice::createAudioEngine()
         goto Done;
     }
     
-    /*
-    audioEngine->setIndex(instanceCount);
-    instanceCount++;
-    
-	debug(DBGCLASS"[%p]::createAudioEngine() instance count %i \n", this, (int)instanceCount);
-    */
-    
     create_audio_controls(audioEngine);
+    
     
     // Active the audio engine - this will cause the audio engine to have start() and initHardware() called on it
     // After this function returns, that audio engine should be ready to begin vending audio services to the system
     activateAudioEngine(audioEngine);
     // Once the audio engine has been activated, release it so that when the driver gets terminated,
     // it gets freed
+    
+    audioEngine->setIndex(hw->actualPort);
     
     audioEngine->release();
     

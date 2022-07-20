@@ -82,13 +82,15 @@
  #include "dsp.h"
 #endif
 
-#include <cstring>
+#include <string.h>
+
 #if !defined(__GNUC__)
     // some weird issues with this
     #include <cmath>
 #endif
-#include <cfloat>
+
+#include <float.h>
 #include <stdio.h>
-#include <cstdlib>
+#include <stdlib.h>
 
 #endif  // AFX_STDAFX_H__11223344_EC7B_4C58_8989_2C23F9DDDDFD__INCLUDED_

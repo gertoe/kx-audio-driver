@@ -12,7 +12,12 @@
 		<key>FloatLib.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>13</integer>
+			<integer>8</integer>
+		</dict>
+		<key>FloatLib_32Bit.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 		<key>FloatLib_Libraryless.xcscheme</key>
 		<dict>
@@ -24,10 +29,15 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
+		<key>FloatLib_Libraryless_32Bit.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>FloatLib_PPC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>9</integer>
+			<integer>14</integer>
 		</dict>
 		<key>edspctrl.xcscheme</key>
 		<dict>
@@ -37,19 +47,14 @@
 		<key>edspctrl.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>8</integer>
+			<integer>7</integer>
 		</dict>
 		<key>edspctrl_PPC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>16</integer>
 		</dict>
 		<key>edspctrl_libraryless.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>3</integer>
-		</dict>
-		<key>edspctrl_libraryless.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
@@ -57,7 +62,7 @@
 		<key>kX AC97 PPC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>16</integer>
+			<integer>18</integer>
 		</dict>
 		<key>kX AC97.xcscheme</key>
 		<dict>
@@ -67,7 +72,7 @@
 		<key>kX AC97.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>7</integer>
+			<integer>11</integer>
 		</dict>
 		<key>kX Manager.xcscheme</key>
 		<dict>
@@ -77,7 +82,7 @@
 		<key>kX Manager.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>11</integer>
+			<integer>12</integer>
 		</dict>
 		<key>kXAPI.xcscheme</key>
 		<dict>
@@ -87,12 +92,12 @@
 		<key>kXAPI.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>14</integer>
+			<integer>9</integer>
 		</dict>
 		<key>kXAPI_PPC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>12</integer>
+			<integer>17</integer>
 		</dict>
 		<key>kXAudioDriver.xcscheme</key>
 		<dict>
@@ -102,7 +107,12 @@
 		<key>kXAudioDriver.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>4</integer>
+			<integer>2</integer>
+		</dict>
+		<key>kXAudioDriver_32Bit.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
 		</dict>
 		<key>kXAudioDriver_LibraryLess.xcscheme</key>
 		<dict>
@@ -114,10 +124,15 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>kXAudioDriver_LibraryLess_32Bit.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 		<key>kXAudioDriver_PPC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>15</integer>
+			<integer>13</integer>
 		</dict>
 		<key>kxctrl.xcscheme</key>
 		<dict>
@@ -132,14 +147,9 @@
 		<key>kxctrl_PPC.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>15</integer>
 		</dict>
 		<key>kxctrl_libraryless.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
-		<key>kxctrl_libraryless.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
@@ -183,6 +193,11 @@
 			<true/>
 		</dict>
 		<key>DD5FC8D625ED49CE000DD663</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD9B6B55282C0E0F00BA90C7</key>
 		<dict>
 			<key>primary</key>
 			<true/>

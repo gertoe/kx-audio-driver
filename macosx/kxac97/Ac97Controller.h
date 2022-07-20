@@ -25,6 +25,7 @@
 
 
 #import <Cocoa/Cocoa.h>
+#import <AppKit/AppKit.h>
 #import "RoundedBox.h"
 
 #include "interface/kxapi.h"

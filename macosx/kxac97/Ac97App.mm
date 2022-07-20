@@ -23,7 +23,9 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-
+#import <Cocoa/Cocoa.h>
+#import <AppKit/AppKit.h>
+#import <Foundation/Foundation.h>
 #import "Ac97App.h"
 #import "Ac97Controller.h"
 

@@ -48,7 +48,6 @@ class kXAudioEngine : public IOAudioEngine
 	UInt8	n_channels;
 	
 	int		is_running;
-    bool hama_experimental;
     
     //custom saplig rate and channels mapping code
     UInt8 mapping[MAPPING_NUM_CHANNELS];
@@ -101,5 +100,7 @@ public:
     virtual IOReturn convertInputSamples(const void *sampleBuf, void *destBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
     
 };
+
+
 
 #endif /* _KXAUDIOENGINE_H */

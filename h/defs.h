@@ -26,6 +26,8 @@
     #include "i386.h"
 #elif defined(__PPC__) || defined(__ppc__) || defined(_ARCH_PPC) || defined(__POWERPC__) || defined(__powerpc) || defined(__powerpc__)
     #include "PPC.h"
+#elif defined(__ARM__) || defined(__arm__) || defined(_ARCH_ARM) || defined(_ARCH_ARM64) || defined(__aarch64e__) || defined(__arm) || defined(__arm64e__)
+    #include "ARM.h"
 #else
     #error "Unknown processor architecture"
 #endif
@@ -47,6 +49,39 @@ void writeLE16(word* addr, const word data);
 //__int64 readLE64(const __int64* addr);
 dword readLE32(const dword* addr);
 word readLE16(const word* addr);
+
+static inline char itoax_s(dword v)
+//hex string conversion
+{
+    if(v>=10)
+    {
+        return ((char)v-10)+'a';
+    }
+    else
+        return (char)v+'0';
+}
+
+static inline void itoax(char *str, const dword vall, const byte len)
+{
+    dword val = (dword)vall;// & 0xffff;
+    
+    dword mask = 0xf << 4 * (len - 1);
+    dword shift = 4 * (len - 1);
+    
+    for(byte i = 0; i < len; i++){
+        *str++=itoax_s((val&mask)>>shift);
+        shift -= 4;
+        mask = mask >> 4;
+    }
+    
+    /*
+     *str=itoax_s((val&0xf000)>>12); str++;
+     *str=itoax_s((val&0xf00)>>8); str++;
+     *str=itoax_s((val&0xf0)>>4); str++;
+     *str=itoax_s((val&0xf)); str++;
+     */
+    
+}
 
 #if defined(SYSTEM_IO)
 

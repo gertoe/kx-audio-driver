@@ -104,7 +104,7 @@ static int kx_get_friendly_name(const unsigned int device, const unsigned int su
        else
        {
         //strncpy(tmp_str,"EM8810 10k2",KX_MAX_STRING); // [110] - 1010 v1
-           strncpy(tmp_str,"E-1010 10k2",KX_MAX_STRING);
+           strncpy(tmp_str,"E-MU E-1010 10k2",KX_MAX_STRING);
            strncpy(tmp_model_str,"KXProject_EMU_E-1010_10k2",KX_MAX_STRING);
         is_edsp=1;
         lack_ac97=1;
@@ -611,10 +611,10 @@ static int kx_get_friendly_name(const unsigned int device, const unsigned int su
 
      case 0x40021102:
          if(!is_k8){
-             strncpy(tmp_str,"E-0404",KX_MAX_STRING); // [111]
+             strncpy(tmp_str,"E-MU E-0404",KX_MAX_STRING); // [111]
              strncpy(tmp_model_str,"KXProject_EMU_E-0404_10k2",KX_MAX_STRING);
          }else{
-             strncpy(tmp_str,"E-0404",KX_MAX_STRING); // [120]
+             strncpy(tmp_str,"E-MU E-0404",KX_MAX_STRING); // [120]
              strncpy(tmp_model_str,"KXProject_EMU_E-0404_10k8",KX_MAX_STRING);
          }
        is_edsp=1;
@@ -622,10 +622,10 @@ static int kx_get_friendly_name(const unsigned int device, const unsigned int su
        break;
      case 0x40031102:
          if(!is_k8){
-             strncpy(tmp_str,"E-1010",KX_MAX_STRING); // [112]
+             strncpy(tmp_str,"E-MU E-1010",KX_MAX_STRING); // [112]
              strncpy(tmp_model_str,"KXProject_EMU_E-1010_10k2",KX_MAX_STRING);
          }else{
-             strncpy(tmp_str,"E-1010",KX_MAX_STRING); // [121]
+             strncpy(tmp_str,"E-MU E-1010",KX_MAX_STRING); // [121]
              strncpy(tmp_model_str,"KXProject_EMU_E-1010_10k8",KX_MAX_STRING);
          }
        is_edsp=1;
@@ -634,14 +634,14 @@ static int kx_get_friendly_name(const unsigned int device, const unsigned int su
      case 0x40041102: // [123]
        if(is_k8)
        {
-           strncpy(tmp_str,"EM8960",KX_MAX_STRING); // EM8960: 1010 PCI 10k8
+           strncpy(tmp_str,"E-MU EM8960",KX_MAX_STRING); // EM8960: 1010 PCI 10k8
            strncpy(tmp_model_str,"KXProject_EMU_EM8960",KX_MAX_STRING);
         is_edsp=1;
         lack_ac97=1;
        }
        else
        {
-           strncpy(tmp_str,"UN4004",KX_MAX_STRING); // ?? 10k2
+           strncpy(tmp_str,"E-MU UN4004",KX_MAX_STRING); // ?? 10k2
            strncpy(tmp_model_str,"KXProject_EMU_UN4004",KX_MAX_STRING);
        }
        break;
@@ -650,7 +650,7 @@ static int kx_get_friendly_name(const unsigned int device, const unsigned int su
          {
              //strncpy(tmp_str,"EM8984 10k8",KX_MAX_STRING); // EM8984: 0404 PCIe 10k8
              
-             strncpy(tmp_str,"E-0404 PCIe",KX_MAX_STRING);
+             strncpy(tmp_str,"E-MU E-0404 PCIe",KX_MAX_STRING);
              strncpy(tmp_model_str,"KXProject_EMU_E-0404_PCIe",KX_MAX_STRING);
              
              is_edsp=1;
@@ -658,7 +658,7 @@ static int kx_get_friendly_name(const unsigned int device, const unsigned int su
          }
          else
          {
-             strncpy(tmp_str,"Un4005",KX_MAX_STRING); // ?? 10k2
+             strncpy(tmp_str,"E-MU Un4005",KX_MAX_STRING); // ?? 10k2
              strncpy(tmp_model_str,"KXProject_EMU_UN4005",KX_MAX_STRING);
          }
          break;
@@ -666,19 +666,19 @@ static int kx_get_friendly_name(const unsigned int device, const unsigned int su
      {
          if(is_k8)
          {
-             strncpy(tmp_str,"EM8982",KX_MAX_STRING); //10k8
+             strncpy(tmp_str,"E-MU EM8982",KX_MAX_STRING); //10k8
              strncpy(tmp_model_str,"KXProject_EMU_EM8982",KX_MAX_STRING);
              is_edsp=1;
              lack_ac97=1;
          }else{
-             strncpy(tmp_str,"Un4007",KX_MAX_STRING); //10k2
+             strncpy(tmp_str,"E-MU Un4007",KX_MAX_STRING); //10k2
              strncpy(tmp_model_str,"KXProject_EMU_UN4007",KX_MAX_STRING);
          }
      }
          break;
 
      case 0x42011102: // [122]
-       strncpy(tmp_str,"EM8950",KX_MAX_STRING); // 1616 CardBus v2 10k2
+       strncpy(tmp_str,"E-MU EM8950",KX_MAX_STRING); // 1616 CardBus v2 10k2
          strncpy(tmp_model_str,"KXProject_EMU_EM8950",KX_MAX_STRING);
        is_edsp=1;
        lack_ac97=1;

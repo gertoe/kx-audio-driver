@@ -44,7 +44,7 @@
 
  #if !defined(UNICODE)
  
-  static void debug(const char *,...) {}
+	static void debug(const char *,...) {}
   
  #else
   static void debug(const wchar_t *,...) {}

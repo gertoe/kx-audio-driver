@@ -22,7 +22,7 @@
 #include "kx.h"
 
 static int kx_ac97_state(kx_hw *hw);
-
+/*
 static inline char itoax_s(dword v)
 {
  if(v>=10)
@@ -32,7 +32,7 @@ static inline char itoax_s(dword v)
  else
   return (char)v+'0';
 }
-
+*/
 static inline void itoax(char *str,dword val)
 {
  *str=itoax_s((val&0xf000)>>12); str++;
