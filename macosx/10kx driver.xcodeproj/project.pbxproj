@@ -6380,6 +6380,7 @@
 					"-Wmost",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
+					"-Wno-unused",
 				);
 				ZERO_LINK = NO;
 			};
@@ -6599,6 +6600,7 @@
 					"-Wmost",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
+					"-Wno-unused",
 				);
 				ZERO_LINK = NO;
 			};
@@ -6758,6 +6760,7 @@
 					"-Wmost",
 					"-Wno-four-char-constants",
 					"-Wno-unknown-pragmas",
+					"-Wno-unused",
 				);
 				ZERO_LINK = NO;
 			};

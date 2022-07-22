@@ -955,36 +955,36 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
             dword clockChip = EMU_HANA_DEFCLOCK_48K;
             dword led = EMU_HANA_DOCK_LEDS_2_44K;
             
-            dword pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,48000));
+            dword pitch_target_seed = 48000; //kx_samplerate_to_linearpitch(kx_sr_coeff(hw,48000));
             
             switch (newSampleRate->whole) {
                     
                 case 6000:
                     clockVal |= EMU_HANA_WCLOCK_1X;
                     
-                    pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,6000));
+                    pitch_target_seed = 6000;
                     break;
                 case 11025:
                     clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
                     clockChip = EMU_HANA_DEFCLOCK_44_1K;
                     
-                    pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,12000));
+                    pitch_target_seed = 12000;
                     break;
                 case 12000:
                     clockVal |= EMU_HANA_WCLOCK_1X;
                     
-                    pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,12000));
+                    pitch_target_seed = 12000;
                     break;
                 case 22050:
                     clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
                     clockChip = EMU_HANA_DEFCLOCK_44_1K;
                     
-                    pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,24000));
+                    pitch_target_seed = 24000;
                     break;
                 case 24000:
                     clockVal |= EMU_HANA_WCLOCK_1X;
                     
-                    pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,24000));
+                    pitch_target_seed = 24000;
                     break;
                 case 44100:
                     clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
@@ -1001,13 +1001,13 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
                     
                     led = EMU_HANA_DOCK_LEDS_2_96K;
                     
-                    pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,96000));
+                    pitch_target_seed = 96000;
                     break;
                 case 96000:
                     led = EMU_HANA_DOCK_LEDS_2_96K;
                     clockVal |= EMU_HANA_WCLOCK_1X;
                     
-                    pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,96000));
+                    pitch_target_seed = 96000;
                     break;
                 case 176400:
                     clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
@@ -1015,18 +1015,19 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
                     
                     led = EMU_HANA_DOCK_LEDS_2_192K;
                     
-                    pitch_target = 0xffff;
+                    pitch_target_seed = 192000;
                     
                     break;
                 case 192000:
                     led = EMU_HANA_DOCK_LEDS_2_192K;
                     clockVal |= EMU_HANA_WCLOCK_1X;
                     
-                    pitch_target = 0xffff;
+                    pitch_target_seed = 192000;
                     break;
                 default:
-                    debug("\t Internal Error - unknown sample rate selected.\n");
+                    debug("\t Internal Error - unknown sample rate selected falling back to 48khz.\n");
                     clockVal |= EMU_HANA_WCLOCK_1X;
+                    led = EMU_HANA_DOCK_LEDS_2_48K;
                     break;
             }
             
@@ -1034,9 +1035,11 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
             kx_writefpga(hw,EMU_HANA_DEFCLOCK, clockChip);
             kx_writefpga(hw,EMU_HANA_WCLOCK, clockVal);
             
-            for(int i=0; i<n_channels;i++)
-            {
+            const dword pitch_target = pitch_target_seed == 192000 ? 0xffff : kx_samplerate_to_linearpitch(kx_sr_coeff(hw, pitch_target_seed));
+            
+            for(int i=0; i<n_channels;i++){
                 hw->voicetable[i].param.pitch_target = pitch_target;
+                hw->voicetable[i].sampling_rate = pitch_target_seed;
             }
             
             //unmute and update leds
@@ -1047,7 +1050,7 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
         }
     }
     
-    dump_addr();
+    //dump_addr();
     
     return kIOReturnSuccess;
 }

@@ -266,8 +266,6 @@ bool kXAudioDevice::initHardware(IOService *provider)
         setDeviceShortName(device_model_name);
     }
     
-    
-    
     //setDeviceShortName("kXAudioDevice");
     
     // The interruptEventSource needs to be enabled to allow interrupts to start firing
