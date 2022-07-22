@@ -940,22 +940,14 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
             
         }else{
             
-            //mute the fpga
-            kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
-            
-            //turn off the leds
-            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_44K | EMU_HANA_DOCK_LEDS_2_EXT);
-            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_48K | EMU_HANA_DOCK_LEDS_2_EXT);
-            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_96K | EMU_HANA_DOCK_LEDS_2_EXT);
-            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_192K | EMU_HANA_DOCK_LEDS_2_EXT);
-            
-            IOSleep(100);
+            dword config_val = kx_readfn0(hw,HCFG_K1);
             
             dword clockVal = EMU_HANA_WCLOCK_INT_48K;
             dword clockChip = EMU_HANA_DEFCLOCK_48K;
             dword led = EMU_HANA_DOCK_LEDS_2_44K;
             
             dword pitch_target_seed = 48000; //kx_samplerate_to_linearpitch(kx_sr_coeff(hw,48000));
+            dword card_frequency = 48000;
             
             switch (newSampleRate->whole) {
                     
@@ -969,6 +961,7 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
                     clockChip = EMU_HANA_DEFCLOCK_44_1K;
                     
                     pitch_target_seed = 12000;
+                    card_frequency = 44100;
                     break;
                 case 12000:
                     clockVal |= EMU_HANA_WCLOCK_1X;
@@ -980,6 +973,7 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
                     clockChip = EMU_HANA_DEFCLOCK_44_1K;
                     
                     pitch_target_seed = 24000;
+                    card_frequency = 44100;
                     break;
                 case 24000:
                     clockVal |= EMU_HANA_WCLOCK_1X;
@@ -989,6 +983,8 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
                 case 44100:
                     clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
                     clockChip = EMU_HANA_DEFCLOCK_44_1K;
+                    
+                    card_frequency = 44100;
                     break;
                 case 48000:
                     led = EMU_HANA_DOCK_LEDS_2_48K;
@@ -1002,6 +998,8 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
                     led = EMU_HANA_DOCK_LEDS_2_96K;
                     
                     pitch_target_seed = 96000;
+                    card_frequency = 44100;
+                    
                     break;
                 case 96000:
                     led = EMU_HANA_DOCK_LEDS_2_96K;
@@ -1016,6 +1014,7 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
                     led = EMU_HANA_DOCK_LEDS_2_192K;
                     
                     pitch_target_seed = 192000;
+                    card_frequency = 44100;
                     
                     break;
                 case 192000:
@@ -1030,6 +1029,19 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
                     led = EMU_HANA_DOCK_LEDS_2_48K;
                     break;
             }
+            
+            kx_set_hw_parameter(hw,KX_HW_AC3_PASSTHROUGH, card_frequency == 48000);
+            
+            //mute the fpga
+            kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
+            
+            //turn off the leds
+            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_44K | EMU_HANA_DOCK_LEDS_2_EXT);
+            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_48K | EMU_HANA_DOCK_LEDS_2_EXT);
+            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_96K | EMU_HANA_DOCK_LEDS_2_EXT);
+            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_192K | EMU_HANA_DOCK_LEDS_2_EXT);
+            
+            IOSleep(100);
             
             //set defclock and wclock
             kx_writefpga(hw,EMU_HANA_DEFCLOCK, clockChip);
@@ -1047,6 +1059,15 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
             kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, led | EMU_HANA_DOCK_LEDS_2_LOCK);
             kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
             
+            if (card_frequency != 48000){
+                config_val |= HCFG_44K_K2;
+            }else{
+                config_val &= ( ~HCFG_44K_K2 );
+            }
+            
+            kx_writefn0(hw,HCFG_K1,config_val);
+            
+            hw->card_frequency = card_frequency;
         }
     }
     
