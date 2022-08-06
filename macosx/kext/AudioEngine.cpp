@@ -559,11 +559,14 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
 {
     IOAudioStream *audioStream = new IOAudioStream;
     
-    if (audioStream)
-    {
-        if (!audioStream->initWithAudioEngine(this, direction, 1))
-        {
+    if (audioStream){
+        
+        static UInt32 streamIndex = 0;
+        
+        if (!audioStream->initWithAudioEngine(this, direction, 1)){
+            
             audioStream->release();
+            
         } else {
             IOAudioSampleRate rate;
             
@@ -576,15 +579,14 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 kIOAudioStreamAlignmentHighByte,                // high byte aligned - unused because bit depth == bit width
                 kIOAudioStreamByteOrderLittleEndian,            // little endian
                 true,                                           // format is mixable
-                0                                               // driver-defined tag - unused by this driver
+                hw->actualPort + streamIndex++                    // driver-defined tag
             };
             
             //buffer allocation
             struct memhandle* mem = my_alloc_contiguous(sampleBufferSize);
             
-            if(!mem){
+            if(!mem)
                 return NULL;
-            }
             
             // allocate memory:
             if(direction==kIOAudioStreamDirectionOutput)
@@ -673,8 +675,6 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                     kx_writeptr(hw,FXWC_K1, 0, ch << 16);
             }
             
-            
-            
             debug("kXAudioEngine[%p] Initializing sampling rates\n",this);
             
             // As part of creating a new IOAudioStream, its sample buffer needs to be set
@@ -690,13 +690,16 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
 				const bool isInput = (direction==kIOAudioStreamDirectionInput);
 				
                 //the order of this array is important, don't touch it
-                const UInt32 supportedFreqs[] = {44100, 48000, 192000, 176400, 96000, 88200, 22050, 24000, 11025, 12000, 6000, 7000, 8000, 9600, 16000, 18900, 32000, 37800, 44056, 49716, 64000, custom_sampling_rate, sampling_rate};
-                UInt8 length = isInput ?  2 : (sizeof(supportedFreqs) / sizeof(*supportedFreqs));
+                const UInt32 supportedFreqs[] = {48000, 44100, 192000, 176400, 96000, 88200, 22050, 24000, 11025, 12000, 6000, 7000, 8000, 9600, 16000, 18900, 32000, 37800, 44056, 49716, 64000, custom_sampling_rate, sampling_rate};
+                UInt8 length = isInput ? 1 : (sizeof(supportedFreqs) / sizeof(*supportedFreqs));
                 
                 if (hw->is_edsp){
                     debug("kXAudioEngine[%p] The current sound card in an E-MU e-dsp or similar (using the same architecture), using hardware support for sampling rathes rather than the software resampler\n",this);
                     
-                    length = 11;
+                    if (isInput)
+                        length = 2;
+                    else
+                        length = 11;
                     
                 }else{
                     //support for custom sampling rates for the software resampler
@@ -707,13 +710,11 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 format.fBitWidth = bps;
                 
 				{
+					UInt8 d = isInput ? bps : 8;
 					
-					UInt8 d     = isInput ? bps : 8; 
-					UInt8 start = isInput ? 1   : 0; 
-					
-					for (/*UInt8 d = 8*/; d <= bps; d += 8){
+					for (; d <= bps; d += 8){
 						format.fBitDepth = d;
-						for (UInt8 i = start; i < length; i++){
+						for (UInt8 i = 0; i < length; i++){
 							rate.whole = supportedFreqs[i];
 							audioStream->addAvailableFormat(&format, &rate, &rate);
 							//debug("kXAudioEngine[%p] Added sampling rate: %u at %u bits. is input? %u \n",this, rate.whole, format.fBitDepth, isInput);
@@ -761,7 +762,7 @@ IOReturn kXAudioEngine::performAudioEngineStart()
         }
     }
     
-    if(first!=-1)
+    if(first != -1)
     {
         // zero sample position, too
         for(int i=0;i<32;i++)

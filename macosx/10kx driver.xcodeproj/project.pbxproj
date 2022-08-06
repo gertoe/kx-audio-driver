@@ -6403,7 +6403,7 @@
 					KX_DEBUG,
 					SYSTEM_IO,
 				);
-				GCC_VERSION = "";
+				GCC_VERSION = 4.0;
 				INFOPLIST_FILE = "kXAudioDriver copy2-Info.plist";
 				KERNEL_MODULE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -6412,7 +6412,7 @@
 				MODULE_VERSION = 2.3.0b0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.4u.sdk;
+				SDKROOT = macosx10.4;
 				VALID_ARCHS = "x86_64 i386 arm64e";
 				WRAPPER_EXTENSION = kext;
 			};
@@ -6437,14 +6437,14 @@
 					"KX_DEBUG_FUNC=hw->cb.debug_func",
 					KX_DEBUG,
 				);
-				GCC_VERSION = "";
+				GCC_VERSION = 4.0;
 				HEADER_SEARCH_PATHS = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Kernel.framework/Headers";
 				KERNEL_MODULE = YES;
 				LIBRARY_STYLE = STATIC;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				MODULE_IOKIT = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.4;
 				VALID_ARCHS = "x86_64 i386 arm64e";
 			};
 			name = Deployment;
@@ -6473,7 +6473,7 @@
 					KX_DEBUG,
 					KX_LIBLESS,
 				);
-				GCC_VERSION = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
@@ -6496,7 +6496,7 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\\\"$(SRCROOT)/build/Deployment\\\"";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				MODULE_IOKIT = YES;
 				MODULE_NAME = com.kXProject.driver.kXAudioDriver;
 				MODULE_VERSION = 2.3.0b0;
@@ -6505,7 +6505,7 @@
 				OTHER_REZFLAGS = "";
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.5;
 				SEPARATE_STRIP = NO;
 				SEPARATE_SYMBOL_EDIT = NO;
 				SKIP_INSTALL = NO;
@@ -6553,7 +6553,7 @@
 					APPLE,
 					NeXT,
 				);
-				GCC_VERSION = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = NO;
@@ -6575,7 +6575,7 @@
 				);
 				LD_GENERATE_MAP_FILE = YES;
 				LIBRARY_STYLE = STATIC;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				MODULE_VERSION = "";
 				OTHER_CFLAGS = (
 					"-nostdinc",
@@ -6590,7 +6590,7 @@
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REZ_EXECUTABLE = YES;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.5;
 				SEPARATE_SYMBOL_EDIT = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = debugging;
