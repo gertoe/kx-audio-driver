@@ -28,6 +28,11 @@
 
 // these are generally inlines:
 
+inline double kx_log2(register double _x_)
+{
+	return log2(_x_);
+}
+
 inline double kx_log10(register double _x_)
 {
         return log10(_x_);
@@ -51,6 +56,7 @@ inline double kx_sqrt(register double y)
 #else
 
 double kx_log10(register double x);
+double kx_log2(register double x);
 double kx_pow2(register double);
 double kx_pow10(register double);
 double kx_sqrt(register double);
@@ -59,7 +65,7 @@ double kx_sqrt(register double);
 
 // long _p_acos(float c)
 // approximation of arccos (see _pacos.gif: blue - real acos, red - this function)
-// returns the angle in deegrees (between 0° and 180°)
+// returns the angle in deegrees (between 0âˆž and 180âˆž)
 inline int kx_arccos(float c)
 {                   
     float x;

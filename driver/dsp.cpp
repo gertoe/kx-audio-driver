@@ -331,6 +331,7 @@ KX_API(int,kx_get_dsp_register(kx_hw *hw,int pgm,word id,dword *val))
  	{
  	 *val=kx_readptr(hw,info->translated,0);
  	}
+	// *val = correctEndianess32(*val);
  	return 0;
  }
  debug(DLIB,"!! get_dsp failed [%d.%x]\n",pgm,id);
@@ -361,6 +362,7 @@ static int get_tram_addr(kx_hw *hw,dsp_microcode *m,dsp_register_info *info,dwor
          else
           *addr-=m->xtram_start;
  	}
+	//*addr = correctEndianess32(*addr);
  	return 0;
 }
 

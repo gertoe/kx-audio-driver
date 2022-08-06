@@ -25,6 +25,7 @@
 
 
 #import <Cocoa/Cocoa.h>
+#import <AppKit/AppKit.h>
 #import "RoundedBox.h"
 
 #include "interface/kxapi.h"
@@ -46,6 +47,7 @@
 		 regVideo, regAux, regDac, regRecSel, regRec, regGp;
 
     iKX *kx;
+    NSDictionary *registers;
 }
 
 - (void)setDevice:(int)value;

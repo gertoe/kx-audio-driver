@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>64FD8AA7-4FB3-40DC-A7B7-F5F26F38AD19</string>
+	<key>IDESourceControlProjectName</key>
+	<string>10kx driver</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>6304C277-3E6C-48EA-9B12-EAF189F155B3</key>
+		<string>https://github.com/ITzTravelInTime/kx-audio-driver.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>macosx/10kx driver.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>6304C277-3E6C-48EA-9B12-EAF189F155B3</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ITzTravelInTime/kx-audio-driver.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>6304C277-3E6C-48EA-9B12-EAF189F155B3</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6304C277-3E6C-48EA-9B12-EAF189F155B3</string>
+			<key>IDESourceControlWCCName</key>
+			<string>kx-audio-driver</string>
+		</dict>
+	</array>
+</dict>
+</plist>

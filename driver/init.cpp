@@ -20,12 +20,13 @@
 
 
 #include "kx.h"
-
-#include "frname.cpp"
+#include "frname.h"
 
 const char *copyright=KX_COPYRIGHT_STR;
 
+/*
 static inline char itoax_s(dword v)
+//hex string conversion
 {
  if(v>=10)
  {
@@ -35,21 +36,34 @@ static inline char itoax_s(dword v)
   return (char)v+'0';
 }
 
-static inline void itoax(char *str,dword val)
+static inline void itoax(char *str, const size_t vall, const byte len)
 {
- *str=itoax_s((val&0xf000)>>12); str++;
- *str=itoax_s((val&0xf00)>>8); str++;
- *str=itoax_s((val&0xf0)>>4); str++;
- *str=itoax_s((val&0xf)); str++;
-}
+    dword val = (dword)vall;// & 0xffff;
+	
+	size_t mask = 0xf << 4 * (len - 1);
+	size_t shift = 4 * (len - 1);
+	
+	for(byte i = 0; i < len; i++){
+		*str++=itoax_s((val&mask)>>shift);
+		shift -= 4;
+		mask = mask >> 4;
+	}
+ 
+ // *str=itoax_s((val&0xf000)>>12); str++;
+ // *str=itoax_s((val&0xf00)>>8); str++;
+ // *str=itoax_s((val&0xf0)>>4); str++;
+ // *str=itoax_s((val&0xf)); str++;
+ 
+}*/
 
 // bus=0xff for autoscan PCI
 int pci_init(kx_hw *hw);
 int pci_init(kx_hw *hw)
 {
- if((hw->cb.io_base==0)||(hw->standalone)) // do autoscan
+ if((!hw->cb.io_base && !system_io)||(hw->standalone)) // do autoscan
  {
- word wdata;
+#ifndef SYSTEM_IO
+word wdata;
  byte bdata;
  dword device;
  dword subsys;
@@ -99,12 +113,15 @@ int pci_init(kx_hw *hw)
     // here we get only if no emu10kx is present
     debug(DLIB,"PCI: no Emu10kx found\n");
     return 2; // error: not found
+     
+#endif
 
  } // end autoscan
  else // provided device/subsys/chip_rev & bus/dev/fn
  {
-  /// use WDM supplied resources
+  /// use supplied resources
   hw->port=hw->cb.io_base;
+  hw->actualPort = hw->cb.actual_io_base;
   hw->irq=hw->cb.irql;
 
   hw->pci_device=hw->cb.device; // should be real
@@ -116,8 +133,9 @@ int pci_init(kx_hw *hw)
   hw->pci_func=hw->cb.func;
  }
 
+#ifndef SYSTEM_IO
 FOUND: // bus,dev,func contain right values
-
+#endif
   if(hw->pci_device!=0x021102 && hw->pci_device!=0x041102 && hw->pci_device!=0x081102) // Emu10kx + Creative
   {
    debug(DLIB,"PCI: bad device/subsys supplied [%x]\n",hw->pci_device);
@@ -145,13 +163,15 @@ FOUND: // bus,dev,func contain right values
  hw->drum_channel=10;
 
  char tmp_str[KX_MAX_STRING];
+ char tmp_model_str[KX_MAX_STRING];
     
     //needed on older os x versions because the next code do not guaratee that the string is 0 terminated
     for (uint i = 0; i < KX_MAX_STRING; i++){
         tmp_str[i] = '\0';
+        tmp_model_str[i] = '\0';
     }
     
- kx_get_friendly_name(hw->pci_device,hw->pci_subsys,hw->pci_chiprev,tmp_str,
+ kx_get_friendly_name(hw->pci_device,hw->pci_subsys,hw->pci_chiprev,tmp_str, tmp_model_str,
                 hw->is_51,hw->has_surdac,
         hw->is_aps,hw->is_10k2,hw->is_a2,hw->is_a2ex,hw->is_k8,hw->is_a4,hw->is_edsp,
         hw->have_ac97,hw->lack_ac97,hw->is_zsnb,hw->is_cardbus);
@@ -159,17 +179,56 @@ FOUND: // bus,dev,func contain right values
  hw->can_k8_passthru=hw->is_k8;
 
  char *p=&tmp_str[strlen(tmp_str)];
- *p=' '; p++; *p='['; p++;
- itoax(p,hw->port); p+=4;
- *p=']'; p++; *p=0;
-    
-    //other 0 termination check for mac os x
-    for (size_t i = strlen(tmp_str); i < KX_MAX_STRING; i++){
-        tmp_str[i] = '\0';
-    }
+ 
+ *p++=' ';
+ *p++='[';
+ itoax(p,(size_t)(hw->port), (byte)(sizeof(hw->port)*2)); p+=(sizeof(hw->port)*2);
+ *p++=']'; 
+	
+#if 0
+	if (sizeof(hw->port) != sizeof(word)){
+		
+		*p++=' ';
+		*p++='[';
+		itoax(p,(size_t)(hw->actualPort), (byte)(sizeof(hw->actualPort)*2)); p+=(sizeof(hw->actualPort)*2);
+		*p++=']';
+		
+#if 0
+		*p++=' ';
+		*p++='[';
+		itoax(p,sizeof(dword), 2); p+=2;
+		*p++=']';
+		
+		*p++=' ';
+		*p++='[';
+		itoax(p,sizeof(word), 2); p+=2;
+		*p++=']';
+		
+		*p++=' ';
+		*p++='[';
+		itoax(p,sizeof(byte), 2); p+=2;
+		*p++=']';
+		
+		*p++=' ';
+		*p++='[';
+		itoax(p,sizeof(int), 2); p+=2;
+		*p++=']';
+		
+		*p++=' ';
+		*p++='[';
+		itoax(p,sizeof(__int64), 2); p+=2;
+		*p++=']';
+#endif	
+	}
+ 
+#endif
+	
+	*p=0;
 
  strncpy(hw->card_name,tmp_str,KX_MAX_STRING);
+ strncpy(hw->card_model_name,tmp_model_str,KX_MAX_STRING);
  debug(DLIB,"card name: '%s'\n",hw->card_name);
+ debug(DLIB,"card model name: '%s'\n",hw->card_model_name);
 
  if(hw->is_10k2) 
   hw->can_passthru=1;
@@ -193,54 +252,58 @@ FOUND: // bus,dev,func contain right values
 static int kx_pci_buffers_init(kx_hw *hw)
 {
     int ret=0;
-
+	
     hw->tankmem.size = hw->cb.tram_size;
     hw->virtualpagetable.size = MAXPAGES * sizeof(dword);
     hw->silentpage.size = KX_PAGE_SIZE;
     hw->mtr_buffer.size=65536; // always
-
+	
     if(!hw->cb.pci_alloc || hw->standalone)
-         return 0;
-
+		return 0;
+	
     ret=hw->cb.pci_alloc(hw->cb.call_with,&hw->virtualpagetable,KX_NONCACHED);
     if(ret)
     {
-     debug(DLIB,"Error allocating PCI for PT\n");
-     return ret;
+		debug(DLIB,"Error allocating PCI for PT\n");
+		return ret;
     }
-
+	
     ret=hw->cb.pci_alloc(hw->cb.call_with,&hw->silentpage,KX_NONCACHED);
     if(ret)
     { 
-      debug(DLIB,"Error allocating PCI for first page\n");
-      hw->cb.pci_free(hw->cb.call_with,&hw->virtualpagetable);
-      return ret; 
+		debug(DLIB,"Error allocating PCI for first page\n");
+		hw->cb.pci_free(hw->cb.call_with,&hw->virtualpagetable);
+		return ret; 
     }
-
+	
+	bzero(hw->silentpage.addr, hw->silentpage.size);
+	
     ret=hw->cb.pci_alloc(hw->cb.call_with,&hw->mtr_buffer,KX_NONCACHED);
     if(ret)
     {
-     debug(DLIB,"Error allocating PCI for MTR buffer\n");
-     return ret;
+		hw->cb.pci_free(hw->cb.call_with,&hw->virtualpagetable);
+		hw->cb.pci_free(hw->cb.call_with,&hw->silentpage);
+		debug(DLIB,"Error allocating PCI for MTR buffer\n");
+		return ret;
     }
-
+	
     if(hw->cb.tram_size>0)
     {
-            ret=hw->cb.pci_alloc(hw->cb.call_with,&hw->tankmem,KX_NONCACHED);
-            if(ret)
-            { 
-               debug(DLIB,"Error allocating PCI for TRAM\n");
-               hw->cb.pci_free(hw->cb.call_with,&hw->virtualpagetable);
-               hw->cb.pci_free(hw->cb.call_with,&hw->silentpage);
-                   hw->cb.pci_free(hw->cb.call_with,&hw->mtr_buffer);
-               hw->cb.tram_size=0;
-               return ret; 
-            }
-            memset(hw->tankmem.addr,0,hw->tankmem.size);
+		ret=hw->cb.pci_alloc(hw->cb.call_with,&hw->tankmem,KX_NONCACHED);
+		if(ret)
+		{ 
+			debug(DLIB,"Error allocating PCI for TRAM\n");
+			hw->cb.pci_free(hw->cb.call_with,&hw->virtualpagetable);
+			hw->cb.pci_free(hw->cb.call_with,&hw->silentpage);
+			hw->cb.pci_free(hw->cb.call_with,&hw->mtr_buffer);
+			hw->cb.tram_size=0;
+			return ret; 
+		}
+		bzero(hw->tankmem.addr,hw->tankmem.size);
     }
-
+	
     hw->initialized|=KX_BUFFERS_INITED;
-
+	
     return ret;
 }
 
@@ -645,7 +708,7 @@ KX_API(dword,kx_getdword(kx_hw *hw,int what,dword *ret))
   switch(what)
   {
     case KX_DWORD_CARD_PORT:
-        *ret=(dword)hw->port;
+        *ret=(dword)(((unsigned long)hw->port) & 0xffff);
         break;
     case KX_DWORD_CARD_IRQ:
         *ret=(dword)hw->irq;

@@ -7,37 +7,152 @@
 		<key>FloatLib.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
+		<key>FloatLib.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>12</integer>
+		</dict>
+		<key>FloatLib_32Bit.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
+		</dict>
+		<key>FloatLib_Libraryless.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
 			<integer>1</integer>
+		</dict>
+		<key>FloatLib_Libraryless.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>FloatLib_Libraryless_32Bit.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
+		<key>FloatLib_PPC.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>17</integer>
 		</dict>
 		<key>edspctrl.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>4</integer>
 		</dict>
+		<key>edspctrl.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>13</integer>
+		</dict>
+		<key>edspctrl_PPC.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>9</integer>
+		</dict>
+		<key>edspctrl_libraryless.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>kX AC97 PPC.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
+		</dict>
 		<key>kX AC97.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>6</integer>
+			<integer>4</integer>
+		</dict>
+		<key>kX AC97.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>10</integer>
 		</dict>
 		<key>kX Manager.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
+		<key>kX Manager.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>14</integer>
+		</dict>
 		<key>kXAPI.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>7</integer>
+		</dict>
+		<key>kXAPI.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
+		<key>kXAPI_PPC.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>16</integer>
 		</dict>
 		<key>kXAudioDriver.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>kXAudioDriver.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>kXAudioDriver_32Bit.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>kXAudioDriver_LibraryLess.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+		<key>kXAudioDriver_LibraryLess.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>kXAudioDriver_LibraryLess_32Bit.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>kXAudioDriver_PPC.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>11</integer>
 		</dict>
 		<key>kxctrl.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>3</integer>
+		</dict>
+		<key>kxctrl.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>15</integer>
+		</dict>
+		<key>kxctrl_PPC.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>18</integer>
+		</dict>
+		<key>kxctrl_libraryless.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -47,32 +162,52 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>44212C1A0DECB61B00E06065</key>
+		<key>C612EA7D25ED16130006C564</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E8A3E96D0E8F20FE005D3692</key>
+		<key>C612EBC025ED1AFA0006C564</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E8A3EA1D0E8F2735005D3692</key>
+		<key>DD360B1125EDF1CE006DECBA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E8A6D9840E908BA40083971C</key>
+		<key>DD360C4125EDF1D0006DECBA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E8A6D9B50E908E940083971C</key>
+		<key>DD5FC79D25ED49BA000DD663</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E8D8957C10687D6E006F33DC</key>
+		<key>DD5FC8CD25ED49CB000DD663</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD5FC8D625ED49CE000DD663</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD9B6B55282C0E0F00BA90C7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DDA39A6A26132BBD00008BFD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DDA39A9126132D4D00008BFD</key>
 		<dict>
 			<key>primary</key>
 			<true/>

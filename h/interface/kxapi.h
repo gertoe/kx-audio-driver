@@ -26,7 +26,8 @@
 #ifndef _KX_SDK_H
 #define _KX_SDK_H
 
-#include "i386.h"
+//#include "i386.h"
+#include "defs.h"
 // #include "hw/8010.h"
 #include "hw/ac97.h"
 #include "interface/ikx.h"

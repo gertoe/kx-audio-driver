@@ -19,6 +19,8 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
+#include <IOKit/audio/IOAudioEngine.h>
+#include "AudioDevice.h"
 
 #ifndef _KXAUDIOENGINE_H
 #define _KXAUDIOENGINE_H
@@ -34,7 +36,7 @@
 class kXAudioEngine : public IOAudioEngine
 {
     OSDeclareDefaultStructors(kXAudioEngine)
-public:    
+//public:    
     kx_hw	*hw;
 	int		n_frames;
 	int		bps;
@@ -46,7 +48,6 @@ public:
 	UInt8	n_channels;
 	
 	int		is_running;
-    bool hama_experimental;
     
     //custom saplig rate and channels mapping code
     UInt8 mapping[MAPPING_NUM_CHANNELS];
@@ -68,13 +69,19 @@ public:
 	IOAudioStream *in_streams[MAX_CHANNELS_];
 	IOAudioStream *out_streams[MAX_CHANNELS_];
     
+    void dump_addr(void);
+    
+    virtual struct memhandle *my_alloc_contiguous(size_t size);
+    virtual void       my_free_contiguous(struct memhandle *desc, mach_vm_size_t size);
+    
+    virtual inline bool inRange(const long, const long, const long);
+    virtual inline UInt32 stringToNumber_dummy(const char *str);
+    
 public:
 
     virtual bool init(kx_hw *hw_);
     virtual void free();
 	virtual void free_all();
-	
-	void dump_addr(void);
     
     virtual bool initHardware(IOService *provider);
     virtual void stop(IOService *provider);
@@ -87,17 +94,13 @@ public:
     
     virtual UInt32 getCurrentSampleFrame();
 	
-	virtual IOBufferMemoryDescriptor *my_alloc_contiguous(mach_vm_size_t size, void **addr, dword *phys);
-	virtual void my_free_contiguous(IOBufferMemoryDescriptor *desc, mach_vm_size_t size);
-    
     virtual IOReturn performFormatChange(IOAudioStream *audioStream, const IOAudioStreamFormat *newFormat, const IOAudioSampleRate *newSampleRate);
 
     virtual IOReturn clipOutputSamples(const void *mixBuf, void *sampleBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
     virtual IOReturn convertInputSamples(const void *sampleBuf, void *destBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
     
-    virtual inline bool inRange(const int, const int, const int);
-    virtual inline UInt32 stringToNumber_dummy(const char *str);
-    
 };
+
+
 
 #endif /* _KXAUDIOENGINE_H */

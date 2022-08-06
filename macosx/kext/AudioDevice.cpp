@@ -49,8 +49,6 @@ bool kXAudioDevice::init(OSDictionary *dictionary)
     
     IOLog("\n\n** Please don't support any scammers asking you to pay for a hackintosh installation, those people are most likely ignorants, and you will loose a lot of money and probably end up with a bad or poorly done installation. Hackintoshing is about freedom so let it be free for enyone **\n\n");
     
-
-    
     pciDevice=NULL;
     deviceMap=NULL;
     hw=NULL;
@@ -74,14 +72,18 @@ bool kXAudioDevice::initHardware(IOService *provider)
     bool result = false;
     IOWorkLoop *workLoop_=NULL;
     
+	#if !defined(USE_TIGER_IPC)
     char tmp[KXBootArgValueLength];
-    
+    #endif
+	
     //this is a driver-disable security switch
     //we need this because we can screw up way too mutch sometimes
+	#if !defined(USE_TIGER_IPC)
     if (PE_parse_boot_argn("-kxoff", tmp, KXBootArgValueLength)){
         debug(DBGCLASS"[%p] Driver disabled by disable boot arg\n",this);
         return false;
     }
+	#endif
     
     debug(DBGCLASS"[%p]::initHardware(%p)\n", this, provider);
     
@@ -152,13 +154,23 @@ bool kXAudioDevice::initHardware(IOService *provider)
         goto Done;
     }
     
-    debug(DBGCLASS"[%p]::initHardware: I/O range @0x%x (%08lx) mapped into %08x [up to %08x]\n",
+	#if !defined(USE_TIGER_IPC)
+	debug(DBGCLASS"[%p]::initHardware: I/O range @0x%x (%08lx) mapped into %08x [up to %08x] addr %08x\n",
+          this,
+          kIOPCIConfigBaseAddress0,
+          (unsigned long)deviceMap->getPhysicalAddress(),
+          (unsigned) deviceMap->getVirtualAddress(),
+          (unsigned int)(deviceMap->getVirtualAddress()+deviceMap->getLength()-1),
+		  (unsigned) deviceMap->getAddress());
+	#else
+	debug(DBGCLASS"[%p]::initHardware: I/O range @0x%x (%08lx) mapped into %08x [up to %08x]\n",
           this,
           kIOPCIConfigBaseAddress0,
           (unsigned long)deviceMap->getPhysicalAddress(),
           (unsigned) deviceMap->getVirtualAddress(),
           (unsigned int)(deviceMap->getVirtualAddress()+deviceMap->getLength()-1));
-    
+    #endif
+	
     // Enable the PCI memory access - the kernel will panic if this isn't done before accessing the
     // mapped registers
     pciDevice->setMemoryEnable(true);
@@ -168,13 +180,21 @@ bool kXAudioDevice::initHardware(IOService *provider)
     //always give credits were the credits go
     setManufacturerName("Eugene Gavrilov, kX Project, Mod by Alejandro, ITzTravelInTime (Pietro Caruso), BiOM");
     setDeviceTransportType(kIOAudioDeviceTransportTypePCI);
+    //setDeviceCanBeDefault(kIOAudioDeviceCanBeDefaultInput | kIOAudioDeviceCanBeDefaultOutput | kIOAudioDeviceCanBeSystemOutput);
     
     kx_callbacks cb;
     memset(&cb,0,sizeof(cb));
     
     cb.call_with=this;
     cb.irql=0x0; // unused
-    cb.io_base=deviceMap->getPhysicalAddress();
+    
+    //#if defined(SYSTEM_IO) && (defined(__ppc__) || defined(__arm__))
+    cb.io_base = (io_port_t)deviceMap->getVirtualAddress(); //reccomended for x86 too by the apple documentation
+    //#else
+    //cb.io_base = (io_port_t)deviceMap->getPhysicalAddress();
+    //#endif
+	
+	cb.actual_io_base = port;
     
     cb.device=dev_id;
     cb.subsys=subsys_id;
@@ -204,7 +224,8 @@ bool kXAudioDevice::initHardware(IOService *provider)
     kx_defaults(NULL,&cb);
     
     int ret;
-    ret=kx_init(&hw,&cb,0);
+    
+	ret=kx_init(&hw,&cb,0);
     
     if(ret || hw==NULL)
     {
@@ -224,19 +245,28 @@ bool kXAudioDevice::initHardware(IOService *provider)
     // re-set defaults based on hardware features
     kx_defaults(hw,NULL);
     
-    char device_name[KX_MAX_STRING];
-    //strncpy(device_name,"kX ",KX_MAX_STRING);
-    
-    for (uint i = 0; i < KX_MAX_STRING; i++){
-        device_name[i] = '\0';
+    {
+        char device_name[KX_MAX_STRING];
+        char device_model_name[KX_MAX_STRING];
+        //strncpy(device_name,"kX ",KX_MAX_STRING);
+        
+        bzero(device_name, KX_MAX_STRING);
+		bzero(device_model_name, KX_MAX_STRING);
+        
+        //strncat(device_name,hw->card_name,KX_MAX_STRING);
+        
+        strncpy(device_name, hw->card_name, KX_MAX_STRING);
+        strncpy(device_model_name, hw->card_model_name, KX_MAX_STRING);
+		
+		device_name[KX_MAX_STRING - 1] = '\0';
+		device_model_name[KX_MAX_STRING - 1] = '\0';
+        
+        setDeviceName(device_name);
+        setDeviceModelName(device_model_name);
+        setDeviceShortName(device_model_name);
     }
     
-    //strncat(device_name,hw->card_name,KX_MAX_STRING);
-    
-    strncpy(device_name, hw->card_name, KX_MAX_STRING);
-    
-    setDeviceName(device_name);
-    setDeviceShortName("kXAudio");
+    //setDeviceShortName("kXAudioDevice");
     
     // The interruptEventSource needs to be enabled to allow interrupts to start firing
     if(interruptEventSource)
@@ -246,7 +276,6 @@ bool kXAudioDevice::initHardware(IOService *provider)
     {
         goto Done;
     }
-    
     
     result = true;
     
@@ -280,6 +309,7 @@ Done:
         }
         
         pciDevice=NULL;
+        
     }
     
     return result;
@@ -350,6 +380,8 @@ void kXAudioDevice::free()
 
 bool kXAudioDevice::createAudioEngine()
 {
+    //static UInt32 instanceCount = 0;
+    
     bool result = false;
     kXAudioEngine *audioEngine = NULL;
     // IOAudioControl *control;
@@ -372,11 +404,15 @@ bool kXAudioDevice::createAudioEngine()
     
     create_audio_controls(audioEngine);
     
+    
     // Active the audio engine - this will cause the audio engine to have start() and initHardware() called on it
     // After this function returns, that audio engine should be ready to begin vending audio services to the system
     activateAudioEngine(audioEngine);
     // Once the audio engine has been activated, release it so that when the driver gets terminated,
     // it gets freed
+    
+    audioEngine->setIndex(hw->actualPort);
+    
     audioEngine->release();
     
     result = true;
@@ -496,8 +532,6 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
     }
     
     kx_lock_release(hw,&hw->dsp_lock,&flags);
-    
-    
     
     kx_set_dsp_register(hw,prolog_pgm,"in0vol",0x2000*65535);
     kx_set_dsp_register(hw,prolog_pgm,"in1vol",0x2000*65535);
@@ -2097,4 +2131,16 @@ IOReturn kXAudioDevice::performPowerStateChange(IOAudioDevicePowerState oldPower
     
     return result;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

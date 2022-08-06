@@ -47,43 +47,53 @@ int main(int argc, char* argv[])
 			"the Free Software Foundation; either version 2 of the License, or\n"
 			"(at your option) any later version.\n\n");
 	
-	int id=0;
+	int id=0, fixed = 0;
 	
 	if(argc>1 && argv[1][0]=='$')
 	{
-		id=argv[1][1]-'0';
+		fixed=argv[1][1]-'0';
 		argc--; 
 		argv++; 
 	}
 	
-	iKX *ikx=iKX::create(id);
+	int reprogram_fpga=0;
+	int reprogram_dock=0;
+	int reload_defaults=0;
 	
-	if(ikx) // success?
+	while(argc>1)
 	{
-        dword v=0;
-        ikx->get_dword(KX_DWORD_IS_EDSP,&v);
-        if(!v)
-        {
-         printf("Your card is not E-DSP\n");
-         ikx->destroy();
-         return 1;
-        }
-
+		argv++;
+		argc--;
+		if(strcmp(argv[0],"-fpga")==0) reprogram_fpga=1;
+		else if(strcmp(argv[0],"-dock")==0) reprogram_dock=1;
+		else if(strcmp(argv[0],"-defaults")==0) reload_defaults=1;
+		else if(strcmp(argv[0],"-reset")==0) { reprogram_fpga=1; reprogram_dock=1; reload_defaults=1; }
+	}
+    
+    for(id=fixed;id<(fixed ? fixed : 16);id++){
+		iKX *ikx=iKX::create(id);
+        
+        printf("==== Checking card at ID %i\n", id);
+		
+		if(!ikx) // success?
+		{
+			printf("     Card not present or not working properly\n");
+			continue;
+		}
+		
+		dword v=0;
+		ikx->get_dword(KX_DWORD_IS_EDSP,&v);
+		if(!v)
+		{
+			printf("Card at %i is not E-DSP\n", id);
+			ikx->destroy();
+			//return 1;
+			continue;
+		}
+		
 		printf("==== E-mu E-DSP initialization\n");
 		
-		int reprogram_fpga=0;
-		int reprogram_dock=0;
-		int reload_defaults=0;
 		
-		while(argc>1)
-		{
-			argv++;
-			argc--;
-			if(strcmp(argv[0],"-fpga")==0) reprogram_fpga=1;
-			else if(strcmp(argv[0],"-dock")==0) reprogram_dock=1;
-			else if(strcmp(argv[0],"-defaults")==0) reload_defaults=1;
-			else if(strcmp(argv[0],"-reset")==0) { reprogram_fpga=1; reprogram_dock=1; reload_defaults=1; }
-		}
 		
 		if(!is_fpga_programmed(ikx) || reprogram_fpga)
 		{
@@ -115,9 +125,10 @@ int main(int argc, char* argv[])
 		print_status(ikx);
 		
 		ikx->destroy();
+		//}
+		//else
+		//	fprintf(stderr,"Error initializing kX interface\n");
+		
 	}
-	else
-		fprintf(stderr,"Error initializing kX interface\n");
-    
     return 0;
 }

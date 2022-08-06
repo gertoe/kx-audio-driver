@@ -23,8 +23,8 @@
 #define KX_DRIVER_H_
 
 // #define KX_INTERNAL      // - include internal structures/defs
-// #define KX_DEBUG     // - release / debug
-// #define KX_DEBUG_FUNC    // - code to debug smthing
+//#define KX_DEBUG     // - release / debug
+//#define KX_DEBUG_FUNC    // - code to debug smthing
 
 #include "vers.h"
 #include "defs.h"
@@ -75,7 +75,7 @@
 #if defined(KX_DEBUG_FUNC) && defined(KX_DEBUG)
  #define debug (((KX_DEBUG_FUNC)==0)?0:(KX_DEBUG_FUNC))
 #else
- #define debug (void)
+ #define debug 
 #endif
 
 enum kx_cpu_cache_type_t
@@ -114,7 +114,7 @@ struct kx_voice_buffer
 
  void *instance;
 
-#if defined(__APPLE__) && defined(__MACH__) // MacOSX
+#if defined(__APPLE__) && defined(__MACH__) && !defined(OLD_ALLOC) // MacOSX
  IOBufferMemoryDescriptor *desc;
 #endif
 };
@@ -168,15 +168,17 @@ struct kx_callbacks
     // allocates contiguous memory
     int  (*pci_alloc)(void *call_with,struct memhandle *,kx_cpu_cache_type_t cache_type);
     void (*pci_free)(void *call_with,struct memhandle *);
-    void (*get_physical)(void *call_with,kx_voice_buffer *buff,int offset,__int64 *physical_addr);
+    void (*get_physical)(void *call_with,kx_voice_buffer *buff, const dword offset, dword *physical_addr);
 
     // soundfont functions
     // allocates large memory blocks [nonpaged, not-contiguous]
     int (*lmem_alloc_func)(void *call_with,int len,void **lm,kx_cpu_cache_type_t cache_type);
     int (*lmem_free_func)(void *call_with,void **lm);
     void * (*lmem_get_addr_func)(void *call_with,void **lm,int offset,__int64 *phisical); // physical is optional
-
-    word io_base;
+    
+    io_port_t io_base;
+	word actual_io_base;
+    
     byte irql;
 
     dword device; // needed
@@ -409,6 +411,8 @@ struct asio_physical_descr_t
        void *mdl;
 };
 
+
+
 struct kx_hw
 {
     char kx_version[KX_MAX_STRING];
@@ -438,6 +442,7 @@ struct kx_hw
     byte is_a4;         // ??
 
     char card_name[KX_MAX_STRING];
+    char card_model_name[KX_MAX_STRING];
     char db_name[KX_MAX_STRING];
     dword hcfg_k1,hcfg_k2;
 
@@ -464,7 +469,9 @@ struct kx_hw
     byte can_passthru;
 
     // Resources
-    word port;
+    io_port_t port;
+	word actualPort;
+    
     byte irq;
     byte standalone;
 
@@ -629,6 +636,8 @@ KX_API(dword,kx_getdword(kx_hw *hw,int what,dword *ret)); // returns 0 on succes
 // buffer management; num is voice number
 int kx_alloc_buffer(kx_hw *hw,int num);
 void kx_free_buffer(kx_hw *hw,int num);
+
+io_port_t ioAddr(kx_hw* hw, const dword reg);
 
 // UART
 KX_API(int,kx_mpu_write_data(kx_hw *card, byte data,int where));

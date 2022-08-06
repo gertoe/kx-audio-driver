@@ -29,6 +29,8 @@
 #ifndef _IKX_H_
 #define _IKX_H_
 
+	#include "../defs.h"
+
     #define MAX_ASIO_OUTPUTS    16
     #define MAX_ASIO_INPUTS 16
 

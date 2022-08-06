@@ -82,7 +82,7 @@ void kx_timer_install(kx_hw *hw, struct kx_timer *timer, dword delay)
 
 		for_each_list_entry(item, &hw->timers)
 		{
-			t = list_item(item, struct kx_timer, list);
+			t = list_item(item, struct kx_timer, list); 
 			if(!t)
 			 continue;
 

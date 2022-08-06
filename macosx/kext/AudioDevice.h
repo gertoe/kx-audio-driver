@@ -32,8 +32,9 @@
 #include <IOKit/IOLib.h>
 #include <IOKit/pci/IOPCIDevice.h>
 #include <IOKit/IOFilterInterruptEventSource.h>
-#include <IOKit/IOUserClient.h>
-#include <AvailabilityMacros.h>
+//#include <IOKit/IOUserClient.h>
+//#include <pexpert/pexpert.h>
+//#include <AvailabilityMacros.h>
 
 #include "driver/kx.h"
 #include "interface/kx_ioctl.h"
@@ -52,6 +53,10 @@
 
 #define KXBootArgValueLength 16
 
+#define kx_allocation_mask ((0x000000007FFFFFFFULL) & (~((PAGE_SIZE) - 1)))
+
+//#define USE_TIGER_IPC
+
 struct kXRequest;
 
 class kXAudioEngine;
@@ -59,9 +64,11 @@ class kXAudioEngine;
 class kXAudioDevice : public IOAudioDevice
 {
     friend class kXAudioEngine;
+    
 public:    
     OSDeclareDefaultStructors(kXAudioDevice)
     
+    //protected stuff
     IOPCIDevice						*pciDevice;
     IOMemoryMap						*deviceMap;
 	kx_hw							*hw;
@@ -88,7 +95,7 @@ public:
     int pci_alloc(struct memhandle *h,kx_cpu_cache_type_t cache_type);
 	void pci_free(struct memhandle *h);
 	void sync(sync_data*s);
-	void get_physical(kx_voice_buffer *buff,int offset,__int64 *physical);
+	void get_physical(kx_voice_buffer *buff, const dword offset, dword *physical);
 	    
 	static void malloc_func(void *call_with,int len,void **b,int where) { ((kXAudioDevice *)call_with)->malloc_func(len,b,where); };
     static void send_message(void *call_with,int len,const void *b) { ((kXAudioDevice *)call_with)->send_message(len,b); };
@@ -100,7 +107,7 @@ public:
     static void pci_free(void *call_with,struct memhandle *h) { ((kXAudioDevice *)call_with)->pci_free(h); };
     static void sync(void *call_with,sync_data*s) { ((kXAudioDevice *)call_with)->sync(s); };
     static void usleep(int microseconds) { IODelay(microseconds); };
-	static void get_physical(void *call_with,kx_voice_buffer *buff,int offset,__int64 *physical) { ((kXAudioDevice *)call_with)->get_physical(buff,offset,physical); };
+	static void get_physical(void *call_with,kx_voice_buffer *buff, const dword offset, dword *physical) { ((kXAudioDevice *)call_with)->get_physical(buff,offset,physical); };
 
 	static int debug_func(int where,const char *__format, ... );
     static void save_fpu_state(kx_fpu_state *state);
@@ -121,7 +128,7 @@ public:
     virtual IOReturn outputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
 	
 	int create_audio_controls(IOAudioEngine *audioEngine);
-	
+    
 public:
 	virtual IOReturn user_request(const void* inStruct, void* outStruct,uint32_t inStructSize, const uint32_t* outStructSize);
 
@@ -144,5 +151,7 @@ protected:
     static void interruptHandler(OSObject *owner, IOInterruptEventSource *source, int count);
     static bool interruptFilter(OSObject *owner, IOFilterInterruptEventSource *source);
 };
+
+
 
 #endif /* _KXAUDIODEVICE_H */

@@ -23,6 +23,9 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
+#import <Cocoa/Cocoa.h>
+#import <AppKit/AppKit.h>
+#import <Foundation/Foundation.h>
 
 #import "Ac97Controller.h"
 #import "Ac97Macro.h"
@@ -30,6 +33,7 @@
 @implementation Ac97Controller
 
 @synthesize kx;
+
 @synthesize registers;
 
 static NSArray *controls = NULL;
@@ -49,6 +53,7 @@ static NSArray *controls = NULL;
             @"phoneMuted",	@"phone",
             @"spkMuted",	@"spk",
             @"rsLeft",		@"rsRight",		@"digLB"] retain];
+
 
     registers = [@{
         @"Master":  @[@AC97_REG_MASTER_VOL,	[NSValue valueWithPointer: &regMaster]],

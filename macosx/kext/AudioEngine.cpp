@@ -51,11 +51,10 @@ bool kXAudioEngine::init(kx_hw *hw_)
     bool result = false;
     bool def    = false;
     
-    hama_experimental = false;
-    
     hw = hw_;
     
     dump_addr();
+    
     
     if (!super::init(NULL))
     {
@@ -64,6 +63,8 @@ bool kXAudioEngine::init(kx_hw *hw_)
     
     hw->initialized|=KX_ENGINE_INITED;
     
+    setIndex(hw->actualPort);
+    
     //it's better to keep this as is, because the initialization code probably assumes it with this value, after the initialization you are free to change smapling rate
     sampling_rate=48000;
     //known safe default value
@@ -71,28 +72,28 @@ bool kXAudioEngine::init(kx_hw *hw_)
     
     result = true;
     
-    //always clean your stuff kids
-    for (int i = 0; i < KXBootArgValueLength; i++) {
-        customMapping[i] = 0;
-        customSampleRate[i] = '\0';
-        customMultiplyer[i] = '\0';
-    }
+    bzero(customMapping, KXBootArgValueLength);
+    bzero(customSampleRate, KXBootArgValueLength);
+    bzero(customMultiplyer, KXBootArgValueLength);
     
     //enable some experiemntal stuff, no warraties here, be very carefoul, the customMapping array is used as temporary storage for calling this function
     
+	#if !defined(USE_TIGER_IPC)
     if (PE_parse_boot_argn("-kxtest", customMapping, KXBootArgValueLength)){
         debug(DBGCLASS"[%p]::init: WARNING Experimental features enabled using the -kxtest boot arg, you are doing this at your own risk, this stuff may harm your computer, YOU HAVE BEEN WARNED!!\n",this);
-        hama_experimental = true;
+        
+        //TODO: Add test stuff here
+        
     }
+	#endif
     
     //cleanup
-    for (int i = 0; i < KXBootArgValueLength; i++) {
-        customMapping[i] = '\0';
-    }
+    bzero(customMapping, KXBootArgValueLength);
     
     //when you need a custom output mapping for whatever reason, here it is, it's supported via boot arg, the equivalent thing via mac's midi configuration app is quite buggy
     //This is for you Hurrain, because you told me you have a broken jack on your sound card
     
+	#if !defined(USE_TIGER_IPC)
     if (PE_parse_boot_argn("_kxcl", customMapping, MAPPING_NUM_CHANNELS)) {
         debug(DBGCLASS"[%p]::init: custom output layout specified with the _kxcl boot arg \n",this);
         
@@ -125,6 +126,9 @@ bool kXAudioEngine::init(kx_hw *hw_)
     }else{
         def = true;
     }
+	#else
+	def = true;
+	#endif
     
     if (def) {
         debug("kXAudioEngine[%p]::init: Using default mapping value\n",this);
@@ -133,6 +137,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
         }
     }
     
+	#if !defined(USE_TIGER_IPC)
      //this boot arg is used to enter custom sampling rates values for consumer cards which just uses a pitch adjustment trick and so they can basically use any sampling rate not higher than 192khz and not lower than 1khz
     if (PE_parse_boot_argn("_kxcsr", customSampleRate, KXBootArgValueLength)){
         debug(DBGCLASS"[%p]::init: custom sampling rate specified with the _kxcsr boot arg\n",this);
@@ -140,14 +145,15 @@ bool kXAudioEngine::init(kx_hw *hw_)
         custom_sampling_rate = stringToNumber_dummy(customSampleRate);
         
         //i mean who needs a smapling rate lower than 1k? i don't even know if the i/o kit allows for sampling rates this low - ITzTravelInTime
-        if (!inRange(custom_sampling_rate, 1000, 192000)){
-            debug("kXAudioEngine[%p]::init: new custom sampling rate \"%s\" is out of the supported range [1000 to 192000] or uses illegal characters\n",this, customSampleRate);
+        if (!inRange(custom_sampling_rate, KX_MIN_RATE, KX_MAX_RATE)){
+            debug("kXAudioEngine[%p]::init: new custom sampling rate \"%s\" is out of the supported range [%i to %i] or uses illegal characters\n",this, customSampleRate, KX_MIN_RATE, KX_MAX_RATE);
             custom_sampling_rate = sampling_rate;
         }else{
             debug("kXAudioEngine[%p]::init: new custom sampling rate: %u\n",this, (unsigned int)custom_sampling_rate);
         }
         
     }
+	#endif
     
     if(hw->is_10k2)
         bps=32;
@@ -169,22 +175,24 @@ bool kXAudioEngine::init(kx_hw *hw_)
     //hw->mtr_buffer is already allocated here, so why allocating it again later?
     n_frames = (int)((hw->mtr_buffer.size * 8 / bps / n_channels));
     
+	#if !defined(USE_TIGER_IPC)
     if (PE_parse_boot_argn("_kxcfm", customMultiplyer, KXBootArgValueLength)){
            
         debug(DBGCLASS"[%p]::init: custom n_frames multiplyer specified with the _kxcfm boot arg\n",this);
         
-        UInt32 mul = stringToNumber_dummy(customMultiplyer);
+        unsigned int mul = (unsigned int)stringToNumber_dummy(customMultiplyer);
         
         //limited to 128x for "safety" reasons, 128x is already an insane value
         if (inRange(mul, 1, 128)){
-            debug(DBGCLASS"[%p]::init: custom n_frames multiplyer value is %u\n",this, mul);
+            debug(DBGCLASS"[%p]::init: custom n_frames multiplyer value is %u\n",this, (unsigned int)mul);
             
             n_frames *= ((int)mul);
         }else{
             debug(DBGCLASS"[%p]::init: custom n_frames multiplyer value \"%s\" uses illegal chracters or it's out of the supported range [1 to 128]\n",this, customMultiplyer);
         }
     }
-    
+    #endif
+	
     debug("kXAudioEngine[%p]::init - n_frames=%d\n", this, n_frames);
     
     is_running=0;
@@ -248,6 +256,12 @@ bool kXAudioEngine::initHardware(IOService *provider)
     
     setClockDomain(); // =kIOAudioNewClockDomain
     
+#if defined(X86)
+    setClockIsStable(false);
+#endif
+    
+    setIndex(hw->actualPort);
+    
     // calculate kx_sample_offset
     
     //this new code fixes most of the cracks the old driver had, the commented lines are left just to keep track of what was there before, please don't touch
@@ -282,8 +296,7 @@ bool kXAudioEngine::initHardware(IOService *provider)
         out_streams[i]=audioStream;
     }
     
-    // recording
-    //why is a single buffer used for the recording?
+    // recording, a single buffer for 8 channels is used
     audioStream = createNewAudioStream(0,kIOAudioStreamDirectionInput, n_channels*buffer_size);
     if (!audioStream) {
         goto Done;
@@ -296,6 +309,8 @@ bool kXAudioEngine::initHardware(IOService *provider)
     
     // Set the number of sample frames in each buffer
     setNumSampleFramesPerBuffer(n_frames);
+    
+    setIndex(hw->actualPort);
     
     result = true;
     
@@ -378,7 +393,7 @@ void kXAudioEngine::free_all()
         debug("kXAudioEngine[%p]::free_all() - iKX interface already closed\n",this);
 }
 
-IOBufferMemoryDescriptor *kXAudioEngine::my_alloc_contiguous(mach_vm_size_t size, void **addr, dword *phys)
+struct memhandle *kXAudioEngine::my_alloc_contiguous(size_t size)
 {
     if(size<PAGE_SIZE)
         size=PAGE_SIZE;
@@ -386,11 +401,28 @@ IOBufferMemoryDescriptor *kXAudioEngine::my_alloc_contiguous(mach_vm_size_t size
 #ifdef DEBUGGING
     size += 2 * PAGE_SIZE;
 #endif
+    
+    struct memhandle* mem = new struct memhandle;
+    bzero((void*)mem, sizeof(*mem));
+    mem->size = size;
+    
+#if defined(OLD_ALLOC)
+    
     //old allocation method, deprecated and with a lot of drawbacks, the new one makes sure we are allocating memory in the 32 bit address space and that the buffer is contiguous
     
-    //void *addr=IOMallocContiguous(size+PAGE_SIZE+PAGE_SIZE,alignment,phys);
+    IOPhysicalAddress phy = NULL;
+    mem->addr = IOMallocContiguous(size, PAGE_SIZE, &phy);
+    mem->dma_handle = (dword)phy;
     
-    mach_vm_address_t mask = 0x000000007FFFFFFFULL & ~(PAGE_SIZE - 1);
+    if (!mem->addr || !mem->dma_handle){
+        debug("kXAudioEngine[%p]::my_alloc_contiguous() - allocation failed\n",this);
+        delete mem;
+        return NULL;
+    }
+
+    
+#else
+	mach_vm_address_t mask = kx_allocation_mask;//0x000000007FFFFFFFULL & ~(PAGE_SIZE - 1);
     
     IOBufferMemoryDescriptor *desc =
     IOBufferMemoryDescriptor::inTaskWithPhysicalMask(
@@ -399,33 +431,34 @@ IOBufferMemoryDescriptor *kXAudioEngine::my_alloc_contiguous(mach_vm_size_t size
                                                      size,
                                                      mask);
     
-    if(desc)
-    {
+    if(desc){
         desc->prepare();
         
         IOPhysicalAddress pa = desc->getPhysicalAddress();
+        mem->desc = desc;
         
-        if (pa & ~mask)
+        if (pa & (~mask))
             debug("kXAudioEngine[%p]::my_alloc_contiguous() - memory misaligned or beyond 2GB limit (%p)\n", this, (void *)pa);
         
-        *phys = (dword)pa; //pa is the address of the memory buffer, so why is it casted as a unsigned int? probably to have a 32 bit address for the card, whose can't support 64 bit
-        *addr = desc->getBytesNoCopy();
+        mem->dma_handle = (dword)pa; //pa is the address of the memory buffer, which must be in the 32 bit address space limit for the card to work
+        mem->addr = desc->getBytesNoCopy();
         
-#ifdef DEBUGGING
-        memset(addr,0x11,PAGE_SIZE);
-        memset((UInt8 *)addr+PAGE_SIZE+size,0x22,PAGE_SIZE);
-        
-        *((UInt8 *)addr) += PAGE_SIZE;
-        *phys += PAGE_SIZE;
-#endif
-    }
-    else
+    }else{
         debug("kXAudioEngine[%p]::my_alloc_contiguous() - allocation failed\n",this);
+        delete mem;
+        return NULL;
+    }
+#endif
     
-    return desc;
+    debug("kXAudioEngine[%p]::my_alloc_contiguos() - Allocation success. Virtual address [%p], Physical address [%p]\n", (this), (mem->addr), (void*)(IOPhysicalAddress)(mem->dma_handle));
+    
+    bzero(mem->addr, mem->size);
+    
+    return mem;
+    
 }
 
-void kXAudioEngine::my_free_contiguous(IOBufferMemoryDescriptor *desc, mach_vm_size_t size)
+void kXAudioEngine::my_free_contiguous(struct memhandle *desc, mach_vm_size_t size)
 {
 #ifdef DEBUGGING
     if(size<PAGE_SIZE)
@@ -450,16 +483,25 @@ void kXAudioEngine::my_free_contiguous(IOBufferMemoryDescriptor *desc, mach_vm_s
     }
 #endif
     
+#if !defined(OLD_ALLOC)
     //this is enought to free the memory buffer
-    desc->release();
+    desc->desc->release();
+#else
+    IOFreeContiguous(desc->addr, desc->size);
+#endif
 }
 
 void kXAudioEngine::freeAudioStream(int chn,IOAudioStreamDirection direction)
 {
+    
+    
     if(direction==kIOAudioStreamDirectionOutput)
     {
+        struct memhandle mem;
+		
         for(int i=0;i<KX_NUMBER_OF_VOICES;i++)
         {
+            
             if(hw->voicetable[i].asio_id==this && hw->voicetable[i].asio_channel==(dword)chn)
             {
                 kx_wave_close(hw,i);
@@ -471,11 +513,24 @@ void kXAudioEngine::freeAudioStream(int chn,IOAudioStreamDirection direction)
                 hw->voicetable[i].asio_kernel_addr=0;
                 hw->voicetable[i].asio_user_addr=0;
                 
-                if(hw->voicetable[i].buffer.desc && hw->voicetable[i].buffer.addr && hw->voicetable[i].buffer.size!=0)
+                bzero(((byte*)&mem), sizeof(mem));
+                
+                mem.addr       = hw->voicetable[i].buffer.addr;
+                mem.dma_handle = hw->voicetable[i].buffer.physical;
+                mem.size       = hw->voicetable[i].buffer.size;
+                
+#if !defined(OLD_ALLOC)
+                if(!hw->voicetable[i].buffer.desc){
+                    continue;
+                }
+                mem.desc = hw->voicetable[i].buffer.desc;
+#endif
+				
+                if(mem.addr && mem.size!=0)
                 {
                     //my_free_contiguous(hw->voicetable[i].buffer.addr,hw->voicetable[i].buffer.size);
-                    my_free_contiguous(hw->voicetable[i].buffer.desc, hw->voicetable[i].buffer.size);
-                    bzero(&(hw->voicetable[i].buffer), sizeof(hw->voicetable[i].buffer));
+                    my_free_contiguous(&mem, mem.size);
+                    bzero(((byte*)&(hw->voicetable[i].buffer)), sizeof(hw->voicetable[i].buffer));
                 }
             }
         }
@@ -484,9 +539,16 @@ void kXAudioEngine::freeAudioStream(int chn,IOAudioStreamDirection direction)
     {
         if(direction==kIOAudioStreamDirectionInput)
         {
-            if (hw->mtr_buffer.desc && hw->mtr_buffer.addr && hw->mtr_buffer.size != 0)
+            
+#if !defined(OLD_ALLOC)
+            if (!hw->mtr_buffer.desc){
+                return;
+            }
+#endif
+            
+            if (hw->mtr_buffer.addr && hw->mtr_buffer.size != 0)
             {
-                my_free_contiguous(hw->mtr_buffer.desc, hw->mtr_buffer.size);
+                my_free_contiguous(&hw->mtr_buffer, hw->mtr_buffer.size);
                 bzero(&(hw->mtr_buffer), sizeof(hw->mtr_buffer));
             }
         }
@@ -497,17 +559,16 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
 {
     IOAudioStream *audioStream = new IOAudioStream;
     
-    //UInt8 depth, width;
-    
-    if (audioStream)
-    {
-        if (!audioStream->initWithAudioEngine(this, direction, 1))
-        {
+    if (audioStream){
+        
+        static UInt32 streamIndex = 0;
+        
+        if (!audioStream->initWithAudioEngine(this, direction, 1)){
+            
             audioStream->release();
+            
         } else {
             IOAudioSampleRate rate;
-            
-            //void *sampleBuffer=NULL;
             
             IOAudioStreamFormat format = {
                 1,                                              // num channels
@@ -518,29 +579,37 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 kIOAudioStreamAlignmentHighByte,                // high byte aligned - unused because bit depth == bit width
                 kIOAudioStreamByteOrderLittleEndian,            // little endian
                 true,                                           // format is mixable
-                0                                               // driver-defined tag - unused by this driver
+                hw->actualPort + streamIndex++                    // driver-defined tag
             };
             
-            //buffer object creation and cleaning
-            kx_voice_buffer buffer;
-            bzero(&buffer, sizeof(buffer));
-            
             //buffer allocation
-            buffer.desc = my_alloc_contiguous(sampleBufferSize, &(buffer.addr), &(buffer.physical));
+            struct memhandle* mem = my_alloc_contiguous(sampleBufferSize);
             
-            //basically the buffer is not allocated if this happens
-            if (!buffer.desc)
+            if(!mem)
                 return NULL;
-            
-            //finishes to set up the buffer object
-            buffer.size=sampleBufferSize;
-            buffer.that=this;
-            buffer.notify=-n_frames;
-            //sampleBuffer=buffer.addr;
             
             // allocate memory:
             if(direction==kIOAudioStreamDirectionOutput)
             {
+                //buffer object creation and cleaning
+                kx_voice_buffer buffer;
+                bzero(((byte*)&buffer), sizeof(buffer));
+                
+                buffer.physical = mem->dma_handle;
+                buffer.addr = mem->addr;
+                
+#if !defined(OLD_ALLOC)
+                buffer.desc = mem->desc;
+                //basically the buffer is not allocated if this happens
+                if (!buffer.desc)
+                    return NULL;
+#endif
+                
+                //finishes to set up the buffer object
+                buffer.size=(dword)mem->size;
+                buffer.that=this;
+                buffer.notify=-n_frames;
+                
                 int need_notifier=VOICE_OPEN_NOTIMER;
                 if(chn==0) // first voice?
                     need_notifier|=VOICE_OPEN_NOTIFY; // half/full buffer
@@ -555,6 +624,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                  // wave 4/5 - rear
                  // 8/9 - rear center/etc.
                  */
+                
                 int i=kx_allocate_multichannel(hw,bps,sampling_rate,need_notifier,&buffer,DEF_ASIO_ROUTING+mapping[chn]); // start with 2/3
                 
                 if(i>=0)
@@ -574,13 +644,18 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
             }
             else if(direction==kIOAudioStreamDirectionInput)
             {
-                format.fNumChannels = n_channels;
+                format.fNumChannels = n_channels; // sets input to 8 channels
                 
-                //the mtr buffer should be already allocated here, why allocating it again?
-                hw->mtr_buffer.desc = buffer.desc;
-                hw->mtr_buffer.addr = buffer.addr; //sets the address in the driver code
-                hw->mtr_buffer.size = buffer.size; //sets the sice in the driver code
-                hw->mtr_buffer.dma_handle = buffer.physical; //sets the address for the dma functions/memory access from hardware
+                /*
+				 #if !defined(OLD_ALLOC)
+				 hw->mtr_buffer.desc = buffer.desc;
+				 #endif
+				 hw->mtr_buffer.addr = buffer.addr; //sets the address in the driver code
+				 hw->mtr_buffer.size = buffer.size; //sets the sice in the driver code
+				 hw->mtr_buffer.dma_handle = buffer.physical; //sets the address for the dma functions/memory access from hardware
+				 */
+                
+                memcpy(&hw->mtr_buffer, mem, sizeof(hw->mtr_buffer));
                 
                 //kx_writeptr(hw,FXIDX,0,0);
                 
@@ -589,7 +664,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 kx_writeptr(hw, FXBA, 0, hw->mtr_buffer.dma_handle); //sets the appropriate dma reg in the card
                 
                 dword ch = (1 << (format.fNumChannels * 2)) - 1;    // 24bit needs 2 physical channels
-                debug("createNewAudioStream FXWCH/FXWC_K1: %x\n", ch);
+                debug("createNewAudioStream FXWCH/FXWC_K1: %x\n", (unsigned int)ch);
                 
                 if(hw->is_10k2)
                 {
@@ -604,42 +679,55 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
             
             // As part of creating a new IOAudioStream, its sample buffer needs to be set
             // It will automatically create a mix buffer should it be needed
-            if((buffer.addr) && (buffer.size))
-                audioStream->setSampleBuffer((buffer.addr), (buffer.size));
+            if((mem->addr) && (mem->size))
+				audioStream->setSampleBuffer((mem->addr), (UInt32)(mem->size));
             
             //we need to add our supported sample rates now
-            
             rate.fraction = 0;
-            
-            //we don't have to worry about repetitions of sampleing rates here, because the os already takes care of that by not considering duplicates
-            UInt32 supportedFreqs[] = {44100, 48000, 88200, 96000, 176400, 192000, 7000, 8000, 9600, 11025, 12000, 16000, 18900, 22050, 24000, 32000, 37800, 44056, 49716, 64000, custom_sampling_rate, sampling_rate};
-            unsigned int length = sizeof(supportedFreqs) / sizeof(supportedFreqs[0]);
-            
-            if (hw->is_edsp){
-                debug("kXAudioEngine[%p] The current sound card in an E-MU e-dsp or similar (using the same architecture), using hardware support for sampling rathes rather than the software resampler\n",this);
+			
+			{
+				
+				const bool isInput = (direction==kIOAudioStreamDirectionInput);
+				
+                //the order of this array is important, don't touch it
+                const UInt32 supportedFreqs[] = {48000, 44100, 192000, 176400, 96000, 88200, 22050, 24000, 11025, 12000, 6000, 7000, 8000, 9600, 16000, 18900, 32000, 37800, 44056, 49716, 64000, custom_sampling_rate, sampling_rate};
+                UInt8 length = isInput ? 1 : (sizeof(supportedFreqs) / sizeof(*supportedFreqs));
                 
-                length = (hama_experimental) ? 6 : 2;
-                
-            }else{
-                //support for custom sampling rates for the software resampler
-                if (custom_sampling_rate != sampling_rate)
-                    debug("kXAudioEngine[%p] Custom sampling rate: %u\n",this, (unsigned int)custom_sampling_rate);
-            }
-            
-            format.fBitWidth = bps;
-            
-            for (UInt8 d = 8; d <= format.fBitWidth; d += 8){
-                format.fBitDepth = d;
-                for (unsigned int i = 0; i < length; i++){
-                    rate.whole = supportedFreqs[i];
-                    audioStream->addAvailableFormat(&format, &rate, &rate);
+                if (hw->is_edsp){
+                    debug("kXAudioEngine[%p] The current sound card in an E-MU e-dsp or similar (using the same architecture), using hardware support for sampling rathes rather than the software resampler\n",this);
                     
-                    //debug("kXAudioEngine[%p] Added sampling rate: %u at %u bits\n",this, rate.whole, format.fBitDepth);
+                    if (isInput)
+                        length = 2;
+                    else
+                        length = 11;
+                    
+                }else{
+                    //support for custom sampling rates for the software resampler
+                    if (custom_sampling_rate != sampling_rate)
+                        debug("kXAudioEngine[%p] Custom sampling rate: %u\n",this, (unsigned int)custom_sampling_rate);
                 }
-            }
-            
+                
+                format.fBitWidth = bps;
+                
+				{
+					UInt8 d = isInput ? bps : 8;
+					
+					for (; d <= bps; d += 8){
+						format.fBitDepth = d;
+						for (UInt8 i = 0; i < length; i++){
+							rate.whole = supportedFreqs[i];
+							audioStream->addAvailableFormat(&format, &rate, &rate);
+							//debug("kXAudioEngine[%p] Added sampling rate: %u at %u bits. is input? %u \n",this, rate.whole, format.fBitDepth, isInput);
+						}
+					}
+					
+				}
+                
+			}
             // Finally, the IOAudioStream's current format needs to be indicated
             audioStream->setFormat(&format);
+            
+            delete mem;
         }
     }
     
@@ -674,7 +762,7 @@ IOReturn kXAudioEngine::performAudioEngineStart()
         }
     }
     
-    if(first!=-1)
+    if(first != -1)
     {
         // zero sample position, too
         for(int i=0;i<32;i++)
@@ -830,147 +918,161 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
         if(!hw->is_edsp){
             
             
-            //not a real sampling rate support, but rather a pitch adjustment to sound right, this can work for the professional cards as well, but there is a better implementation for professional cards using the hama fpga, so it just uses that (BTW how does the windows driver for some edps cards support 192 khz?, i guess it uses some clock multiplyers or just this pitch trick, but it whould be nice to see the official creative source some day)
+            //not a real sampling rate support, but rather a pitch adjustment to sound right, this can work for the professional cards as well, but there is a better implementation for professional cards using the hana fpga, so it just uses that (BTW how does the creative windows driver for some cards support 192 khz?)
+            //if (audioStream->direction == kIOAudioStreamDirectionOutput){
+				if(newSampleRate->whole == 192000){
+					for(int i=0; i<n_channels;i++)
+					{
+						hw->voicetable[i].param.pitch_target  = 0xffff;
+					}
+				}else{
+					for(int i=0; i<n_channels;i++)
+					{
+						hw->voicetable[i].param.initial_pitch =(word)  kx_srToPitch(kx_sr_coeff(hw,newSampleRate->whole) >> 8);
+						hw->voicetable[i].param.pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,newSampleRate->whole));
+						hw->voicetable[i].sampling_rate = newSampleRate->whole;
+					}
+				}
+			//}else{
+				
+			//}
             
-            /*for(int i=0; i<n_channels;i++)
-            {
-                hw->voicetable[i].param.initial_pitch =  (word) kx_srToPitch(kx_sr_coeff(hw,newSampleRate->whole) >> 8);
-                hw->voicetable[i].param.pitch_target  =         kx_samplerate_to_linearpitch(kx_sr_coeff(hw,newSampleRate->whole));
-                hw->voicetable[i].sampling_rate       =         newSampleRate->whole;
-             }*/
-            
-            
-            //optimization tip: what is better? having 2 separated loops in the code or doing a branch operation for each loop cycle? performance-wise the first one is better, but for memory occupied by code, the latter one is better, luckly pcs nowdays doesn't have to warry about a few extra memory cells occupied by code, so we can just implement the best one for performance
-            
-            if(newSampleRate->whole == 192000){
-                for(int i=0; i<n_channels;i++)
-                {
-                    hw->voicetable[i].param.pitch_target  = 0xffff;
-                }
-            }else{
-                for(int i=0; i<n_channels;i++)
-                {
-                    hw->voicetable[i].param.initial_pitch =(word)  kx_srToPitch(kx_sr_coeff(hw,newSampleRate->whole) >> 8);
-                    hw->voicetable[i].param.pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,newSampleRate->whole));
-                    hw->voicetable[i].sampling_rate = newSampleRate->whole;
-                }
-            }
-            
+            //TODO: input sample rates switching
             
         }else{
             
-            if (hama_experimental){
-                //exprimental wide range of sampling rates support for edsp cards, not tested, might not work because of some other clock stuff going on which needs to be changed or other driver behaviour not designed to work with it, so this is just an idea or a draft and is provvided as is, try it at your own risk, there are no guaratees here
-                
-                kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
-                
-                const UInt32 div_44 = 44100, div_48 = 48000;
-                const UInt32 divr_44 = (newSampleRate->whole / div_44), divr_48 = (newSampleRate->whole / div_48);
-                
-                bool done = false;
-                
-                switch (divr_44) {
-                    case 1:
-                        kx_writefpga(hw,EMU_HANA_DEFCLOCK, EMU_HANA_DEFCLOCK_44_1K);
-                        kx_writefpga(hw,EMU_HANA_WCLOCK, EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X);
-                        done = true;
-                        break;
-                        
-                    case 2:
-                        kx_writefpga(hw,EMU_HANA_DEFCLOCK, EMU_HANA_DEFCLOCK_44_1K);
-                        kx_writefpga(hw,EMU_HANA_WCLOCK, EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_2X);
-                        done = true;
-                        break;
-                        
-                    case 4:
-                        kx_writefpga(hw,EMU_HANA_DEFCLOCK, EMU_HANA_DEFCLOCK_44_1K);
-                        kx_writefpga(hw,EMU_HANA_WCLOCK, EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_4X);
-                        done = true;
-                        break;
-                            
-                    default:
-                        break;
-                }
-                
-                if (!done)
-                switch (divr_48) {
-                    case 1:
-                        kx_writefpga(hw,EMU_HANA_DEFCLOCK,EMU_HANA_DEFCLOCK_48K);
-                        kx_writefpga(hw,EMU_HANA_WCLOCK, EMU_HANA_WCLOCK_INT_48K | EMU_HANA_WCLOCK_1X);
-                        done = true;
-                        break;
-                        
-                    case 2:
-                        kx_writefpga(hw,EMU_HANA_DEFCLOCK,EMU_HANA_DEFCLOCK_48K);
-                        kx_writefpga(hw,EMU_HANA_WCLOCK, EMU_HANA_WCLOCK_INT_48K | EMU_HANA_WCLOCK_2X);
-                        done = true;
-                        break;
-                        
-                    case 4:
-                        kx_writefpga(hw,EMU_HANA_DEFCLOCK,EMU_HANA_DEFCLOCK_48K);
-                        kx_writefpga(hw,EMU_HANA_WCLOCK, EMU_HANA_WCLOCK_INT_48K | EMU_HANA_WCLOCK_4X);
-                        done = true;
-                        break;
-                            
-                    default:
-                        break;
-                }
-                
-                if (!done){
-                    debug("\t Internal Error - unknown sample rate selected, falling back to 44.1 khz.\n");
-                    kx_writefpga(hw,EMU_HANA_DEFCLOCK, EMU_HANA_DEFCLOCK_44_1K);
-                    kx_writefpga(hw,EMU_HANA_WCLOCK, EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_2X);
-                }
-                
-                if ((newSampleRate->whole % div_44) == 0){
-                    kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_44K | EMU_HANA_DOCK_LEDS_2_LOCK);
-                }else{
-                    kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_48K | EMU_HANA_DOCK_LEDS_2_LOCK);
-                }
-                
-                IOSleep(200);
-                kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
-                
-            }else{
-                
-                //just a couple of supported sample rated here, but at least it's not pitch adjustment but rather a more proper sampling rate support, because it switeches the clock crystal used for the hama fpga, so edsp cards can enjoy nice higher quality audio at both sample rates
-                
-                
-                switch (newSampleRate->whole) {
-                    case 44100:
-                        //mutes the card
-                        kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
-                        //switches the clock chip
-                        kx_writefpga(hw,EMU_HANA_DEFCLOCK, EMU_HANA_DEFCLOCK_44_1K);
-                        //sets the clock chip mode for the card
-                        kx_writefpga(hw,EMU_HANA_WCLOCK, EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X);
-                        //sets the leds according to the clock chip used
-                        kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_44K | EMU_HANA_DOCK_LEDS_2_LOCK);
-                        //waits for the switch to complete and then unmutes the card
-                        IOSleep(200);
-                        kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
-                        break;
-                        
-                    case 48000:
-                        kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
-                        kx_writefpga(hw,EMU_HANA_DEFCLOCK,EMU_HANA_DEFCLOCK_48K);
-                        kx_writefpga(hw,EMU_HANA_WCLOCK,EMU_HANA_WCLOCK_INT_48K | EMU_HANA_WCLOCK_1X);
-                        kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_48K | EMU_HANA_DOCK_LEDS_2_LOCK);
-                        IOSleep(200);
-                        kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
-                        break;
-                        
-                    default:
-                        // This should not be possible since we only specified 44100 and 48000 as valid sample rates
-                        debug("\t Internal Error - unknown sample rate selected.\n");
-                        break;
-                }
-                
+            dword config_val = kx_readfn0(hw,HCFG_K1);
+            
+            dword clockVal = EMU_HANA_WCLOCK_INT_48K;
+            dword clockChip = EMU_HANA_DEFCLOCK_48K;
+            dword led = EMU_HANA_DOCK_LEDS_2_44K;
+            
+            dword pitch_target_seed = 48000; //kx_samplerate_to_linearpitch(kx_sr_coeff(hw,48000));
+            dword card_frequency = 48000;
+            
+            switch (newSampleRate->whole) {
+                    
+                case 6000:
+                    clockVal |= EMU_HANA_WCLOCK_1X;
+                    
+                    pitch_target_seed = 6000;
+                    break;
+                case 11025:
+                    clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
+                    clockChip = EMU_HANA_DEFCLOCK_44_1K;
+                    
+                    pitch_target_seed = 12000;
+                    card_frequency = 44100;
+                    break;
+                case 12000:
+                    clockVal |= EMU_HANA_WCLOCK_1X;
+                    
+                    pitch_target_seed = 12000;
+                    break;
+                case 22050:
+                    clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
+                    clockChip = EMU_HANA_DEFCLOCK_44_1K;
+                    
+                    pitch_target_seed = 24000;
+                    card_frequency = 44100;
+                    break;
+                case 24000:
+                    clockVal |= EMU_HANA_WCLOCK_1X;
+                    
+                    pitch_target_seed = 24000;
+                    break;
+                case 44100:
+                    clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
+                    clockChip = EMU_HANA_DEFCLOCK_44_1K;
+                    
+                    card_frequency = 44100;
+                    break;
+                case 48000:
+                    led = EMU_HANA_DOCK_LEDS_2_48K;
+                    clockVal |= EMU_HANA_WCLOCK_1X;
+                    break;
+                case 88200:
+                    
+                    clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
+                    clockChip = EMU_HANA_DEFCLOCK_44_1K;
+                    
+                    led = EMU_HANA_DOCK_LEDS_2_96K;
+                    
+                    pitch_target_seed = 96000;
+                    card_frequency = 44100;
+                    
+                    break;
+                case 96000:
+                    led = EMU_HANA_DOCK_LEDS_2_96K;
+                    clockVal |= EMU_HANA_WCLOCK_1X;
+                    
+                    pitch_target_seed = 96000;
+                    break;
+                case 176400:
+                    clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
+                    clockChip = EMU_HANA_DEFCLOCK_44_1K;
+                    
+                    led = EMU_HANA_DOCK_LEDS_2_192K;
+                    
+                    pitch_target_seed = 192000;
+                    card_frequency = 44100;
+                    
+                    break;
+                case 192000:
+                    led = EMU_HANA_DOCK_LEDS_2_192K;
+                    clockVal |= EMU_HANA_WCLOCK_1X;
+                    
+                    pitch_target_seed = 192000;
+                    break;
+                default:
+                    debug("\t Internal Error - unknown sample rate selected falling back to 48khz.\n");
+                    clockVal |= EMU_HANA_WCLOCK_1X;
+                    led = EMU_HANA_DOCK_LEDS_2_48K;
+                    break;
             }
+            
+            kx_set_hw_parameter(hw,KX_HW_AC3_PASSTHROUGH, card_frequency == 48000);
+            
+            //mute the fpga
+            kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
+            
+            //turn off the leds
+            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_44K | EMU_HANA_DOCK_LEDS_2_EXT);
+            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_48K | EMU_HANA_DOCK_LEDS_2_EXT);
+            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_96K | EMU_HANA_DOCK_LEDS_2_EXT);
+            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_192K | EMU_HANA_DOCK_LEDS_2_EXT);
+            
+            IOSleep(100);
+            
+            //set defclock and wclock
+            kx_writefpga(hw,EMU_HANA_DEFCLOCK, clockChip);
+            kx_writefpga(hw,EMU_HANA_WCLOCK, clockVal);
+            
+            const dword pitch_target = pitch_target_seed == 192000 ? 0xffff : kx_samplerate_to_linearpitch(kx_sr_coeff(hw, pitch_target_seed));
+            
+            for(int i=0; i<n_channels;i++){
+                hw->voicetable[i].param.pitch_target = pitch_target;
+                hw->voicetable[i].sampling_rate = pitch_target_seed;
+            }
+            
+            //unmute and update leds
+            IOSleep(200);
+            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, led | EMU_HANA_DOCK_LEDS_2_LOCK);
+            kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
+            
+            if (card_frequency != 48000){
+                config_val |= HCFG_44K_K2;
+            }else{
+                config_val &= ( ~HCFG_44K_K2 );
+            }
+            
+            kx_writefn0(hw,HCFG_K1,config_val);
+            
+            hw->card_frequency = card_frequency;
         }
     }
     
-    dump_addr();
+    //dump_addr();
     
     return kIOReturnSuccess;
 }
@@ -1025,7 +1127,7 @@ void kXAudioEngine::dump_addr(void)
 }
 
 //just to make syntax a little bit better
-bool kXAudioEngine::inRange(const int n, const int min, const int max){
+bool kXAudioEngine::inRange(const long n, const long min, const long max){
     return (n <= max && n >= min);
 }
 
@@ -1042,7 +1144,7 @@ UInt32 kXAudioEngine::stringToNumber_dummy(const char *str){
     if (str){
         
         //if the string starts with 0x it's interpreted like a an hex value, otherwise is interpreted as a base 10 value
-        static const UInt8 hex_mul = 16, dec_mul = 10;
+        const UInt8 hex_mul = 16, dec_mul = 10;
         const UInt8 mul = ((str[0] == '0') && (str[1] == 'x')) ? hex_mul : dec_mul;
         ddebug("    mul is %u\n", mul);
         

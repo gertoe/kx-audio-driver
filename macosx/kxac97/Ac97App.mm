@@ -23,7 +23,9 @@
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-
+#import <Cocoa/Cocoa.h>
+#import <AppKit/AppKit.h>
+#import <Foundation/Foundation.h>
 #import "Ac97App.h"
 #import "Ac97Controller.h"
 
@@ -143,8 +145,9 @@
     
     NSDictionary *regs = [ac97 registers];
 
-    for (NSString *key in [regs allKeys])
+    for (NSString *key in [regs allKeys]){
         kx->ac97_write([regs[key][0] unsignedCharValue], [[card objectForKey:key] intValue]);
+	}
 }
 
 - (void)saveState:(iKX *)kx
