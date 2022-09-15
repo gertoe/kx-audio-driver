@@ -21,6 +21,12 @@
 #ifndef I386_H_
 #define I386_H_
 
+#if (defined(i386) || defined(I386) || defined(IX86) || defined(__I386__) || defined(_IX86) || defined(_M_IX86) || defined(AMD64) || defined(__x86_64__) || defined(__i386__))
+#define X86
+#define ARCH_DETECTED
+#endif
+
+#if defined(X86)
 // Basic kX-related type definitions
 // these are architecture-dependent:
 
@@ -39,11 +45,11 @@ typedef unsigned char byte;
 
 typedef unsigned long uintptr_t;
 
-#define X86
-
 #ifdef KX_INTERNAL
 
-//#define SYSTEM_IO
+#ifndef SYSTEM_IO
+    #define SYSTEM_IO
+#endif
 //#define OLD_ALLOC
 
 #if !defined(CONIO_USAGE) && !defined(SYSTEM_IO)
@@ -210,4 +216,5 @@ extern __inline__ void outp(word port,
  #define PAGE_SIZE 	4096
 #endif
 
+#endif
 #endif

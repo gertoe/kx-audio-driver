@@ -1044,7 +1044,7 @@ IOReturn kXAudioDevice::user_request(const void* inStruct, void* outStruct,uint3
             break;
         case KX_PROP_INITPASSTHRU+KX_PROP_GET:
         {
-            prep_in(dword_property);
+            //prep_in(dword_property);
             prep_out(dword_property);
             
             int method=0;
@@ -1063,7 +1063,7 @@ IOReturn kXAudioDevice::user_request(const void* inStruct, void* outStruct,uint3
         case KX_PROP_CLOSEPASSTHRU+KX_PROP_GET:
         {
             prep_in(dword_property);
-            prep_out(dword_property);
+            //prep_out(dword_property);
             
             if(kx_close_passthru(hw,in->pntr)!=0)
                 return kIOReturnBadArgument;
@@ -1072,7 +1072,7 @@ IOReturn kXAudioDevice::user_request(const void* inStruct, void* outStruct,uint3
         case KX_PROP_SETPASSTHRU+KX_PROP_GET:
         {
             prep_in(dword_property);
-            prep_out(dword_property);
+            //prep_out(dword_property);
             
             if(kx_set_passthru(hw,in->pntr,(int)in->reg)!=0)
                 return kIOReturnBadArgument;
