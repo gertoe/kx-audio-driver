@@ -65,8 +65,10 @@ class kXAudioDevice : public IOAudioDevice
 {
     friend class kXAudioEngine;
     
-public:    
+public:
     OSDeclareDefaultStructors(kXAudioDevice)
+    
+private:
     
     //protected stuff
     IOPCIDevice						*pciDevice;
@@ -78,12 +80,6 @@ public:
 	int								is_muted;
 	dword							master_volume[2];
 	kXAudioEngine					*engine;
-	
-	bool init(OSDictionary *dictionary);
-	virtual bool initHardware(IOService *provider);
-    virtual bool createAudioEngine();
-    virtual void free();
-	virtual void stop(IOService *provider);
  
 	// ---- HAL functions [OS-specific]
     void malloc_func(int len,void **b,int where);
@@ -118,18 +114,31 @@ public:
 	
     // input controls
     static IOReturn gainChangeHandler(IOService *target, IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue);
-    virtual IOReturn gainChanged(IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue);
+    
     
 	// volume controls
     static IOReturn volumeChangeHandler(IOService *target, IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue);
-    virtual IOReturn volumeChanged(IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue);
+    
     
     static IOReturn outputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
-    virtual IOReturn outputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
+    
 	
 	int create_audio_controls(IOAudioEngine *audioEngine);
     
 public:
+    
+    virtual bool init(OSDictionary *dictionary);
+    virtual bool initHardware(IOService *provider);
+    virtual bool createAudioEngine();
+    virtual void free();
+    virtual void stop(IOService *provider);
+    
+    virtual IOReturn gainChanged(IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue);
+    
+    virtual IOReturn volumeChanged(IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue);
+    
+    virtual IOReturn outputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
+    
 	virtual IOReturn user_request(const void* inStruct, void* outStruct,uint32_t inStructSize, const uint32_t* outStructSize);
 
 	virtual IOReturn performPowerStateChange(IOAudioDevicePowerState oldPowerState, IOAudioDevicePowerState newPowerState, UInt32 *microsecondsUntilComplete);

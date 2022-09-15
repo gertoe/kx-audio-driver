@@ -22,6 +22,8 @@ typedef unsigned char  byte;
     typedef long long __int64;
 #endif
 
+typedef unsigned long uintptr_t;
+
 #ifdef KX_INTERNAL
 
 #define SYSTEM_IO

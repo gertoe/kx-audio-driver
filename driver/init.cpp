@@ -182,7 +182,7 @@ FOUND: // bus,dev,func contain right values
  
  *p++=' ';
  *p++='[';
- itoax(p,(size_t)(hw->port), (byte)(sizeof(hw->port)*2)); p+=(sizeof(hw->port)*2);
+ itoax(p,(uintptr_t)(hw->port), (byte)(sizeof(hw->port)*2)); p+=(sizeof(hw->port)*2);
  *p++=']'; 
 	
 #if 0

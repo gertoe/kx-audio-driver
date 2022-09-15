@@ -12,7 +12,12 @@
 // Basic kX-related type definitions
 // these are architecture-dependent:
 
-typedef unsigned long  dword;
+#if defined(__GNUC__)
+typedef unsigned int dword;
+#else
+typedef unsigned long dword;
+#endif
+
 typedef unsigned short word;
 typedef unsigned char  byte;
 
@@ -21,6 +26,8 @@ typedef unsigned char  byte;
 #if defined(__GNUC__)
     typedef long long __int64;
 #endif
+
+typedef unsigned long uintptr_t;
 
 #ifdef KX_INTERNAL
 

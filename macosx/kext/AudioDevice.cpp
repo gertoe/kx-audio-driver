@@ -255,8 +255,8 @@ bool kXAudioDevice::initHardware(IOService *provider)
         
         //strncat(device_name,hw->card_name,KX_MAX_STRING);
         
-        strncpy(device_name, hw->card_name, KX_MAX_STRING);
-        strncpy(device_model_name, hw->card_model_name, KX_MAX_STRING);
+        _kx_strcpy(device_name, hw->card_name, KX_MAX_STRING);
+        _kx_strcpy(device_model_name, hw->card_model_name, KX_MAX_STRING);
 		
 		device_name[KX_MAX_STRING - 1] = '\0';
 		device_model_name[KX_MAX_STRING - 1] = '\0';
@@ -1639,9 +1639,9 @@ IOReturn kXAudioDevice::user_request(const void* inStruct, void* outStruct,uint3
             prep_in(kx_assignment_info);
             if(in->level<MAX_MIXER_CONTROLS && in->level>=0)
             {
-                strncpy(hw->cb.mixer_controls[in->level].pgm_name,in->pgm,KX_MAX_STRING);
-                strncpy(hw->cb.mixer_controls[in->level].reg_left,in->reg_left,KX_MAX_STRING);
-                strncpy(hw->cb.mixer_controls[in->level].reg_right,in->reg_right,KX_MAX_STRING);
+                _kx_strcpy(hw->cb.mixer_controls[in->level].pgm_name,in->pgm,KX_MAX_STRING);
+                _kx_strcpy(hw->cb.mixer_controls[in->level].reg_left,in->reg_left,KX_MAX_STRING);
+                _kx_strcpy(hw->cb.mixer_controls[in->level].reg_right,in->reg_right,KX_MAX_STRING);
                 
                 hw->cb.mixer_controls[in->level].max_vol=in->max_vol;
             }
@@ -1655,9 +1655,9 @@ IOReturn kXAudioDevice::user_request(const void* inStruct, void* outStruct,uint3
             prep_in(kx_assignment_info);
             if(in->level<MAX_MIXER_CONTROLS && in->level>=0)
             {
-                strncpy(out->pgm,hw->cb.mixer_controls[in->level].pgm_name,KX_MAX_STRING);
-                strncpy(out->reg_left,hw->cb.mixer_controls[in->level].reg_left,KX_MAX_STRING);
-                strncpy(out->reg_right,hw->cb.mixer_controls[in->level].reg_right,KX_MAX_STRING);
+                _kx_strcpy(out->pgm,hw->cb.mixer_controls[in->level].pgm_name,KX_MAX_STRING);
+                _kx_strcpy(out->reg_left,hw->cb.mixer_controls[in->level].reg_left,KX_MAX_STRING);
+                _kx_strcpy(out->reg_right,hw->cb.mixer_controls[in->level].reg_right,KX_MAX_STRING);
                 
                 out->max_vol=hw->cb.mixer_controls[in->level].max_vol;
             }

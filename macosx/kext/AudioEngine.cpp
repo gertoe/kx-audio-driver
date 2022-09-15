@@ -248,7 +248,7 @@ bool kXAudioEngine::initHardware(IOService *provider)
     
     //strncat(device_name,hw->card_name,KX_MAX_STRING);
     
-    strncpy(device_name, hw->card_name, KX_MAX_STRING);
+    _kx_strcpy(device_name, hw->card_name, KX_MAX_STRING);
     
     setDescription(device_name);
     
@@ -1186,3 +1186,8 @@ UInt32 kXAudioEngine::stringToNumber_dummy(const char *str){
         
 }
 
+#if defined(ARM)
+bool kXAudioEngine::driverDesiresHiResSampleIntervals(){
+    return TRUE; //to be changed probably, idk
+}
+#endif

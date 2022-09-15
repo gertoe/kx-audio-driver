@@ -61,7 +61,7 @@ static inline char itoax_s(dword v)
         return (char)v+'0';
 }
 
-static inline void itoax(char *str, const dword vall, const byte len)
+static inline void itoax(char *str, const uintptr_t vall, const byte len)
 {
     dword val = (dword)vall;// & 0xffff;
     
@@ -82,6 +82,26 @@ static inline void itoax(char *str, const dword vall, const byte len)
      */
     
 }
+
+static void _kx_strcpy(char* destination, const char* source, dword len)
+{
+    
+    // return if no memory is allocated to the destination
+    if (destination == (char*)0 || len == 0) {
+        return;
+    }
+    
+    while (*source && len--)
+    {
+        *destination++ = *source++;
+    }
+ 
+    // null terminate destination string
+    *destination = '\0';
+    
+    return;
+}
+
 
 #if defined(SYSTEM_IO)
 

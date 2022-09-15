@@ -35,8 +35,9 @@
 
 class kXAudioEngine : public IOAudioEngine
 {
+public:
     OSDeclareDefaultStructors(kXAudioEngine)
-//public:    
+private:
     kx_hw	*hw;
 	int		n_frames;
 	int		bps;
@@ -71,11 +72,11 @@ class kXAudioEngine : public IOAudioEngine
     
     void dump_addr(void);
     
-    virtual struct memhandle *my_alloc_contiguous(size_t size);
-    virtual void       my_free_contiguous(struct memhandle *desc, mach_vm_size_t size);
+    struct memhandle *my_alloc_contiguous(size_t size);
+    void my_free_contiguous(struct memhandle *desc, mach_vm_size_t size);
     
-    virtual inline bool inRange(const long, const long, const long);
-    virtual inline UInt32 stringToNumber_dummy(const char *str);
+    inline bool inRange(const long, const long, const long);
+    inline UInt32 stringToNumber_dummy(const char *str);
     
 public:
 
@@ -98,6 +99,10 @@ public:
 
     virtual IOReturn clipOutputSamples(const void *mixBuf, void *sampleBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
     virtual IOReturn convertInputSamples(const void *sampleBuf, void *destBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
+    
+#if defined(ARM)
+    virtual bool driverDesiresHiResSampleIntervals(void);
+#endif
     
 };
 

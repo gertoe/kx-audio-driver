@@ -37,6 +37,8 @@ typedef unsigned char byte;
     typedef long long __int64;
 #endif
 
+typedef unsigned long uintptr_t;
+
 #define X86
 
 #ifdef KX_INTERNAL

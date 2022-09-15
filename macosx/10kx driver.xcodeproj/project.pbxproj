@@ -6169,7 +6169,7 @@
 		44212BE50DECB47E00E06065 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2.3.0b0;
@@ -6193,7 +6193,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = kXAudioDriver;
 				SDKROOT = macosx;
-				VALID_ARCHS = "x86_64 i386";
+				VALID_ARCHS = "x86_64 i386 arm64e";
 				WRAPPER_EXTENSION = kext;
 			};
 			name = Deployment;
@@ -6201,7 +6201,7 @@
 		44212C1D0DECB66900E06065 /* Deployment */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_X86_VECTOR_INSTRUCTIONS = sse4.1;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -6225,7 +6225,7 @@
 				MODULE_IOKIT = YES;
 				PRODUCT_NAME = FloatLib;
 				SDKROOT = macosx;
-				VALID_ARCHS = "x86_64 i386";
+				VALID_ARCHS = "x86_64 i386 arm64e";
 			};
 			name = Deployment;
 		};
@@ -6233,7 +6233,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = x86_64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				COPY_PHASE_STRIP = YES;
 				CURRENT_PROJECT_VERSION = 2.3.0b0;
 				DEAD_CODE_STRIPPING = NO;
@@ -6307,7 +6307,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = x86_64;
+				ARCHS = "$(ARCHS_STANDARD)";
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DYLIB_COMPATIBILITY_VERSION = 1;
