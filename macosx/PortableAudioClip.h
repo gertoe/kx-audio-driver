@@ -65,40 +65,40 @@ static const float clipNegMulDiv32 = 1 / clipNegMul32;
 static inline int32_t FloatToInt32(const double val){
 
 #if !defined(PPC) || defined(NO_ASM)
-    static const double maxInt32 = 2147483648.0;	// 1 << 31
-	static const double round = 128.0;
-	static const double max32 = maxInt32 - 1.0 - round;
+    static const double maxInt32 = 2147483648.0;    // 1 << 31
+    static const double round = 128.0;
+    static const double max32 = maxInt32 - 1.0 - round;
 #endif
     
 #if defined(PPC) && !defined(NO_ASM)
-	int32_t i;
-	union {
-		double	 d;
-		uint32_t i[2];
-	} u;
+    int32_t i;
+    union {
+        double     d;
+        uint32_t i[2];
+    } u;
     
-	// fctiw rounds, doesn't truncate towards zero like fctiwz
-	__asm__ volatile ("fctiw %0, %1" 
-			 : "=f" (u.d) 
-			 : "f" (val));
+    // fctiw rounds, doesn't truncate towards zero like fctiwz
+    __asm__ volatile ("fctiw %0, %1"
+             : "=f" (u.d)
+             : "f" (val));
     
-	i = u.i[1];
-	return i;
-	
+    i = u.i[1];
+    return i;
+    
 #elif defined(X86)
-	/*
-	if (val >= max32) return 0x7FFFFFFF;
-	return (SInt32)val; //the compiler handles it better on x86, hence the missing check compared to the generic version
+    /*
+    if (val >= max32) return 0x7FFFFFFF;
+    return (SInt32)val; //the compiler handles it better on x86, hence the missing check compared to the generic version
     */
-	
-	return ((val >= max32) * 0x7FFFFFFF) + ((val < max32) * ((int32_t)val)); //branchless, so the cpu is happy
+    
+    return ((val >= max32) * 0x7FFFFFFF) + ((val < max32) * ((int32_t)val)); //branchless, so the cpu is happy
 #else
     //Generic slow version
     static const double min32 = -2147483648.0;
     
-	if (val >= max32) return 0x7FFFFFFF;
-	else if (val <= min32) return 0x80000000;
-	return (SInt32)val;
+    if (val >= max32) return 0x7FFFFFFF;
+    else if (val <= min32) return 0x80000000;
+    return (SInt32)val;
     
 #endif
     
@@ -107,29 +107,29 @@ static inline int32_t FloatToInt32(const double val){
 static inline double fabs(const double val){
  
 #if defined(PPC) && !defined(NO_ASM)
-	double d;
+    double d;
     
-	__asm__ volatile ("fabs %0, %1" 
-			 : "=f" (d)
-			 : "f" (val));
+    __asm__ volatile ("fabs %0, %1"
+             : "=f" (d)
+             : "f" (val));
     
-	return d;
-#else 
+    return d;
+#else
     return val * ((val > 0) - (val < 0));
 #endif
     
 }
 
 static inline double fmax(const double a, const double b){
-	return (a + b + fabs(a - b)) / 2;
+    return (a + b + fabs(a - b)) / 2;
 }
 
 static inline double fmin(const double a, const double b){
-	return (a + b - fabs(a - b)) / 2;
+    return (a + b - fabs(a - b)) / 2;
 }
 
 static inline double clamp(const double val){
-	return fmin(fmax(val, clipMin), clipMax); 
+    return fmin(fmax(val, clipMin), clipMax);
 }
 
 
@@ -151,14 +151,14 @@ static void Float32ToSInt32_portable( const float* floatMixBuf, SInt32* destBuf,
 }
 
 static void Float32ToSInt16Aligned32_portable( const float* floatMixBuf, SInt32* destBuf, const size_t end, const size_t start){
-	register float inSample;
+    register float inSample;
     register size_t sampleIndex = start, sampleDestinationMemoryIndex = (start * sizeof(*destBuf));
     
     // Loop through the mix/sample buffers one sample at a time and perform the clip and conversion operations
     for (; sampleIndex < end; sampleIndex++, sampleDestinationMemoryIndex += sizeof(*destBuf)){
         // Fetch the floating point mix sample
         inSample = (clamp(floatMixBuf[sampleIndex]) * clipPosMul16);
-		
+        
         // Scale the -1.0 to 1.0 range to the appropriate scale for signed 16-bit samples and then
         // convert to SInt16 and shit upwards of 16 bits (to have the correct volume) and store in the hardware sample buffer
         
@@ -168,14 +168,14 @@ static void Float32ToSInt16Aligned32_portable( const float* floatMixBuf, SInt32*
 }
 
 static void Float32ToSInt16_portable( const float* floatMixBuf, SInt16* destBuf, const size_t end, const size_t start){
-	register float inSample;
+    register float inSample;
     register size_t sampleIndex = start, sampleDestinationMemoryIndex = (start * sizeof(*destBuf));
     
     // Loop through the mix/sample buffers one sample at a time and perform the clip and conversion operations
     for (; sampleIndex < end; sampleIndex++, sampleDestinationMemoryIndex += sizeof(*destBuf)){
         // Fetch the floating point mix sample
         inSample = (clamp(floatMixBuf[sampleIndex]) * clipPosMul16);
-		
+        
         // Scale the -1.0 to 1.0 range to the appropriate scale for signed 16-bit samples and then
         // convert to SInt16 and store in the hardware sample buffer
         
@@ -183,7 +183,7 @@ static void Float32ToSInt16_portable( const float* floatMixBuf, SInt16* destBuf,
     }
 }
 
-static void Float32ToSInt32_no_array_little_endian( const float* mixBuf, int32_t* destBuf, const size_t end, const size_t start){
+static void Float32ToSInt32_no_array_little_endian( const float* mixBuf, SInt32* destBuf, const size_t end, const size_t start){
     register uintptr_t inSample = (uintptr_t)&mixBuf[start];
     register uintptr_t outSample = (uintptr_t)&destBuf[start];
     
@@ -195,7 +195,7 @@ static void Float32ToSInt32_no_array_little_endian( const float* mixBuf, int32_t
     
 }
 
-static void Float32ToSInt16Aligned32_no_array_little_endian( const float* mixBuf, int32_t* destBuf, const size_t end, const size_t start){
+static void Float32ToSInt16Aligned32_no_array_little_endian( const float* mixBuf, SInt32* destBuf, const size_t end, const size_t start){
     register uintptr_t inSample = (uintptr_t)&mixBuf[start];
     register uintptr_t outSample = (uintptr_t)&destBuf[start];
     
@@ -206,7 +206,7 @@ static void Float32ToSInt16Aligned32_no_array_little_endian( const float* mixBuf
     }
 }
 
-static void Float32ToSInt16_no_array_little_endian( const float* mixBuf, int16_t* destBuf, const size_t end, const size_t start){
+static void Float32ToSInt16_no_array_little_endian( const float* mixBuf, SInt16* destBuf, const size_t end, const size_t start){
     register uintptr_t inSample = (uintptr_t)&mixBuf[start];
     register uintptr_t outSample = (uintptr_t)&destBuf[start];
     
@@ -217,7 +217,7 @@ static void Float32ToSInt16_no_array_little_endian( const float* mixBuf, int16_t
     }
 }
 
-static void Float32ToSInt32_no_array_portable( const float* mixBuf, int32_t* destBuf, const size_t end, const size_t start){
+static void Float32ToSInt32_no_array_portable( const float* mixBuf, SInt32* destBuf, const size_t end, const size_t start){
     register uintptr_t inSample = (uintptr_t)&mixBuf[start];
     register size_t outSampleIndex = start * sizeof(*destBuf);
     
@@ -228,7 +228,7 @@ static void Float32ToSInt32_no_array_portable( const float* mixBuf, int32_t* des
     }
 }
 
-static void Float32ToSInt16Aligned32_no_array_portable( const float* mixBuf, int32_t* destBuf, const size_t end, const size_t start){
+static void Float32ToSInt16Aligned32_no_array_portable( const float* mixBuf, SInt32* destBuf, const size_t end, const size_t start){
     register uintptr_t inSample = (uintptr_t)&mixBuf[start];
     register size_t outSampleIndex = start * sizeof(*destBuf);
     
@@ -239,7 +239,7 @@ static void Float32ToSInt16Aligned32_no_array_portable( const float* mixBuf, int
     }
 }
 
-static void Float32ToSInt16_no_array_portable( const float* mixBuf, int16_t* destBuf, const size_t end, const size_t start){
+static void Float32ToSInt16_no_array_portable( const float* mixBuf, SInt16* destBuf, const size_t end, const size_t start){
     register uintptr_t inSample = (uintptr_t)&mixBuf[start];
     register size_t outSampleIndex = start * sizeof(*destBuf);
     
@@ -258,6 +258,11 @@ static void Float32ToSInt16_no_array_portable( const float* mixBuf, int16_t* des
 #define Float32ToSInt16Aligned32_optimized Float32ToSInt16Aligned32_no_array_portable
 
 #elif defined(TARGET_RT_LITTLE_ENDIAN) || defined(X86)
+
+#ifndef TARGET_RT_LITTLE_ENDIAN
+#define TARGET_RT_LITTLE_ENDIAN 0
+#endif
+
 #if TARGET_RT_LITTLE_ENDIAN || defined(X86)
 
 #define Float32ToSInt16_optimized Float32ToSInt16_no_array_little_endian
