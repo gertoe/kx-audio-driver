@@ -75,9 +75,6 @@ private:
     struct memhandle *my_alloc_contiguous(size_t size);
     void my_free_contiguous(struct memhandle *desc, mach_vm_size_t size);
     
-    inline bool inRange(const long, const long, const long);
-    inline UInt32 stringToNumber_dummy(const char *str);
-    
 public:
 
     virtual bool init(kx_hw *hw_);

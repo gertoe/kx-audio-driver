@@ -122,8 +122,10 @@ private:
     
     static IOReturn outputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
     
-	
 	int create_audio_controls(IOAudioEngine *audioEngine);
+    
+    static void interruptHandler(OSObject *owner, IOInterruptEventSource *source, int count);
+    static bool interruptFilter(OSObject *owner, IOFilterInterruptEventSource *source);
     
 public:
     
@@ -143,7 +145,7 @@ public:
 
 	virtual IOReturn performPowerStateChange(IOAudioDevicePowerState oldPowerState, IOAudioDevicePowerState newPowerState, UInt32 *microsecondsUntilComplete);
 
-protected:
+private:
 	/*
     static IOReturn gainChangeHandler(IOService *target, IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue);
     virtual IOReturn gainChanged(IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue);
@@ -157,8 +159,7 @@ protected:
 	int fpga_fw_offset;
 	int fpga_fw_size;
 	
-    static void interruptHandler(OSObject *owner, IOInterruptEventSource *source, int count);
-    static bool interruptFilter(OSObject *owner, IOFilterInterruptEventSource *source);
+    
 };
 
 

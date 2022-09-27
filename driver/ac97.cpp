@@ -352,6 +352,8 @@ KX_API(void,kx_ac97reset(kx_hw *hw))
     i++;
  }
 
+ debug(DLIB,"ac97 init::Detected codec: '%s'\n",hw->ac97_codec_name);
+    
  i=0;
  while(1)
  {

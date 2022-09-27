@@ -22,6 +22,7 @@
 
 #include "AudioDevice.h"
 #include "AudioEngine.h"
+#include "Utility.h"
 
 #define DBGCLASS "kXAudioDevice"
 
@@ -253,11 +254,9 @@ bool kXAudioDevice::initHardware(IOService *provider)
         bzero(device_name, KX_MAX_STRING);
 		bzero(device_model_name, KX_MAX_STRING);
         
-        //strncat(device_name,hw->card_name,KX_MAX_STRING);
-        
         _kx_strcpy(device_name, hw->card_name, KX_MAX_STRING);
         _kx_strcpy(device_model_name, hw->card_model_name, KX_MAX_STRING);
-		
+        
 		device_name[KX_MAX_STRING - 1] = '\0';
 		device_model_name[KX_MAX_STRING - 1] = '\0';
         

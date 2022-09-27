@@ -21,6 +21,7 @@
 
 #include "AudioDevice.h"
 #include "AudioEngine.h"
+#include "Utility.h"
 #include "emu.h"
 
 #define DBGCLASS "kXAudioEngine"
@@ -142,7 +143,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
     if (PE_parse_boot_argn("_kxcsr", customSampleRate, KXBootArgValueLength)){
         debug(DBGCLASS"[%p]::init: custom sampling rate specified with the _kxcsr boot arg\n",this);
         
-        custom_sampling_rate = stringToNumber_dummy(customSampleRate);
+        custom_sampling_rate = stringToNumber(customSampleRate);
         
         //i mean who needs a smapling rate lower than 1k? i don't even know if the i/o kit allows for sampling rates this low - ITzTravelInTime
         if (!inRange(custom_sampling_rate, KX_MIN_RATE, KX_MAX_RATE)){
@@ -180,7 +181,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
            
         debug(DBGCLASS"[%p]::init: custom n_frames multiplyer specified with the _kxcfm boot arg\n",this);
         
-        unsigned int mul = (unsigned int)stringToNumber_dummy(customMultiplyer);
+        unsigned int mul = (unsigned int)stringToNumber(customMultiplyer);
         
         //limited to 128x for "safety" reasons, 128x is already an insane value
         if (inRange(mul, 1, 128)){
@@ -1083,7 +1084,7 @@ void kXAudioEngine::dump_addr(void)
     
     //debug dumping and stuff, nice if you don't need it and you just want some extra text to look at while you are booting
     
-#if 0
+#if 1
     IOLog("== functions: init: %p initHardware: %p free: %p stop: %p free_all: %p alloc: %p free: %p freeAS: %p\n"
           "== functions: create: %p perfStart: %p perfStop: %p getCW: %p fmt: %p\n"
           "== functions: clip: %p clip2: %p\n",
@@ -1109,12 +1110,12 @@ void kXAudioEngine::dump_addr(void)
     debug("\n\n== n_frames stuff\n");
     debug("== n_frames %i\n", n_frames);
     debug("== customMultiplyer %s\n", customMultiplyer);
-    debug("== customMultiplyer interpeted %u\n", stringToNumber_dummy(customMultiplyer));
+    debug("== customMultiplyer interpeted %u\n", stringToNumber(customMultiplyer));
     
     debug("\n\n== sampling rate stuff\n");
     debug("== custom_sampling_rate %i\n", custom_sampling_rate);
     debug("== customSampleRate %s\n", customSampleRate);
-    debug("== customSampleRate interpreted %u\n", stringToNumber_dummy(customSampleRate));
+    debug("== customSampleRate interpreted %u\n", stringToNumber(customSampleRate));
     
     debug("\n\n== mapping stuff\n");
     debug("== customMapping %s\n", customMapping);
@@ -1124,66 +1125,6 @@ void kXAudioEngine::dump_addr(void)
     */
      
 #endif
-}
-
-//just to make syntax a little bit better
-bool kXAudioEngine::inRange(const long n, const long min, const long max){
-    return (n <= max && n >= min);
-}
-
-
-//just for our boot arg purposes, likely libriries provvide a better option but i am not a library expert - ITzTravelInTime
-UInt32 kXAudioEngine::stringToNumber_dummy(const char *str){
-    
-    ddebug("\nstringToNumber_dummy Interpreting: %s\n", str);
-    
-    //0 is returned in case of error
-    UInt32 ret = 0;
-    
-    
-    if (str){
-        
-        //if the string starts with 0x it's interpreted like a an hex value, otherwise is interpreted as a base 10 value
-        const UInt8 hex_mul = 16, dec_mul = 10;
-        const UInt8 mul = ((str[0] == '0') && (str[1] == 'x')) ? hex_mul : dec_mul;
-        ddebug("    mul is %u\n", mul);
-        
-        for (size_t i = ((mul == hex_mul) ? 2 : 0); i < strlen(str) ; i++){
-            char c = str[i];
-            
-            ddebug("    iteration %lu value %c\n", i, c);
-            
-            ret *= mul;
-            
-            if (inRange(c, '0', '9')){
-                ret += (c - '0');
-                ddebug("        fits n %u\n", ret);
-                
-            }else if (mul == hex_mul){
-                
-                //this implementation is case insensitive, but it's not the best for performance
-                if (inRange(c, 'a', 'f')) {
-                    ret += (c - 'a' + 10);
-                    ddebug("        fits h %u\n", ret);
-                }else if (inRange(c, 'A', 'F')) {
-                    ret += (c - 'A' + 10);
-                    ddebug("        fits H %u\n", ret);
-                }else{
-                    ddebug("        abort 1!\n");
-                    return 0;
-                }
-                    
-            }else{
-                ddebug("        abort 2!\n");
-                return 0;
-            }
-        }
-    }
-    
-    ddebug("stringToNumber_dummy end: %u\n\n", ret);
-    
-    return ret;
-        
 }
 
 #if defined(ARM)

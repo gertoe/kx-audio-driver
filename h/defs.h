@@ -84,25 +84,6 @@ static inline void itoax(char *str, const uintptr_t vall, const byte len)
     
 }
 
-static void _kx_strcpy(char* destination, const char* source, dword len)
-{
-    
-    // return if no memory is allocated to the destination
-    if (destination == (char*)0 || len == 0) {
-        return;
-    }
-    
-    while (*source && len--)
-    {
-        *destination++ = *source++;
-    }
- 
-    // null terminate destination string
-    *destination = '\0';
-    
-    return;
-}
-
 #if defined(SYSTEM_IO)
 
 dword inpd_System(const io_port_t port);
