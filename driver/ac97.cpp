@@ -260,7 +260,7 @@ KX_API(void,kx_ac97write(kx_hw *hw,byte index, word data))
  while((!(inp_System(hw->port,AC97ADDRESS)&AC97ADDRESS_READY))&&(timeout))
   timeout--;
  if(timeout)
-  outpw(hw->port+AC97DATA,data);
+  outpw_System(hw->port,AC97DATA,data);
 
  kx_lock_release(hw,&hw->ac97_lock,&flags);
 }

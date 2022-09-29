@@ -224,7 +224,7 @@ KX_API(void, kx_writeptrw(kx_hw *hw, dword reg, dword channel, word data))
 
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
         outpd_System(hw->port, PTR,regptr);
-        outpw(hw->port + DATA,data);
+        outpw_System(hw->port, DATA,data);
         kx_lock_release(hw,&hw->hw_lock, &flags);
 }
 

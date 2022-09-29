@@ -115,12 +115,12 @@ extern __inline__ byte inp(const io_port_t port)
 extern __inline__ void outpd(io_port_t port, const dword value)
 {
     outpd_System(port, 0, value);
-}*/
+}
 
 extern __inline__ void outpw(io_port_t port, const word value)
 {
     outpw_System(port, 0, value);
-}
+}*/
 
 extern __inline__ void outp(io_port_t port, const byte value)
 {
