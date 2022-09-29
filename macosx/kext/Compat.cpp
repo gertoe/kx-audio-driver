@@ -78,6 +78,10 @@ dword inpd_System(const io_port_t port, const word displacement){
     
     const word disp = displacement & 0xFFFF;
     
+    if ((port + disp) % 4 != 0){
+        IOLog("kXAudioDriver::ILLEGAL IO PORT MEMORY ACCESS!!!!!! %lx, %i", port, disp);
+    }
+    
     register dword value = OSReadLittleInt32( (volatile void *) port, disp);
     OSSynchronizeIO();
     
@@ -87,6 +91,10 @@ dword inpd_System(const io_port_t port, const word displacement){
 word inpw_System(const io_port_t port, const word displacement){
     
     const word disp = displacement & 0xFFFF;
+    
+    if ((port + disp) % 2 != 0){
+        IOLog("kXAudioDriver::ILLEGAL IO PORT MEMORY ACCESS!!!!!! %lx, %i", port, disp);
+    }
     
     register word value = OSReadLittleInt16( (volatile void *)port, disp);
     OSSynchronizeIO();
@@ -108,6 +116,10 @@ void outpd_System(io_port_t port, const word displacement, const dword value){
     
     const word disp = displacement & 0xFFFF;
     
+    if ((port + disp) % 4 != 0){
+        IOLog("kXAudioDriver::ILLEGAL IO PORT MEMORY ACCESS!!!!!! %lx, %i", port, disp);
+    }
+    
     OSWriteLittleInt32( (volatile void *)port, disp, value);
     OSSynchronizeIO();
 }
@@ -115,6 +127,10 @@ void outpd_System(io_port_t port, const word displacement, const dword value){
 void outpw_System(io_port_t port, const word displacement, const word value){
     
     const word disp = displacement & 0xFFFF;
+    
+    if ((port + disp) % 2 != 0){
+        IOLog("kXAudioDriver::ILLEGAL IO PORT MEMORY ACCESS!!!!!! %lx, %i", port, disp);
+    }
     
     OSWriteLittleInt16( (volatile void *)port, disp, value);
     OSSynchronizeIO();
@@ -131,6 +147,13 @@ void outp_System(io_port_t port, const word displacement, const byte value){
 #elif defined(__i386__) || defined(__x86_64__) || defined(X86)
 
 dword inpd_System(const io_port_t port, const word displacement){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    if ((port + disp) % 4 != 0){
+        IOLog("kXAudioDriver::ILLEGAL IO PORT MEMORY ACCESS!!!!!! %hx, %i", port, disp);
+    }
+    
     dword value = 0;
     
     __asm__ volatile("inl %w1, %0" : "=a" (value) : "Nd" (port + displacement));
@@ -139,6 +162,13 @@ dword inpd_System(const io_port_t port, const word displacement){
 }
 
 word inpw_System(const io_port_t port, const word displacement){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    if ((port + disp) % 2 != 0){
+        IOLog("kXAudioDriver::ILLEGAL IO PORT MEMORY ACCESS!!!!!! %hx, %i", port, disp);
+    }
+    
     word value = 0;
     
     __asm__ volatile("inw %w1, %0" : "=a" (value) : "Nd" (port + displacement));
@@ -155,10 +185,24 @@ byte inp_System(const io_port_t port, const word displacement){
 }
 
 void outpd_System(io_port_t port, const word displacement, const dword value){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    if ((port + disp) % 4 != 0){
+        IOLog("kXAudioDriver::ILLEGAL IO PORT MEMORY ACCESS!!!!!! %hx, %i", port, disp);
+    }
+    
     __asm__ volatile("outl %0, %w1" : : "a" (value), "Nd" (port + displacement));
 }
 
 void outpw_System(io_port_t port, const word displacement, const word value){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    if ((port + disp) % 2 != 0){
+        IOLog("kXAudioDriver::ILLEGAL IO PORT MEMORY ACCESS!!!!!! %hx, %i", port, disp);
+    }
+    
     __asm__ volatile("outw %0, %w1" : : "a" (value), "Nd" (port + displacement));
 }
 
