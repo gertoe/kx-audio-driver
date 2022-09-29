@@ -37,7 +37,7 @@
  #error "Unknown OS"
 #endif
 
-#define KX_PAGE_SIZE    4096
+#define KX_PAGE_SIZE PAGE_SIZE
 
 #include "driver/list.h"
 #include "hw/8010x.h"
@@ -637,7 +637,7 @@ KX_API(dword,kx_getdword(kx_hw *hw,int what,dword *ret)); // returns 0 on succes
 int kx_alloc_buffer(kx_hw *hw,int num);
 void kx_free_buffer(kx_hw *hw,int num);
 
-io_port_t ioAddr(kx_hw* hw, const dword reg);
+//io_port_t ioAddr(kx_hw* hw, const dword reg);
 
 // UART
 KX_API(int,kx_mpu_write_data(kx_hw *card, byte data,int where));

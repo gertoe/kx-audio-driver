@@ -537,7 +537,7 @@ KX_API(int,kx_wave_set_parameter(kx_hw *hw,int num, int ch, int param,dword valu
                     kx_lock_acquire(hw,&hw->hw_lock, &flags);
 
                     outpd(hw->port + PTR,regptr);
-                    dword val=inpd(hw->port+DATA);
+                    dword val=inpd_System(hw->port,DATA);
                     val=(val&(~QKBCA_INTERPROMMASK))|(interpolation);
 
                     // outpd(hw->port + DATA,val);

@@ -34,7 +34,7 @@
 #endif
 
 #if defined(SYSTEM_IO) && !(defined(__x86_64__) || defined(__i386__) || defined(X86))
-typedef volatile byte* io_port_t; //volatile char*
+typedef volatile uintptr_t io_port_t; //volatile char*
 #else
 typedef word io_port_t;
 #endif
@@ -86,44 +86,46 @@ static inline void itoax(char *str, const uintptr_t vall, const byte len)
 
 #if defined(SYSTEM_IO)
 
-dword inpd_System(const io_port_t port);
-word inpw_System(const io_port_t port);
-byte inp_System(const io_port_t port);
+dword inpd_System(const io_port_t port, const word displacement);
+word inpw_System(const io_port_t port, const word displacement);
+byte inp_System(const io_port_t port, const word displacement);
 
-void outpd_System(io_port_t port, const dword value);
-void outpw_System(io_port_t port, const word value);
-void outp_System(io_port_t port, const byte value);
+void outpd_System(io_port_t port, const word displacement, const dword value);
+void outpw_System(io_port_t port, const word displacement, const word value);
+void outp_System(io_port_t port, const word displacement, const byte value);
 
 static const int system_io = 1;
 
+/*
 extern __inline__ dword inpd(const io_port_t port)
 {
-    return inpd_System(port);
+    return inpd_System(port, 0);
 }
+*/
 
 extern __inline__ word inpw(const io_port_t port)
 {
-    return inpw_System(port);
+    return inpw_System(port, 0);
 }
 
 extern __inline__ byte inp(const io_port_t port)
 {
-    return inp_System(port);
+    return inp_System(port, 0);
 }
 
 extern __inline__ void outpd(io_port_t port, const dword value)
 {
-    outpd_System(port, value);
+    outpd_System(port, 0, value);
 }
 
 extern __inline__ void outpw(io_port_t port, const word value)
 {
-    outpw_System(port, value);
+    outpw_System(port, 0, value);
 }
 
 extern __inline__ void outp(io_port_t port, const byte value)
 {
-    outp_System(port, value);
+    outp_System(port, 0, value);
 }
 
 #else

@@ -122,7 +122,7 @@ static void ecard_write(kx_hw *hw, dword value)
 
     kx_lock_acquire(hw,&hw->hw_lock, &flags);
 
-    hcvalue = inpd(hw->port + HCFG_K1) & ~(HOOKN_BIT|HANDN_BIT|PULSEN_BIT);
+    hcvalue = inpd_System(hw->port, HCFG_K1) & ~(HOOKN_BIT|HANDN_BIT|PULSEN_BIT);
 
     outpd(hw->port + HCFG_K1, hcvalue);
 

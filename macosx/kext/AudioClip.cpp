@@ -118,7 +118,7 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
 			//break;
 		case 16:
 			//IOLog("Defaulting to 16 bit playback routines\n");
-			Float32ToSInt16Aligned32_optimized( (const float *)mixBuf, (int32_t *)sampleBuf, maxSampleIndex, startSampleIndex);
+			Float32ToSInt16Aligned32_optimized( (const float *)mixBuf, (SInt32 *)sampleBuf, maxSampleIndex, startSampleIndex);
 			break;
 		//case 24:
 			//IOLog("Defaulting to 24 bit playback routines\n");
@@ -127,7 +127,7 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
 		//case 32:
 		default:
 			//IOLog("Defaulting to 32 bit playback routines\n");
-			Float32ToSInt32_optimized( (const float *)mixBuf, (int32_t *)sampleBuf, maxSampleIndex, startSampleIndex);
+			Float32ToSInt32_optimized( (const float *)mixBuf, (SInt32 *)sampleBuf, maxSampleIndex, startSampleIndex);
 			break;
 	}
 		

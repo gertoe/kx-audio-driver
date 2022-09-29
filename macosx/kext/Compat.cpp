@@ -72,85 +72,103 @@ word readLE16(const word* addr){
 
 
 #if defined(SYSTEM_IO)
-#if !(defined(__i386__) || defined(__x86_64__) || defined(X86)) || defined(PPC)
+#if !(defined(__i386__) || defined(__x86_64__) || defined(X86)) && (defined(PPC) || defined(ARM))
 
-dword inpd_System(const io_port_t port){
-    register dword value = OSReadLittleInt32( (volatile void *) port, 0);
+dword inpd_System(const io_port_t port, const word displacement){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    register dword value = OSReadLittleInt32( (volatile void *) port, disp);
     OSSynchronizeIO();
     
     return value;
 }
 
-word inpw_System(const io_port_t port){
-    register word value = OSReadLittleInt16( (volatile void *)port, 0);
+word inpw_System(const io_port_t port, const word displacement){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    register word value = OSReadLittleInt16( (volatile void *)port, disp);
     OSSynchronizeIO();
     
     return value;
 }
 
-byte inp_System(const io_port_t port){
-    register byte value = port[0];
+byte inp_System(const io_port_t port, const word displacement){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    register byte value = ((volatile byte*)port)[disp];
     OSSynchronizeIO();
     
     return value;
 }
 
-void outpd_System(io_port_t port, const dword value){
-    OSWriteLittleInt32( port, 0, value);
+void outpd_System(io_port_t port, const word displacement, const dword value){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    OSWriteLittleInt32( (volatile void *)port, disp, value);
     OSSynchronizeIO();
 }
 
-void outpw_System(io_port_t port, const word value){
-    OSWriteLittleInt16( port, 0, value);
+void outpw_System(io_port_t port, const word displacement, const word value){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    OSWriteLittleInt16( (volatile void *)port, disp, value);
     OSSynchronizeIO();
 }
 
-void outp_System(io_port_t port, const byte value){
-    port[0] = value;
+void outp_System(io_port_t port, const word displacement, const byte value){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    ((volatile byte*)port)[disp] = value;
     OSSynchronizeIO();
 }
 
 #elif defined(__i386__) || defined(__x86_64__) || defined(X86)
 
-dword inpd_System(const io_port_t port){
+dword inpd_System(const io_port_t port, const word displacement){
     dword value = 0;
     
-    __asm__ volatile("inl %w1, %0" : "=a" (value) : "Nd" (port));
+    __asm__ volatile("inl %w1, %0" : "=a" (value) : "Nd" (port + displacement));
     
     return value;
 }
 
-word inpw_System(const io_port_t port){
+word inpw_System(const io_port_t port, const word displacement){
     word value = 0;
     
-    __asm__ volatile("inw %w1, %0" : "=a" (value) : "Nd" (port));
+    __asm__ volatile("inw %w1, %0" : "=a" (value) : "Nd" (port + displacement));
     
     return value;
 }
 
-byte inp_System(const io_port_t port){
+byte inp_System(const io_port_t port, const word displacement){
     byte value = 0;
     
-    __asm__ volatile("inb %w1, %b0" : "=a" (value) : "Nd" (port));
+    __asm__ volatile("inb %w1, %b0" : "=a" (value) : "Nd" (port + displacement));
     
     return value;
 }
 
-void outpd_System(io_port_t port, const dword value){
-    __asm__ volatile("outl %0, %w1" : : "a" (value), "Nd" (port));
+void outpd_System(io_port_t port, const word displacement, const dword value){
+    __asm__ volatile("outl %0, %w1" : : "a" (value), "Nd" (port + displacement));
 }
 
-void outpw_System(io_port_t port, const word value){
-    __asm__ volatile("outw %0, %w1" : : "a" (value), "Nd" (port));
+void outpw_System(io_port_t port, const word displacement, const word value){
+    __asm__ volatile("outw %0, %w1" : : "a" (value), "Nd" (port + displacement));
 }
 
-void outp_System(io_port_t port, const byte value){
-    __asm__ volatile("outb %0, %w1" : : "a" (value), "Nd" (port));
+void outp_System(io_port_t port, const word displacement, const byte value){
+    __asm__ volatile("outb %0, %w1" : : "a" (value), "Nd" (port + displacement));
 }
 
 #else
 
-#error Missing I/O implementation!!
+#error "Missing I/O implementation!!"
 
 #endif
 #endif

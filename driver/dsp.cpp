@@ -153,7 +153,7 @@ char *strstr(const char *str1, const char *str2)
 		s2 = (char *) str2;
 		
 		while ( *s1 && *s2 && !(*s1-*s2) )
-            s1++; s2++;
+            static_cast<void>(s1++),s2++;
 		
 		if (!*s2)
 			return(cp);

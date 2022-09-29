@@ -245,9 +245,9 @@ static inline int kx_voice_irq_critical_handler(kx_hw *hw)
      dword qkbca;
      dword ptr_reg=(QKBCA<<16)|(hw->asio_notification_krnl.n_voice);
 
-     dword old_ptr=inpd(hw->port+PTR);
+     dword old_ptr=inpd_System(hw->port,PTR);
      outpd(hw->port+PTR,ptr_reg);
-     qkbca=inpd(hw->port+DATA);
+     qkbca=inpd_System(hw->port,DATA);
      outpd(hw->port+PTR,old_ptr);
 
      qkbca=kx_calc_position(hw,hw->asio_notification_krnl.n_voice,(qkbca&QKBCA_CURRADDR_MASK));
@@ -461,7 +461,7 @@ void kx_dsp_irq_handler(kx_hw *hw)
 inline KX_API(dword,kx_get_irq_pending(kx_hw *hw))
 {
  if(hw->standalone)
-  return inpd(hw->port + IPR);
+  return inpd_System(hw->port, IPR);
  else
   return hw->irq_pending;
 }
@@ -502,7 +502,7 @@ inline KX_API(void,kx_clear_irq_pending(kx_hw *hw,dword pat))
 inline KX_API(int,kx_interrupt_critical(kx_hw *hw))
 {
     // don't use kx_get_irq_pending() and kx_clear_irq_pending()
-    dword ipr=inpd(hw->port + IPR);
+    dword ipr=inpd_System(hw->port, IPR);
 
     if(ipr==0)
      return -1; // not our IRQ
@@ -543,7 +543,7 @@ inline KX_API(int,kx_interrupt_critical(kx_hw *hw))
       mask|=INTE_K2_MIDITXENABLE;
 
       if(mask)
-       outpd(hw->port+INTE,inpd(hw->port + INTE)&(~mask));
+       outpd(hw->port+INTE,inpd_System(hw->port, INTE)&(~mask));
 
      return 0;
 }
@@ -576,14 +576,14 @@ void kx_sync(sync_data *s)
         break;
   case KX_SYNC_IRQ_ENABLE:
         {
-         dword val = inpd(hw->port + INTE) | s->irq_mask;
+         dword val = inpd_System(hw->port, INTE) | s->irq_mask;
          outpd(hw->port + INTE,val);
 
          break;
         }
   case KX_SYNC_IRQ_DISABLE:
         {
-         dword val = inpd(hw->port + INTE) & (~s->irq_mask);
+         dword val = inpd_System(hw->port, INTE) & (~s->irq_mask);
          outpd(hw->port + INTE,val);
 
          break;
@@ -591,7 +591,7 @@ void kx_sync(sync_data *s)
   case KX_SYNC_MPUIN:
         {
            // re-enable the interrupt (disabled in kx_interrupt_critical handler)
-           dword old_inte=inpd(hw->port+INTE);
+           dword old_inte=inpd_System(hw->port, INTE);
 
            if(s->ret)
            {
@@ -618,7 +618,7 @@ void kx_sync(sync_data *s)
         }
   case KX_SYNC_MPUOUT:
         {
-                dword old_inte=inpd(hw->port+INTE);
+                dword old_inte=inpd_System(hw->port,INTE);
 
                 if(s->ret)
                 {
@@ -1028,9 +1028,9 @@ KX_API(int,kx_get_asio_position(kx_hw *hw,int reget))
 #if defined(__APPLE__) && defined(__MACH__) // MacOSX
    // in OS X we cannot acquire spinlocks here, or at least should not to
    dword ptr_reg=(QKBCA<<16)|(hw->asio_notification_krnl.n_voice);
-   dword old_ptr=inpd(hw->port+PTR);
+   dword old_ptr=inpd_System(hw->port,PTR);
    outpd(hw->port+PTR,ptr_reg);
-   qkbca=inpd(hw->port+DATA);
+   qkbca=inpd_System(hw->port,DATA);
    outpd(hw->port+PTR,old_ptr);
 #elif defined(_WIN32) || defined(_WINDOWS) || defined(WIN32)
    qkbca = kx_readptr(hw,QKBCA,krnl->n_voice)&QKBCA_CURRADDR_MASK;
