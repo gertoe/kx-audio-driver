@@ -34,7 +34,7 @@ void write_mpu_data(kx_hw *hw,byte data,int where)
       	}
       	else
       	{
-      	  outp(hw->port + MUDATA_K1, data);
+          outp_System(hw->port, MUDATA_K1, data);
       	}
 }
 
@@ -88,7 +88,7 @@ inline void write_mpu_cmd(kx_hw *hw,byte cmd,int where)
       	}
       	else
       	{
-      	  outp(hw->port + MUCMD_K1, cmd);
+            outp_System(hw->port, MUCMD_K1, cmd);
       	}
 }
 

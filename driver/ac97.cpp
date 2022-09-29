@@ -227,7 +227,7 @@ KX_API(word,kx_ac97read(kx_hw *hw,byte index))
 
  kx_lock_acquire(hw,&hw->ac97_lock, &flags);
 
- outp(hw->port+AC97ADDRESS,index);
+ outp_System(hw->port,AC97ADDRESS,index);
  while((!(inp_System(hw->port, AC97ADDRESS)&AC97ADDRESS_READY))&&(timeout))
   timeout--;
  word val=inpw_System(hw->port, AC97DATA);
@@ -256,7 +256,7 @@ KX_API(void,kx_ac97write(kx_hw *hw,byte index, word data))
 
  kx_lock_acquire(hw,&hw->ac97_lock, &flags);
 
- outp(hw->port+AC97ADDRESS,index);
+ outp_System(hw->port, AC97ADDRESS,index);
  while((!(inp_System(hw->port,AC97ADDRESS)&AC97ADDRESS_READY))&&(timeout))
   timeout--;
  if(timeout)
