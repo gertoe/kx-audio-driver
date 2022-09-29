@@ -81,6 +81,7 @@ private:
 	dword							master_volume[2];
 	kXAudioEngine					*engine;
  
+public:
 	// ---- HAL functions [OS-specific]
     void malloc_func(int len,void **b,int where);
     void send_message(int len,const void *b);
@@ -112,6 +113,7 @@ private:
     static void notify_func(void *data,int what);
 	// ---- end of HAL functions
 	
+protected:
     // input controls
     static IOReturn gainChangeHandler(IOService *target, IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue);
     
@@ -145,14 +147,15 @@ public:
 
 	virtual IOReturn performPowerStateChange(IOAudioDevicePowerState oldPowerState, IOAudioDevicePowerState newPowerState, UInt32 *microsecondsUntilComplete);
 
-private:
-	/*
+    /*
     static IOReturn gainChangeHandler(IOService *target, IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue);
     virtual IOReturn gainChanged(IOAudioControl *gainControl, SInt32 oldValue, SInt32 newValue);
     
     static IOReturn inputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
     virtual IOReturn inputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
-	 */
+     */
+    
+private:
 	
 	// for FPGA programming under OS X, we need the following
 	byte *fpga_fw;

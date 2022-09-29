@@ -12,21 +12,14 @@
 #include "defs.h"
 #include <string.h>
 
-static void _kx_strcpy(char* destination, const char* source, dword len)
+static void _kx_strcpy(char* destination, const char* source, const dword len)
 {
     
-    // return if no memory is allocated to the destination
-    if (destination == (char*)0 || len == 0) {
-        return;
-    }
-    
-    while (*source && len--)
-    {
-        *destination++ = *source++;
-    }
- 
-    // null terminate destination string
-    *destination = '\0';
+#if !defined(PPC)
+    strlcpy(destination, source, len);
+#else
+    strncpy(destination, source, len);
+#endif
     
     return;
 }

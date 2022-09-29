@@ -805,7 +805,7 @@ int kx_hal_init(kx_hw *hw,int fast)
 
                 for(int pagecount = 0; pagecount < MAXPAGES; pagecount++)
                         //((dword *) hw->virtualpagetable.addr)[pagecount] = correctEndianess32((hw->silentpage.dma_handle * 2) | pagecount);
-					writeLE32(&(((dword *) hw->virtualpagetable.addr)[pagecount]), (hw->silentpage.dma_handle * 2) | pagecount);
+					writeLE32(&(((dword *) hw->virtualpagetable.addr)[pagecount]), (((IOPhysicalAddress32)hw->silentpage.dma_handle) * 2) | pagecount);
 
 
                     /* Init page table & tank memory base register */

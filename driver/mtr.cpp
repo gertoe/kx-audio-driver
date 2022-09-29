@@ -28,7 +28,7 @@ KX_API(int,kx_mtrec_start(kx_hw *hw))
  if(hw->mtr_buffer.dma_handle)
  {
   kx_writeptr(hw,FXIDX,0,0);
-  kx_writeptr(hw,FXBA,0,hw->mtr_buffer.dma_handle);
+  kx_writeptr(hw,FXBA,0,(IOPhysicalAddress32)hw->mtr_buffer.dma_handle);
 
   dword sz;
   switch(hw->mtr_buffer_size)

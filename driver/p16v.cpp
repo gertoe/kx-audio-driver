@@ -328,7 +328,7 @@ KX_API(int,kx_p16v_pb_open(kx_hw *hw,kx_voice_buffer *buff,int frequency,int fla
  {
     kx_writep16v(hw,p16vCPFA,hw->p16v_pb_chn,0); // current address [bytes]
     kx_writep16v(hw,p16vPFEA,hw->p16v_pb_chn,0); // end address [bytes]
-    kx_writep16v(hw,p16vPFBA,hw->p16v_pb_chn,buff->physical); // start address
+    kx_writep16v(hw,p16vPFBA,hw->p16v_pb_chn,(IOPhysicalAddress32)buff->physical); // start address
  }
  else
  {
@@ -520,7 +520,7 @@ KX_API(int,kx_p16v_rec_open(kx_hw *hw,kx_voice_buffer *buff,int frequency,int fl
  kx_writep16v(hw,pCRFA,hw->p16v_rec_chn,0); // current address [bytes]
  // kx_writep16v(hw,pXX,0,0); // end address [bytes]
  kx_writep16v(hw,pCRCAV,hw->p16v_rec_chn,0); // cur. addr in samples; cur cache size in samples
- kx_writep16v(hw,pRFBA,hw->p16v_rec_chn,buff->physical); // start address
+ kx_writep16v(hw,pRFBA,hw->p16v_rec_chn,(IOPhysicalAddress32)buff->physical); // start address
 
  kx_p16v_rec_set_notify(hw,buff->notify);
 

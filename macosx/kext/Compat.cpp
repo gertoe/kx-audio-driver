@@ -389,7 +389,7 @@ int kXAudioDevice::debug_func(int where,const char *__format, ... )
 void kXAudioDevice::get_physical(kx_voice_buffer *buff,const dword offset, dword *physical)
 {
 	//*physical=(__int64)(buff->physical+offset);
-    (*physical)=(buff->physical+offset);
+    (*physical)=(((dword)buff->physical)+offset);
 }
 
 void kXAudioDevice::save_fpu_state(kx_fpu_state *state)

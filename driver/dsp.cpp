@@ -137,32 +137,32 @@ inline dword get_tram_flag(kx_hw *hw,dword tmp)
 }
 
 // for MacOS X we need our own strstr()
-#if defined(__APPLE__) || defined(__MACH__)	
+#if defined(__APPLE__) || defined(__MACH__)
 char *strstr(const char *str1, const char *str2);
 char *strstr(const char *str1, const char *str2)
 {
-	char *cp = (char *) str1;
-	char *s1, *s2;
-	
-	if ( !*str2 )
-		return((char *)str1);
-	
-	while (*cp)
-	{
-		s1 = cp;
-		s2 = (char *) str2;
-		
-		while ( *s1 && *s2 && !(*s1-*s2) )
-            static_cast<void>(s1++),s2++;
-		
-		if (!*s2)
-			return(cp);
-		
-		cp++;
-	}
-	
-	return(NULL);
-	
+    char *cp = (char *) str1;
+    char *s1, *s2;
+    
+    if ( !*str2 )
+        return((char *)str1);
+    
+    while (*cp)
+    {
+        s1 = cp;
+        s2 = (char *) str2;
+        
+        while ( *s1 && *s2 && !(*s1-*s2) )
+            s1++, s2++; //DO NOT TOUCH
+        
+        if (!*s2)
+            return(cp);
+        
+        cp++;
+    }
+    
+    return(NULL);
+    
 }
 #endif
 
