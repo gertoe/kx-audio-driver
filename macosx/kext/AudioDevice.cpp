@@ -1273,7 +1273,7 @@ IOReturn kXAudioDevice::user_request(const void* inStruct, void* outStruct,uint3
             break;
         case KX_PROP_GPIO_GET+KX_PROP_GET:
         {
-            //prep_in(dword_property);
+            prep_in(dword_property);
             prep_out(dword_property);
             out->val=kx_get_gp_inputs(hw);
         }
