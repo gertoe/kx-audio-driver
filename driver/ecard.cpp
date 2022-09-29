@@ -124,7 +124,7 @@ static void ecard_write(kx_hw *hw, dword value)
 
     hcvalue = inpd_System(hw->port, HCFG_K1) & ~(HOOKN_BIT|HANDN_BIT|PULSEN_BIT);
 
-    outpd(hw->port + HCFG_K1, hcvalue);
+    outpd_System(hw->port, HCFG_K1, hcvalue);
 
     for(count = 0 ; count < EC_NUM_CONTROL_BITS; count++) 
     {
@@ -132,16 +132,16 @@ static void ecard_write(kx_hw *hw, dword value)
         data = ((value & 0x1) ? PULSEN_BIT : 0);
         value >>= 1;
 
-        outpd(hw->port + HCFG_K1, hcvalue | data);
+        outpd_System(hw->port, HCFG_K1, hcvalue | data);
 
         // Clock the shift register
-        outpd(hw->port + HCFG_K1, hcvalue | data | HANDN_BIT);
-        outpd(hw->port + HCFG_K1, hcvalue | data);
+        outpd_System(hw->port, HCFG_K1, hcvalue | data | HANDN_BIT);
+        outpd_System(hw->port, HCFG_K1, hcvalue | data);
     }
 
     // Latch the bits
-    outpd(hw->port + HCFG_K1, hcvalue | HOOKN_BIT);
-    outpd(hw->port + HCFG_K1, hcvalue);
+    outpd_System(hw->port, HCFG_K1, hcvalue | HOOKN_BIT);
+    outpd_System(hw->port, HCFG_K1, hcvalue);
 
     kx_lock_release(hw,&hw->hw_lock, &flags);
 }

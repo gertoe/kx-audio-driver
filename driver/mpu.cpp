@@ -52,7 +52,7 @@ inline byte read_mpu_data(kx_hw *hw,int where)
       	}
       	else
       	{
-      	  ret=inp(hw->port + MUDATA_K1);
+      	  ret=inp_System(hw->port, MUDATA_K1);
       	}
       	return ret;
 }
@@ -71,7 +71,7 @@ byte read_mpu_state(kx_hw *hw,int where)
 	}
 	else
 	{
-	 state=inp(hw->port + MUSTAT_K1);
+	 state=inp_System(hw->port, MUSTAT_K1);
 	}
 	return state;
 }
