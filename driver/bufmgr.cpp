@@ -165,7 +165,7 @@ int kx_alloc_buffer(kx_hw *hw,int num)
 
 	for(int t=0;t<16;t++) // try up to 16 times...
 	{
-        	buffer->pageindex = kx_bufmgr_alloc(hw,pages * KX_PAGE_SIZE, (IOPhysicalAddress32)buffer->physical);
+        	buffer->pageindex = kx_bufmgr_alloc(hw,pages * KX_PAGE_SIZE, (dword)buffer->physical);
 
         	if(buffer->pageindex>=0) // success
         	   break;
@@ -240,7 +240,7 @@ void kx_free_buffer(kx_hw *hw,int num)
         	{
         			pageindex = buffer->pageindex + pagecount;
         			//((dword *) hw->virtualpagetable.addr)[pageindex] = correctEndianess32((hw->silentpage.dma_handle << 1) | pageindex);
-					writeLE32(&(((dword *) hw->virtualpagetable.addr)[pageindex]), (((IOPhysicalAddress32)hw->silentpage.dma_handle) << 1) | pagecount);
+					writeLE32(&(((dword *) hw->virtualpagetable.addr)[pageindex]), (((dword)hw->silentpage.dma_handle) << 1) | pagecount);
 			}
         }
 

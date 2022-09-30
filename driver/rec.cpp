@@ -186,12 +186,12 @@ KX_API(int,kx_rec_open(kx_hw *hw,kx_voice_buffer *buffer,int usage,int sampling_
  {
   case 0:
       kx_writeptr(hw,ADCBS,0,0);
-      kx_writeptr(hw,ADCBA,0,(IOPhysicalAddress32)voice->buffer.physical);
+      kx_writeptr(hw,ADCBA,0,(dword)voice->buffer.physical);
       kx_writeptr(hw,ADCSR,0,0);
       break;
   case 1:
       kx_writeptr(hw,SPRC,0,0); // control+address
-      kx_writeptr(hw,SPRA,0,(IOPhysicalAddress32)voice->buffer.physical);
+      kx_writeptr(hw,SPRA,0,(dword)voice->buffer.physical);
       break;
  }
 

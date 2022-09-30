@@ -257,10 +257,6 @@ bool kXAudioEngine::initHardware(IOService *provider)
     
     setClockDomain(); // =kIOAudioNewClockDomain
     
-#if defined(X86)
-    setClockIsStable(false);
-#endif
-    
     setIndex(hw->actualPort);
     
     // calculate kx_sample_offset
@@ -662,7 +658,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 
                 //debug("createNewAudioStream FXBA:\n");
                 //kx_writeptr_prof(hw, FXBA, 0, hw->mtr_buffer.dma_handle);
-                kx_writeptr(hw, FXBA, 0, (IOPhysicalAddress32)hw->mtr_buffer.dma_handle); //sets the appropriate dma reg in the card
+                kx_writeptr(hw, FXBA, 0, (dword)hw->mtr_buffer.dma_handle); //sets the appropriate dma reg in the card
                 
                 dword ch = (1 << (format.fNumChannels * 2)) - 1;    // 24bit needs 2 physical channels
                 debug("createNewAudioStream FXWCH/FXWC_K1: %x\n", (unsigned int)ch);

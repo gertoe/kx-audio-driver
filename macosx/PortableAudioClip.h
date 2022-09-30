@@ -151,7 +151,14 @@ static void Float32ToSInt32_portable( const float* floatMixBuf, SInt32* destBuf,
         
         // Scale the -1.0 to 1.0 range to the appropriate scale for signed 32-bit samples and then
         // convert to SInt32 and store in the hardware sample buffer
-        
+		
+		/*
+		if ( ((uintptr_t)destBuf) + ((uintptr_t)sampleDestinationMemoryIndex) % 4 != 0 ){
+			IOLog("kXAudioDriver::Float32ToSInt32_portable misaligned memory operation, skipping it ...\n");
+			//continue;
+		}
+		*/
+		
         OSWriteLittleInt32(destBuf, sampleDestinationMemoryIndex, FloatToInt32(inSample));
     }
     
@@ -258,12 +265,12 @@ static void Float32ToSInt16_no_array_portable( const float* mixBuf, SInt16* dest
 }
 
 
-#if defined(PPC)
+//#if defined(PPC)
 
 #define Float32ToSInt16_optimized Float32ToSInt16_portable
 #define Float32ToSInt32_optimized Float32ToSInt32_portable
 #define Float32ToSInt16Aligned32_optimized Float32ToSInt16Aligned32_portable
-
+/*
 #elif defined(TARGET_RT_LITTLE_ENDIAN) || defined(X86)
 
 #ifndef TARGET_RT_LITTLE_ENDIAN
@@ -290,6 +297,6 @@ static void Float32ToSInt16_no_array_portable( const float* mixBuf, SInt16* dest
 #define Float32ToSInt32_optimized Float32ToSInt32_portable
 #define Float32ToSInt16Aligned32_optimized Float32ToSInt16Aligned32_portable
 
-#endif
+#endif*/
 
 #endif

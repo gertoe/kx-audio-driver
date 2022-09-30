@@ -108,7 +108,7 @@ struct kx_voice_buffer
 
  dword size; // in bytes
  int notify; // in ms
- IOPhysicalAddress32 physical;
+ dword physical;
  void *addr;
  void *that;
 

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 42;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -2071,7 +2071,7 @@
 		1A224C3EFF42367911CA2CB7 /* AudioDevice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AudioDevice.h; path = kext/AudioDevice.h; sourceTree = "<group>"; };
 		1A224C3FFF42367911CA2CB7 /* AudioDevice.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AudioDevice.cpp; path = kext/AudioDevice.cpp; sourceTree = "<group>"; };
 		44212BE20DECB47E00E06065 /* kXAudioDriver.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver.kext; sourceTree = BUILT_PRODUCTS_DIR; };
-		44212BE30DECB47E00E06065 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = kext/Info.plist; sourceTree = "<group>"; };
+		44212BE30DECB47E00E06065 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = kext/Info.plist; sourceTree = "<group>"; };
 		44212C1B0DECB61B00E06065 /* libFloatLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		449EE2410DE799E7000769A3 /* cedebug.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = cedebug.h; path = kext/cedebug.h; sourceTree = "<group>"; };
 		449EE3C00DE7A49D000769A3 /* ac97.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = ac97.cpp; path = ../driver/ac97.cpp; sourceTree = "<group>"; };
@@ -2113,16 +2113,16 @@
 		DD9B6B60282C0E0F00BA90C7 /* libFloatLib_Libraryless_32Bit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatLib_Libraryless_32Bit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDBC2F4D28E27BC400FCDBC1 /* Utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
 		DDC8BDD227856D7400C18665 /* kXAudioDriver_PPC.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kXAudioDriver_PPC.kext; sourceTree = BUILT_PRODUCTS_DIR; };
-		DDC8BDD327856D7400C18665 /* kXAudioDriver_PPC.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = kXAudioDriver_PPC.plist; path = "/Volumes/usb/kexts_source/kx-audio-driver/macosx/kXAudioDriver_PPC.plist"; sourceTree = "<absolute>"; };
+		DDC8BDD327856D7400C18665 /* kXAudioDriver_PPC.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = kXAudioDriver_PPC.plist; path = "/Volumes/usb/kexts_source/kx-audio-driver/macosx/kXAudioDriver_PPC.plist"; sourceTree = "<absolute>"; };
 		DDC8BDDE27856D7700C18665 /* libFloatLib_PPC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFloatLib_PPC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDC8BDED27856D7A00C18665 /* kxctrl_PPC */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kxctrl_PPC; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDC8BDFC27856D7D00C18665 /* edspctrl_PPC */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = edspctrl_PPC; sourceTree = BUILT_PRODUCTS_DIR; };
-		DDC8BDFE27856EC500C18665 /* kXAudioDriver.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = kXAudioDriver.plist; sourceTree = "<group>"; };
+		DDC8BDFE27856EC500C18665 /* kXAudioDriver.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = kXAudioDriver.plist; sourceTree = "<group>"; };
 		DDC8BE012785700700C18665 /* install_PPC.command */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = install_PPC.command; sourceTree = "<group>"; };
 		DDC8BE1B2785715D00C18665 /* kXAPI_PPC.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = kXAPI_PPC.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		DDD62AA9279E0ADF0098C9D6 /* kXAudioDriver64.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = kXAudioDriver64.plist; sourceTree = "<group>"; };
+		DDD62AA9279E0ADF0098C9D6 /* kXAudioDriver64.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = kXAudioDriver64.plist; sourceTree = "<group>"; };
 		DDE9F49A27859161009B9A99 /* kX AC97 PPC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kX AC97 PPC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DDE9F49B27859162009B9A99 /* kX_AC97_PPC.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = kX_AC97_PPC.plist; path = "/Volumes/usb/kexts_source/kx-audio-driver/macosx/kX_AC97_PPC.plist"; sourceTree = "<absolute>"; };
+		DDE9F49B27859162009B9A99 /* kX_AC97_PPC.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = kX_AC97_PPC.plist; path = "/Volumes/usb/kexts_source/kx-audio-driver/macosx/kX_AC97_PPC.plist"; sourceTree = "<absolute>"; };
 		E84374C51527B2C100B8C85C /* asio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asio.h; sourceTree = "<group>"; };
 		E84374C61527B2C100B8C85C /* asiodrivers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asiodrivers.h; sourceTree = "<group>"; };
 		E84374C71527B2C100B8C85C /* asiodrvr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asiodrvr.h; sourceTree = "<group>"; };
@@ -2415,7 +2415,7 @@
 		E8A3E96E0E8F20FE005D3692 /* kXAPI.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = kXAPI.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8A3E97C0E8F21E7005D3692 /* interface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = interface.cpp; path = ../kxapi/interface.cpp; sourceTree = "<group>"; };
 		E8A3EA1E0E8F2735005D3692 /* kX Manager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kX Manager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8A3EA200E8F2735005D3692 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = kxmanager/Info.plist; sourceTree = "<group>"; };
+		E8A3EA200E8F2735005D3692 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = kxmanager/Info.plist; sourceTree = "<group>"; };
 		E8A3EA630E8F27A3005D3692 /* kX Manager_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "kX Manager_Prefix.pch"; path = "kxmanager/kX Manager_Prefix.pch"; sourceTree = "<group>"; };
 		E8A3EA640E8F27AF005D3692 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = main.mm; path = kxmanager/main.mm; sourceTree = "<group>"; };
 		E8A3EA6B0E8F27F4005D3692 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
@@ -2432,7 +2432,7 @@
 		E8A581DD108948FB00104EEB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E8A581DF1089490100104EEB /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E8A581E11089491200104EEB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		E8A6D9850E908BA40083971C /* kxctrl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kxctrl; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8A6D9850E908BA40083971C /* kxctrl */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = kxctrl; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8A6D9A00E908C080083971C /* kxctrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = kxctrl.cpp; path = ../kxctrl/kxctrl.cpp; sourceTree = "<group>"; };
 		E8A6D9B60E908E940083971C /* edspctrl */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = edspctrl; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8A6D9C20E908EC50083971C /* edspctrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = edspctrl.cpp; path = ../edspctrl/edspctrl.cpp; sourceTree = "<group>"; };
@@ -2458,7 +2458,7 @@
 		E8D8955B10687C8C006F33DC /* RoundedBox.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RoundedBox.mm; path = kxac97/RoundedBox.mm; sourceTree = "<group>"; };
 		E8D8956310687CAB006F33DC /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = kxac97/main.m; sourceTree = "<group>"; };
 		E8D8957D10687D6E006F33DC /* kX AC97.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "kX AC97.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8D8957F10687D6E006F33DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = kxac97/Info.plist; sourceTree = "<group>"; };
+		E8D8957F10687D6E006F33DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = Info.plist; path = kxac97/Info.plist; sourceTree = "<group>"; };
 		E8D8958B10687E07006F33DC /* kxac97-main.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = "kxac97-main.icns"; path = "kxac97/kxac97-main.icns"; sourceTree = "<group>"; };
 		E8D8958E10687E87006F33DC /* mute-off.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "mute-off.tif"; path = "kxac97/mute-off.tif"; sourceTree = "<group>"; };
 		E8D8958F10687E87006F33DC /* mute-on.tif */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "mute-on.tif"; path = "kxac97/mute-on.tif"; sourceTree = "<group>"; };

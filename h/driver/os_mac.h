@@ -69,17 +69,12 @@ KX_API(void,kx_lock_release(kx_hw *hw, spinlock_t *, unsigned long *,const char 
 class IOBufferMemoryDescriptor;
 #endif
 
-#ifndef __IOKIT_IOTYPES_H
-typedef dword IOPhysicalAddress32;
-typedef uintptr_t IOPhysicalAddress;
-#endif
-
 struct memhandle
 {
 	// note: this is for 32-bit OS only
 	size_t size;
 	void * addr;		// virtual
-	IOPhysicalAddress32 dma_handle;	// physical
+	dword dma_handle;	// physical
 
 #if !defined(OLD_ALLOC)
 	IOBufferMemoryDescriptor *desc;
