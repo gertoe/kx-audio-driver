@@ -124,6 +124,7 @@ word wdata;
   hw->actualPort = hw->cb.actual_io_base;
 #if defined(__APPLE__) && defined(__MACH__)
   hw->dev = hw->cb.pci;
+  hw->memMap = hw->cb.map;
 #endif
   hw->irq=hw->cb.irql;
 

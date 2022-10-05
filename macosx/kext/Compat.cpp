@@ -48,7 +48,7 @@
 void _kx_strcpy(char* destination, const char* source, const unsigned long len)
 {
     
-#if !defined(PPC)
+#if defined(ARM)
     strlcpy(destination, source, len);
 #else
     strncpy(destination, source, len);
@@ -57,7 +57,7 @@ void _kx_strcpy(char* destination, const char* source, const unsigned long len)
 }
 
 void _kx_strcat(char* destination, const char* source, const unsigned long len){
-#if !defined(PPC)
+#if defined(ARM)
     strlcat(destination, source, len);
 #else
     strncat(destination, source, len);
@@ -239,46 +239,46 @@ void outp_System(struct kx_hw* hw, const word displacement, const byte value){
 #endif
  */
 
+
 dword inpd_System(const struct kx_hw* hw, const word displacement){
-    
     const word disp = displacement & 0xFFFF;
      
-    return hw->dev->ioRead32(disp);
+    return hw->dev->ioRead32(disp, hw->memMap);
 }
 
 word inpw_System(const struct kx_hw* hw, const word displacement){
     
     const word disp = displacement & 0xFFFF;
     
-    return hw->dev->ioRead16(disp);
+    return hw->dev->ioRead16(disp, hw->memMap);
 }
 
 byte inp_System(const struct kx_hw* hw, const word displacement){
     
     const word disp = displacement & 0xFFFF;
     
-    return hw->dev->ioRead8(disp);
+    return hw->dev->ioRead8(disp, hw->memMap);
 }
 
 void outpd_System(struct kx_hw* hw, const word displacement, const dword value){
     
     const word disp = displacement & 0xFFFF;
     
-    return hw->dev->ioWrite32(disp, value);
+    return hw->dev->ioWrite32(disp, value, hw->memMap);
 }
 
 void outpw_System(struct kx_hw* hw, const word displacement, const word value){
     
     const word disp = displacement & 0xFFFF;
     
-    return hw->dev->ioWrite16(disp, value);
+    return hw->dev->ioWrite16(disp, value, hw->memMap);
 }
 
 void outp_System(struct kx_hw* hw, const word displacement, const byte value){
     
     const word disp = displacement & 0xFFFF;
     
-    return hw->dev->ioWrite8(disp, value);
+    return hw->dev->ioWrite8(disp, value, hw->memMap);
 }
 
 #endif

@@ -198,6 +198,7 @@ bool kXAudioDevice::initHardware(IOService *provider)
 	cb.actual_io_base = port;
     
     cb.pci = pciDevice;
+    cb.map = deviceMap;
     
     cb.device=dev_id;
     cb.subsys=subsys_id;
@@ -352,6 +353,14 @@ void kXAudioDevice::free()
     
     if(hw)
     {
+        if (hw->dev){
+            hw->dev = NULL;
+        }
+        
+        if (hw->memMap){
+            hw->memMap = NULL;
+        }
+        
         if((hw->initialized&KX_DEVICE_INITED) && !(hw->initialized&KX_ENGINE_INITED))
         {
             debug(DBGCLASS"[%p]::free_all() - close iKX interface\n",this);

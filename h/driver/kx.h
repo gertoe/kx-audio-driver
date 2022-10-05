@@ -32,7 +32,6 @@
 #if defined(_WIN32) || defined(_WINDOWS) || defined(WIN32)
  #include "driver/os_win.h"
 #elif defined(__APPLE__) && defined(__MACH__) // MacOSX
- #include <IOKit/pci/IOPCIDevice.h>
  #include "driver/os_mac.h"
 #else
  #error "Unknown OS"
@@ -139,6 +138,14 @@ struct sync_data
  int turn_on;
 };
 
+#ifndef _IOKIT_IOPCIDEVICE_H
+class IOPCIDevice;
+#endif
+
+#ifndef _IOMEMORYDESCRIPTOR_H
+class IOMemoryMap;
+#endif
+
 struct kx_callbacks
 {
     void *call_with;
@@ -182,6 +189,7 @@ struct kx_callbacks
     
 #if defined(__APPLE__) && defined(__MACH__)
     IOPCIDevice* pci;
+    IOMemoryMap* map;
 #endif
     
     byte irql;
@@ -416,8 +424,6 @@ struct asio_physical_descr_t
        void *mdl;
 };
 
-
-
 struct kx_hw
 {
     char kx_version[KX_MAX_STRING];
@@ -435,6 +441,7 @@ struct kx_hw
     
 #if defined(__APPLE__) && defined(__MACH__)
     IOPCIDevice* dev;
+    IOMemoryMap* memMap;
 #endif
     
     byte is_10k2;       // dev: 0004
