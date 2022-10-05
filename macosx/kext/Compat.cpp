@@ -96,7 +96,7 @@ word readLE16(const word* addr){
 /*
 #if !(defined(__i386__) || defined(__x86_64__) || defined(X86)) && (defined(PPC) || defined(ARM))
 
-__inline__ dword inpd_System(const struct kx_hw* hw, const word displacement){
+dword inpd_System(const struct kx_hw* hw, const word displacement){
     
     const word disp = displacement & 0xFFFF;
     
@@ -110,7 +110,7 @@ __inline__ dword inpd_System(const struct kx_hw* hw, const word displacement){
     return value;
 }
 
-__inline__ word inpw_System(const struct kx_hw* hw, const word displacement){
+word inpw_System(const struct kx_hw* hw, const word displacement){
     
     const word disp = displacement & 0xFFFF;
     
@@ -124,7 +124,7 @@ __inline__ word inpw_System(const struct kx_hw* hw, const word displacement){
     return value;
 }
 
-__inline__ byte inp_System(const struct kx_hw* hw, const word displacement){
+byte inp_System(const struct kx_hw* hw, const word displacement){
     
     const word disp = displacement & 0xFFFF;
     
@@ -134,7 +134,7 @@ __inline__ byte inp_System(const struct kx_hw* hw, const word displacement){
     return value;
 }
 
-__inline__ void outpd_System(struct kx_hw* hw, const word displacement, const dword value){
+void outpd_System(struct kx_hw* hw, const word displacement, const dword value){
     
     const word disp = displacement & 0xFFFF;
     
@@ -146,7 +146,7 @@ __inline__ void outpd_System(struct kx_hw* hw, const word displacement, const dw
     OSSynchronizeIO();
 }
 
-__inline__ void outpw_System(struct kx_hw* hw, const word displacement, const word value){
+void outpw_System(struct kx_hw* hw, const word displacement, const word value){
     
     const word disp = displacement & 0xFFFF;
     
@@ -158,7 +158,7 @@ __inline__ void outpw_System(struct kx_hw* hw, const word displacement, const wo
     OSSynchronizeIO();
 }
 
-__inline__ void outp_System(struct kx_hw* hw, const word displacement, const byte value){
+void outp_System(struct kx_hw* hw, const word displacement, const byte value){
     
     const word disp = displacement & 0xFFFF;
     
@@ -168,7 +168,7 @@ __inline__ void outp_System(struct kx_hw* hw, const word displacement, const byt
 
 #elif defined(__i386__) || defined(__x86_64__) || defined(X86)
 
-__inline__ dword inpd_System(const struct kx_hw* hw, const word displacement){
+dword inpd_System(const struct kx_hw* hw, const word displacement){
     
     const word disp = displacement & 0xFFFF;
     
@@ -183,7 +183,7 @@ __inline__ dword inpd_System(const struct kx_hw* hw, const word displacement){
     return value;
 }
 
-__inline__ word inpw_System(const struct kx_hw* hw, const word displacement){
+word inpw_System(const struct kx_hw* hw, const word displacement){
     
     const word disp = displacement & 0xFFFF;
     
@@ -198,7 +198,7 @@ __inline__ word inpw_System(const struct kx_hw* hw, const word displacement){
     return value;
 }
 
-__inline__ byte inp_System(const struct kx_hw* hw, const word displacement){
+byte inp_System(const struct kx_hw* hw, const word displacement){
     byte value = 0;
     
     __asm__ volatile("inb %w1, %b0" : "=a" (value) : "Nd" (hw->port + displacement));
@@ -206,7 +206,7 @@ __inline__ byte inp_System(const struct kx_hw* hw, const word displacement){
     return value;
 }
 
-__inline__ void outpd_System(struct kx_hw* hw, const word displacement, const dword value){
+void outpd_System(struct kx_hw* hw, const word displacement, const dword value){
     
     const word disp = displacement & 0xFFFF;
     
@@ -217,7 +217,7 @@ __inline__ void outpd_System(struct kx_hw* hw, const word displacement, const dw
     __asm__ volatile("outl %0, %w1" : : "a" (value), "Nd" (hw->port + displacement));
 }
 
-__inline__ void outpw_System(struct kx_hw* hw, const word displacement, const word value){
+void outpw_System(struct kx_hw* hw, const word displacement, const word value){
     
     const word disp = displacement & 0xFFFF;
     
@@ -228,7 +228,7 @@ __inline__ void outpw_System(struct kx_hw* hw, const word displacement, const wo
     __asm__ volatile("outw %0, %w1" : : "a" (value), "Nd" (hw->port + displacement));
 }
 
-__inline__ void outp_System(struct kx_hw* hw, const word displacement, const byte value){
+void outp_System(struct kx_hw* hw, const word displacement, const byte value){
     __asm__ volatile("outb %0, %w1" : : "a" (value), "Nd" (hw->port + displacement));
 }
 
@@ -239,42 +239,42 @@ __inline__ void outp_System(struct kx_hw* hw, const word displacement, const byt
 #endif
  */
 
-__inline__ dword inpd_System(const struct kx_hw* hw, const word displacement){
+dword inpd_System(const struct kx_hw* hw, const word displacement){
     
     const word disp = displacement & 0xFFFF;
      
     return hw->dev->ioRead32(disp);
 }
 
-__inline__ word inpw_System(const struct kx_hw* hw, const word displacement){
+word inpw_System(const struct kx_hw* hw, const word displacement){
     
     const word disp = displacement & 0xFFFF;
     
     return hw->dev->ioRead16(disp);
 }
 
-__inline__ byte inp_System(const struct kx_hw* hw, const word displacement){
+byte inp_System(const struct kx_hw* hw, const word displacement){
     
     const word disp = displacement & 0xFFFF;
     
     return hw->dev->ioRead8(disp);
 }
 
-__inline__ void outpd_System(struct kx_hw* hw, const word displacement, const dword value){
+void outpd_System(struct kx_hw* hw, const word displacement, const dword value){
     
     const word disp = displacement & 0xFFFF;
     
     return hw->dev->ioWrite32(disp, value);
 }
 
-__inline__ void outpw_System(struct kx_hw* hw, const word displacement, const word value){
+void outpw_System(struct kx_hw* hw, const word displacement, const word value){
     
     const word disp = displacement & 0xFFFF;
     
     return hw->dev->ioWrite16(disp, value);
 }
 
-__inline__ void outp_System(struct kx_hw* hw, const word displacement, const byte value){
+void outp_System(struct kx_hw* hw, const word displacement, const byte value){
     
     const word disp = displacement & 0xFFFF;
     

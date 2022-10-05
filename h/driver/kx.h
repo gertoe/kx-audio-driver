@@ -886,37 +886,6 @@ void outp_System (struct kx_hw* hw, const word displacement, const byte  value);
 
 static const int system_io = 1;
 
-/*
-extern __inline__ dword inpd(const io_port_t port)
-{
-    return inpd_System(port, 0);
-}
-
-extern __inline__ word inpw(const io_port_t port)
-{
-    return inpw_System(port, 0);
-}
-
-extern __inline__ byte inp(const io_port_t port)
-{
-    return inp_System(port, 0);
-}
-
-extern __inline__ void outpd(io_port_t port, const dword value)
-{
-    outpd_System(port, 0, value);
-}
-
-extern __inline__ void outpw(io_port_t port, const word value)
-{
-    outpw_System(port, 0, value);
-}
-
-extern __inline__ void outp(io_port_t port, const byte value)
-{
-    outp_System(port, 0, value);
-}*/
-
 #else
 
 static const int system_io = 0;
