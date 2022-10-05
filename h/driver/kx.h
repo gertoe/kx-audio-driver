@@ -32,6 +32,7 @@
 #if defined(_WIN32) || defined(_WINDOWS) || defined(WIN32)
  #include "driver/os_win.h"
 #elif defined(__APPLE__) && defined(__MACH__) // MacOSX
+ #include <IOKit/pci/IOPCIDevice.h>
  #include "driver/os_mac.h"
 #else
  #error "Unknown OS"
@@ -427,7 +428,11 @@ struct kx_hw
     dword pci_subsys;   // needed
     dword pci_device;
     byte  pci_chiprev;
-
+    
+#if defined(__APPLE__) && defined(__MACH__)
+    IOPCIDevice* dev;
+#endif
+    
     byte is_10k2;       // dev: 0004
     byte is_aps;        //    model match: e-mu APS
     byte is_a2ex;       // a2 platinum ex

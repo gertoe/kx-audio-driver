@@ -10,19 +10,6 @@
 #define Utility_h
 
 #include "defs.h"
-#include <string.h>
-
-static void _kx_strcpy(char* destination, const char* source, const dword len)
-{
-    
-#if !defined(PPC)
-    strlcpy(destination, source, len);
-#else
-    strncpy(destination, source, len);
-#endif
-    
-    return;
-}
 
 //just to make syntax a little bit better
 static inline bool inRange(const long n, const long min, const long max){

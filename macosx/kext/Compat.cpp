@@ -43,6 +43,27 @@
 #undef kx_lock_acquire
 #undef kx_lock_release
 
+#include <string.h>
+
+void _kx_strcpy(char* destination, const char* source, const unsigned long len)
+{
+    
+#if !defined(PPC)
+    strlcpy(destination, source, len);
+#else
+    strncpy(destination, source, len);
+#endif
+    
+}
+
+void _kx_strcat(char* destination, const char* source, const unsigned long len){
+#if !defined(PPC)
+    strlcat(destination, source, len);
+#else
+    strncat(destination, source, len);
+#endif
+}
+
 __int64 correctEndianess64(const __int64 number){
     return OSSwapHostToLittleInt64(number);
 }

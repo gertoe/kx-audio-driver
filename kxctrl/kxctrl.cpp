@@ -984,7 +984,7 @@ int process(int argc, char **argv)
 																							ikx->generate_guid(guid);
 																							
 																							char tmp_name[KX_MAX_STRING+4];
-																							strncpy(tmp_name,name,sizeof(tmp_name));
+                                                                                            strncpy(tmp_name,name,sizeof(tmp_name));
 																							strncat(tmp_name,".da",sizeof(tmp_name)-strlen(tmp_name));
 																							
 																							f=fopen(tmp_name,"wt");

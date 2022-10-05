@@ -471,44 +471,44 @@ END:
 
  name[0]=0;
  if(result==0)
-  strncpy(name,"none ",KX_MAX_STRING);
+     _kx_strcpy(name,"none ",KX_MAX_STRING);
  else
  {
      if(hw->is_aps)
      {
       if(result&1)
-       strncat(name,"EDrive ",KX_MAX_STRING-strlen(name)-1);
+          _kx_strcat(name,"EDrive ",KX_MAX_STRING-strlen(name)-1);
       if(result&2)
-       strncat(name,"MOC ",KX_MAX_STRING-strlen(name)-1);
+          _kx_strcat(name,"MOC ",KX_MAX_STRING-strlen(name)-1);
      }
      else
      {
       if(result&1)
-       strncat(name,"LiveBay1 ",KX_MAX_STRING-strlen(name)-1);
+          _kx_strcat(name,"LiveBay1 ",KX_MAX_STRING-strlen(name)-1);
       if(result&2)
-       strncat(name,"LiveBay0 ",KX_MAX_STRING-strlen(name)-1);
+          _kx_strcat(name,"LiveBay0 ",KX_MAX_STRING-strlen(name)-1);
      }
 
       if(result&0x100)
-       strncat(name,"Aud2ELiveBay ",KX_MAX_STRING-strlen(name)-1);
+          _kx_strcat(name,"Aud2ELiveBay ",KX_MAX_STRING-strlen(name)-1);
       if(result&0x80)
-       strncat(name,"ELiveBay0 ",KX_MAX_STRING-strlen(name)-1);
+          _kx_strcat(name,"ELiveBay0 ",KX_MAX_STRING-strlen(name)-1);
       if(result&0x20)   
-       strncat(name,"LiveBay2 ",KX_MAX_STRING-strlen(name)-1);
+          _kx_strcat(name,"LiveBay2 ",KX_MAX_STRING-strlen(name)-1);
       if(result&4)
-       strncat(name,"db8 ",KX_MAX_STRING-strlen(name)-1);
+          _kx_strcat(name,"db8 ",KX_MAX_STRING-strlen(name)-1);
       if(result&8)
-       strncat(name,"db2 ",KX_MAX_STRING-strlen(name)-1);
+          _kx_strcat(name,"db2 ",KX_MAX_STRING-strlen(name)-1);
       if(result&0x10)
-       strncat(name,"db1 ",KX_MAX_STRING-strlen(name)-1);
+          _kx_strcat(name,"db1 ",KX_MAX_STRING-strlen(name)-1);
       if(result&0x40)
-       strncat(name,"db10 ",KX_MAX_STRING-strlen(name)-1);
+          _kx_strcat(name,"db10 ",KX_MAX_STRING-strlen(name)-1);
  }
 
  name[strlen(name)-1]=0;
 
  debug(DLIB,"db type: %s [%x]\n",name,result);
- strncpy(hw->db_name,name,KX_MAX_STRING);
+    _kx_strcpy(hw->db_name,name,KX_MAX_STRING);
 
  kx_writefn0(hw,INTE,old_inte);
  kx_writefn0(hw,HCFG_K1,old_hcfg_k1);

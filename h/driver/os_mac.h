@@ -26,8 +26,8 @@
 
 #ifdef KX_INTERNAL
   
-  #define my_strcpy strcpy
-  #define my_strncpy strncpy
+  #define my_strcpy _kx_strcpy
+  #define my_strncpy _kx_strcpy
   #define my_strcmp strcmp
   #define my_memset memset
   #define my_memcpy memcpy

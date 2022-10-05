@@ -329,13 +329,13 @@ KX_API(void,kx_ac97reset(kx_hw *hw))
  hw->ac97_id1=id1;
  hw->ac97_id2=id2;
 
- strncpy(hw->ac97_codec_name,"Unk AC97-codec [",KX_MAX_STRING);
+    _kx_strcpy(hw->ac97_codec_name,"Unk AC97-codec [",KX_MAX_STRING);
  char tmp_str[16]; 
  itoax(tmp_str,id1);
- strncat(hw->ac97_codec_name,tmp_str,KX_MAX_STRING-strlen(hw->ac97_codec_name)-1);
+    _kx_strcat(hw->ac97_codec_name,tmp_str,KX_MAX_STRING-strlen(hw->ac97_codec_name)-1);
  itoax(tmp_str,id2); 
- strncat(hw->ac97_codec_name,tmp_str,KX_MAX_STRING-strlen(hw->ac97_codec_name)-1);
- strncat(hw->ac97_codec_name,"]",KX_MAX_STRING-strlen(hw->ac97_codec_name)-1);
+    _kx_strcat(hw->ac97_codec_name,tmp_str,KX_MAX_STRING-strlen(hw->ac97_codec_name)-1);
+    _kx_strcat(hw->ac97_codec_name,"]",KX_MAX_STRING-strlen(hw->ac97_codec_name)-1);
 
  debug(-1,"here it goes: '%s'\n",hw->ac97_codec_name);
 

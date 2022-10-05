@@ -2320,12 +2320,12 @@ KX_API(int,kx_load_microcode(kx_hw *hw,const char *name,dsp_code *code2,int code
          if(info)
           memcpy(&info[0],&info2[0],info_size);
 
-         if(name) strncpy(microcode->name,name,KX_MAX_STRING);
-         if(copyright) strncpy(microcode->copyright,copyright,KX_MAX_STRING);
-         if(engine) strncpy(microcode->engine,engine,KX_MAX_STRING);
-         if(created) strncpy(microcode->created,created,KX_MAX_STRING);
-         if(comment) strncpy(microcode->comment,comment,KX_MAX_STRING);
-         if(guid) strncpy(microcode->guid,guid,KX_MAX_STRING);
+         if(name) _kx_strcpy(microcode->name,name,KX_MAX_STRING);
+         if(copyright) _kx_strcpy(microcode->copyright,copyright,KX_MAX_STRING);
+         if(engine) _kx_strcpy(microcode->engine,engine,KX_MAX_STRING);
+         if(created) _kx_strcpy(microcode->created,created,KX_MAX_STRING);
+         if(comment) _kx_strcpy(microcode->comment,comment,KX_MAX_STRING);
+         if(guid) _kx_strcpy(microcode->guid,guid,KX_MAX_STRING);
          microcode->code=&code[0];
          microcode->code_size=code_size;
          microcode->info=&info[0];
@@ -3038,12 +3038,12 @@ KX_API(int,kx_set_microcode_name(kx_hw *hw,int pgm_id,const char *str,int what))
         {
             switch(what)
             {
-             case KX_MICROCODE_NAME: strncpy(m->name,str,KX_MAX_STRING); break;
-             case KX_MICROCODE_COPYRIGHT: strncpy(m->copyright,str,KX_MAX_STRING); break;
-             case KX_MICROCODE_COMMENT: strncpy(m->comment,str,KX_MAX_STRING); break;
-             case KX_MICROCODE_ENGINE: strncpy(m->engine,str,KX_MAX_STRING); break;
-             case KX_MICROCODE_CREATED: strncpy(m->created,str,KX_MAX_STRING); break;
-             case KX_MICROCODE_GUID: strncpy(m->guid,str,KX_MAX_STRING); break;
+             case KX_MICROCODE_NAME: _kx_strcpy(m->name,str,KX_MAX_STRING); break;
+             case KX_MICROCODE_COPYRIGHT: _kx_strcpy(m->copyright,str,KX_MAX_STRING); break;
+             case KX_MICROCODE_COMMENT: _kx_strcpy(m->comment,str,KX_MAX_STRING); break;
+             case KX_MICROCODE_ENGINE: _kx_strcpy(m->engine,str,KX_MAX_STRING); break;
+             case KX_MICROCODE_CREATED: _kx_strcpy(m->created,str,KX_MAX_STRING); break;
+             case KX_MICROCODE_GUID: _kx_strcpy(m->guid,str,KX_MAX_STRING); break;
             }
 
             kx_lock_release(hw,&hw->dsp_lock,&flags);
@@ -3286,12 +3286,12 @@ KX_API(int,kx_translate_text2id(kx_hw *hw,kx_text2id *ti))
                   if(m->pgm==ti->pgm)
                   {
                    // store the name
-                   strncpy(ti->pgm_name,m->name,KX_MAX_STRING);
+                      _kx_strcpy(ti->pgm_name,m->name,KX_MAX_STRING);
 
                    for(dword i=0;i<m->info_size/sizeof(dsp_register_info);i++)
                     if(m->info[i].num==ti->reg)
                     {
-                     strncpy(ti->reg_name,m->info[i].name,KX_MAX_STRING); // note: reg_name is KX_MAX_STRING, but m->info[i].name is only MAX_GPR_NAME
+                        _kx_strcpy(ti->reg_name,m->info[i].name,KX_MAX_STRING); // note: reg_name is KX_MAX_STRING, but m->info[i].name is only MAX_GPR_NAME
 
                      kx_lock_release(hw,&hw->dsp_lock,&flags);
                      return 0;
@@ -3341,12 +3341,12 @@ KX_API(int,kx_update_microcode(kx_hw *hw,int pgm_id,const char *name,dsp_code *c
         if(m->pgm==pgm_id)
         {
             // UPDATE HERE
-            if((flag&IKX_UPDATE_NAME) && name) strncpy(m->name,name,KX_MAX_STRING);
-            if((flag&IKX_UPDATE_COPYRIGHT) && copyright) strncpy(m->copyright,copyright,KX_MAX_STRING);
-            if((flag&IKX_UPDATE_ENGINE) && engine) strncpy(m->engine,engine,KX_MAX_STRING);
-            if((flag&IKX_UPDATE_CREATED) && created) strncpy(m->created,created,KX_MAX_STRING);
-            if((flag&IKX_UPDATE_COMMENT) && comment) strncpy(m->comment,comment,KX_MAX_STRING);
-            if((flag&IKX_UPDATE_GUID) && guid) strncpy(m->guid,guid,KX_MAX_STRING);
+            if((flag&IKX_UPDATE_NAME) && name) _kx_strcpy(m->name,name,KX_MAX_STRING);
+            if((flag&IKX_UPDATE_COPYRIGHT) && copyright) _kx_strcpy(m->copyright,copyright,KX_MAX_STRING);
+            if((flag&IKX_UPDATE_ENGINE) && engine) _kx_strcpy(m->engine,engine,KX_MAX_STRING);
+            if((flag&IKX_UPDATE_CREATED) && created) _kx_strcpy(m->created,created,KX_MAX_STRING);
+            if((flag&IKX_UPDATE_COMMENT) && comment) _kx_strcpy(m->comment,comment,KX_MAX_STRING);
+            if((flag&IKX_UPDATE_GUID) && guid) _kx_strcpy(m->guid,guid,KX_MAX_STRING);
 
             kx_lock_release(hw,&hw->dsp_lock,&flags);
 

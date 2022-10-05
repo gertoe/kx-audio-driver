@@ -225,8 +225,8 @@ FOUND: // bus,dev,func contain right values
 	
 	*p=0;
 
- strncpy(hw->card_name,tmp_str,KX_MAX_STRING);
- strncpy(hw->card_model_name,tmp_model_str,KX_MAX_STRING);
+    _kx_strcpy(hw->card_name,tmp_str,KX_MAX_STRING);
+    _kx_strcpy(hw->card_model_name,tmp_model_str,KX_MAX_STRING);
  debug(DLIB,"card name: '%s'\n",hw->card_name);
  debug(DLIB,"card model name: '%s'\n",hw->card_model_name);
 
@@ -1087,14 +1087,14 @@ KX_API(int,kx_defaults(kx_hw *hw,kx_callbacks *cb))
 
   memset(cb->mixer_controls,0,sizeof(cb->mixer_controls));
 
-  strncpy(cb->mixer_controls[MIXER_MASTER].pgm_name,"epilog",KX_MAX_STRING);
-  strncpy(cb->mixer_controls[MIXER_MASTER].reg_left,"MasterL",KX_MAX_STRING);
-  strncpy(cb->mixer_controls[MIXER_MASTER].reg_right,"MasterR",KX_MAX_STRING);
+    _kx_strcpy(cb->mixer_controls[MIXER_MASTER].pgm_name,"epilog",KX_MAX_STRING);
+    _kx_strcpy(cb->mixer_controls[MIXER_MASTER].reg_left,"MasterL",KX_MAX_STRING);
+    _kx_strcpy(cb->mixer_controls[MIXER_MASTER].reg_right,"MasterR",KX_MAX_STRING);
   cb->mixer_controls[MIXER_MASTER].max_vol=0x80000000; // 3543
 
-  strncpy(cb->mixer_controls[MIXER_REC].pgm_name,"epilog",KX_MAX_STRING);
-  strncpy(cb->mixer_controls[MIXER_REC].reg_left,"RecLVol",KX_MAX_STRING);
-  strncpy(cb->mixer_controls[MIXER_REC].reg_right,"RecRVol",KX_MAX_STRING);
+    _kx_strcpy(cb->mixer_controls[MIXER_REC].pgm_name,"epilog",KX_MAX_STRING);
+    _kx_strcpy(cb->mixer_controls[MIXER_REC].reg_left,"RecLVol",KX_MAX_STRING);
+    _kx_strcpy(cb->mixer_controls[MIXER_REC].reg_right,"RecRVol",KX_MAX_STRING);
   cb->mixer_controls[MIXER_REC].max_vol=0x80000000; // 3543
 
   cb->mixer_controls[MIXER_KX0].max_vol=0x20000000;

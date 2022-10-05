@@ -22,7 +22,7 @@
 #include "legacy/clear.h"
 
 #define add_register(name1,num1,type1,p1)		\
-	do { strncpy(dyn_info[cur_info].name,name1,MAX_GPR_NAME);		\
+	do { _kx_strcpy(dyn_info[cur_info].name,name1,MAX_GPR_NAME);		\
 	     dyn_info[cur_info].num=(word)num1;			\
 	     dyn_info[cur_info].type=(byte)type1;			\
 	     dyn_info[cur_info].p=(dword)p1;			\

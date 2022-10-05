@@ -304,7 +304,7 @@ KX_API(int,kx_sf_get_preset_description(kx_hw *hw,int bank,int preset,char *name
             )
           {
            if(preset!=-1)
-             strncpy(name,sf->presets[aa].name,sizeof(sf->presets[aa].name));
+               _kx_strcpy(name,sf->presets[aa].name,sizeof(sf->presets[aa].name));
            else
              *(int *)name=sf_bank;             
            kx_lock_release(hw,&hw->sf_lock,&flags);

@@ -34,7 +34,7 @@ int parse_text(char *text,int size,int (*command)(int argc,char **argv))
 			crlf=strstr(text,"\r");
 		if(!crlf)
 		{
-			strncpy(line,text,sizeof(line));
+            strncpy(line,text,sizeof(line));
 			size=0;
 		}
 		else

@@ -996,7 +996,7 @@ int kx_hal_init(kx_hw *hw,int fast)
          detect_db(hw);
         }
         else
-         strncpy(hw->db_name,"none",sizeof(hw->db_name));
+         _kx_strcpy(hw->db_name,"none",sizeof(hw->db_name));
 
         if(!fast)
         {

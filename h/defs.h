@@ -51,6 +51,9 @@ void writeLE16(word* addr, const word data);
 dword readLE32(const dword* addr);
 word readLE16(const word* addr);
 
+void _kx_strcpy(char* destination, const char* source, const unsigned long len);
+void _kx_strcat(char* destination, const char* source, const unsigned long len);
+
 static inline char itoax_s(dword v)
 //hex string conversion
 {
