@@ -93,6 +93,7 @@ word readLE16(const word* addr){
 
 
 #if defined(SYSTEM_IO)
+/*
 #if !(defined(__i386__) || defined(__x86_64__) || defined(X86)) && (defined(PPC) || defined(ARM))
 
 __inline__ dword inpd_System(const struct kx_hw* hw, const word displacement){
@@ -236,6 +237,50 @@ __inline__ void outp_System(struct kx_hw* hw, const word displacement, const byt
 #error "Missing I/O implementation!!"
 
 #endif
+ */
+
+__inline__ dword inpd_System(const struct kx_hw* hw, const word displacement){
+    
+    const word disp = displacement & 0xFFFF;
+     
+    return hw->dev->ioRead32(disp);
+}
+
+__inline__ word inpw_System(const struct kx_hw* hw, const word displacement){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    return hw->dev->ioRead16(disp);
+}
+
+__inline__ byte inp_System(const struct kx_hw* hw, const word displacement){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    return hw->dev->ioRead8(disp);
+}
+
+__inline__ void outpd_System(struct kx_hw* hw, const word displacement, const dword value){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    return hw->dev->ioWrite32(disp, value);
+}
+
+__inline__ void outpw_System(struct kx_hw* hw, const word displacement, const word value){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    return hw->dev->ioWrite16(disp, value);
+}
+
+__inline__ void outp_System(struct kx_hw* hw, const word displacement, const byte value){
+    
+    const word disp = displacement & 0xFFFF;
+    
+    return hw->dev->ioWrite8(disp, value);
+}
+
 #endif
 
 void kXAudioDevice::malloc_func(int len,void **b,int where)

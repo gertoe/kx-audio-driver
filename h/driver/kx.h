@@ -180,6 +180,10 @@ struct kx_callbacks
     io_port_t io_base;
 	word actual_io_base;
     
+#if defined(__APPLE__) && defined(__MACH__)
+    IOPCIDevice* pci;
+#endif
+    
     byte irql;
 
     dword device; // needed

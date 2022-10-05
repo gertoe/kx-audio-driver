@@ -122,6 +122,9 @@ word wdata;
   /// use supplied resources
   hw->port=hw->cb.io_base;
   hw->actualPort = hw->cb.actual_io_base;
+#if defined(__APPLE__) && defined(__MACH__)
+  hw->dev = hw->cb.pci;
+#endif
   hw->irq=hw->cb.irql;
 
   hw->pci_device=hw->cb.device; // should be real

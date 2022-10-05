@@ -47,7 +47,7 @@ typedef unsigned long uintptr_t;
 
 #ifdef KX_INTERNAL
 
-#ifndef SYSTEM_IO
+#if !SYSTEM_IO && (defined(__APPLE__) || defined(__MACH__))
     #define SYSTEM_IO
 #endif
 //#define OLD_ALLOC

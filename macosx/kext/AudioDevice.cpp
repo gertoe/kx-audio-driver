@@ -197,6 +197,8 @@ bool kXAudioDevice::initHardware(IOService *provider)
 	
 	cb.actual_io_base = port;
     
+    cb.pci = pciDevice;
+    
     cb.device=dev_id;
     cb.subsys=subsys_id;
     cb.chip_rev=chiprev_id;
