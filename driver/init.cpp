@@ -816,8 +816,8 @@ KX_API(int,kx_get_voice_info(kx_hw *hw,int what,kx_voice_info *vi))
         if(hw->voicetable[i].synth_id&VOICE_STATUS_AC3PT)
          vi[i].usage|=VOICE_STATUS_AC3PT;
       }
-      outpd_System(hw->port, PTR,((CVCF << 16) & PTR_ADDRESS_MASK) | (i & PTR_CHANNELNUM_MASK));
-      vi[i].cur_vol=(inpd_System(hw->port, DATA)&0xffff0000)>>16;
+      outpd_System(hw, PTR,((CVCF << 16) & PTR_ADDRESS_MASK) | (i & PTR_CHANNELNUM_MASK));
+      vi[i].cur_vol=(inpd_System(hw, DATA)&0xffff0000)>>16;
       if(hw->is_10k2) // 3543 change
        vi[i].cur_vol<<=1;
      }

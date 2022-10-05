@@ -34,7 +34,7 @@ void write_mpu_data(kx_hw *hw,byte data,int where)
       	}
       	else
       	{
-          outp_System(hw->port, MUDATA_K1, data);
+          outp_System(hw, MUDATA_K1, data);
       	}
 }
 
@@ -52,7 +52,7 @@ inline byte read_mpu_data(kx_hw *hw,int where)
       	}
       	else
       	{
-      	  ret=inp_System(hw->port, MUDATA_K1);
+      	  ret=inp_System(hw, MUDATA_K1);
       	}
       	return ret;
 }
@@ -71,7 +71,7 @@ byte read_mpu_state(kx_hw *hw,int where)
 	}
 	else
 	{
-	 state=inp_System(hw->port, MUSTAT_K1);
+	 state=inp_System(hw, MUSTAT_K1);
 	}
 	return state;
 }
@@ -88,7 +88,7 @@ inline void write_mpu_cmd(kx_hw *hw,byte cmd,int where)
       	}
       	else
       	{
-            outp_System(hw->port, MUCMD_K1, cmd);
+            outp_System(hw, MUCMD_K1, cmd);
       	}
 }
 

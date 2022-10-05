@@ -455,7 +455,7 @@ bool kXAudioDevice::interruptFilter(OSObject *owner, IOFilterInterruptEventSourc
     // event source
     if (that && that->hw)
     {
-        dword ipr=inpd_System(that->hw->port, IPR);
+        dword ipr=inpd_System(that->hw, IPR);
         if(ipr==0)
             return false; // not our IRQ, no need to queue interruptHandler
         

@@ -49,13 +49,13 @@ KX_API(void, kx_writefn0(kx_hw *hw, dword reg, dword data))
         reg &= 0x7f;
 
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        data |= inpd_System(hw->port, reg) & ~mask;
-        outpd_System(hw->port, reg, data);
+        data |= inpd_System(hw, reg) & ~mask;
+        outpd_System(hw, reg, data);
         kx_lock_release(hw,&hw->hw_lock, &flags);
     } 
      else 
     {
-        outpd_System(hw->port, reg, data);
+        outpd_System(hw, reg, data);
     }
 }
 
@@ -183,36 +183,36 @@ KX_API(dword, kx_readfn0(kx_hw * hw, dword reg))
         reg &= 0x7f;
 
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        val = inpd_System(hw->port, reg);
+        val = inpd_System(hw, reg);
         kx_lock_release(hw,&hw->hw_lock, &flags);
 
         return (val & mask) >> offset;
     }
     else
     {
-        return inpd_System(hw->port, reg);
+        return inpd_System(hw, reg);
     }
 }
 
 KX_API(void, kx_writefn0w(kx_hw *hw, dword reg, word data))
 {
-        outpw_System(hw->port, reg, data);
+        outpw_System(hw, reg, data);
 }
 
 KX_API(void, kx_writefn0b(kx_hw *hw, dword reg, byte data))
 {
-        outp_System(hw->port, reg, data);
+        outp_System(hw, reg, data);
 }
 
 
 KX_API(word, kx_readfn0w(kx_hw * hw, dword reg))
 {
-        return inpw_System(hw->port, reg);
+        return inpw_System(hw, reg);
 }
 
 KX_API(byte, kx_readfn0b(kx_hw * hw, dword reg))
 {
-        return inp_System(hw->port, reg);
+        return inp_System(hw, reg);
 }
 
 KX_API(void, kx_writeptrw(kx_hw *hw, dword reg, dword channel, word data))
@@ -223,8 +223,8 @@ KX_API(void, kx_writeptrw(kx_hw *hw, dword reg, dword channel, word data))
         regptr = ((reg << 16) & PTR_ADDRESS_MASK) | (channel & PTR_CHANNELNUM_MASK);
 
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        outpd_System(hw->port, PTR,regptr);
-        outpw_System(hw->port, DATA,data);
+        outpd_System(hw, PTR,regptr);
+        outpw_System(hw, DATA,data);
         kx_lock_release(hw,&hw->hw_lock, &flags);
 }
 
@@ -236,8 +236,8 @@ KX_API(word, kx_readptrw(kx_hw * hw, dword reg, dword channel))
 
         regptr = ((reg << 16) & PTR_ADDRESS_MASK) | (channel & PTR_CHANNELNUM_MASK);
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        outpd_System(hw->port, PTR,regptr);
-        val = inpw_System(hw->port, DATA);
+        outpd_System(hw, PTR,regptr);
+        val = inpw_System(hw, DATA);
         kx_lock_release(hw,&hw->hw_lock, &flags);
 
         return val;
@@ -254,8 +254,8 @@ KX_API(void, kx_writeptrb(kx_hw *hw, dword reg, dword channel, byte data))
 
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
 
-        outpd_System(hw->port, PTR, regptr);
-        outp_System(hw->port, DATA,data);
+        outpd_System(hw, PTR, regptr);
+        outp_System(hw, DATA,data);
 
         kx_lock_release(hw,&hw->hw_lock, &flags);
 }
@@ -268,8 +268,8 @@ KX_API(byte, kx_readptrb(kx_hw * hw, dword reg, dword channel))
 
         regptr = ((reg << 16) & PTR_ADDRESS_MASK) | (channel & PTR_CHANNELNUM_MASK);
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        outpd_System(hw->port, PTR,regptr);
-        val = inp_System(hw->port, DATA);
+        outpd_System(hw, PTR,regptr);
+        val = inp_System(hw, DATA);
         kx_lock_release(hw,&hw->hw_lock, &flags);
 
         return val;
@@ -294,14 +294,14 @@ KX_API(void,kx_writeptr(kx_hw *hw, dword reg, dword channel, dword data))
         data = (data << offset) & mask;
 
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        outpd_System(hw->port, PTR,regptr);
-        data |= inpd_System(hw->port, DATA) & ~mask;
-        outpd_System(hw->port, DATA,data);
+        outpd_System(hw, PTR,regptr);
+        data |= inpd_System(hw, DATA) & ~mask;
+        outpd_System(hw, DATA,data);
         kx_lock_release(hw,&hw->hw_lock, &flags);
     } else {
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        outpd_System(hw->port, PTR,regptr);
-        outpd_System(hw->port, DATA,data);
+        outpd_System(hw, PTR,regptr);
+        outpd_System(hw, DATA,data);
         kx_lock_release(hw,&hw->hw_lock, &flags);
     }
 }
@@ -381,7 +381,7 @@ KX_API(void,kx_writeptr_multiple(kx_hw *hw, dword channel, ...))
         register dword data = va_arg(args, dword);
         register dword regptr = (((reg << 16) & PTR_ADDRESS_MASK)
                   | (channel & PTR_CHANNELNUM_MASK));
-        outpd_System(hw->port, PTR,regptr);
+        outpd_System(hw, PTR,regptr);
 
         if(reg & 0xff000000) 
         {
@@ -390,9 +390,9 @@ KX_API(void,kx_writeptr_multiple(kx_hw *hw, dword channel, ...))
             register dword mask = ((1 << size) - 1) << offset;
             data = (data << offset) & mask;
 
-            data |= inpd_System(hw->port, DATA) & ~mask;
+            data |= inpd_System(hw, DATA) & ~mask;
         }
-        outpd_System(hw->port, DATA,data);
+        outpd_System(hw, DATA, data);
     }
     kx_lock_release(hw,&hw->hw_lock, &flags);
 
@@ -416,15 +416,15 @@ KX_API(dword, kx_readptr(kx_hw * hw, dword reg, dword channel))
         mask = ((1 << size) - 1) << offset;
 
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        outpd_System(hw->port, PTR,regptr);
-        val = inpd_System(hw->port, DATA);
+        outpd_System(hw, PTR,regptr);
+        val = inpd_System(hw, DATA);
         kx_lock_release(hw,&hw->hw_lock, &flags);
 
         return (val & mask) >> offset;
     } else {
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        outpd_System(hw->port, PTR,regptr);
-        val = inpd_System(hw->port, DATA);
+        outpd_System(hw, PTR,regptr);
+        val = inpd_System(hw, DATA);
         kx_lock_release(hw,&hw->hw_lock, &flags);
 
         return val;
@@ -444,13 +444,13 @@ KX_API(int,kx_writefpga(kx_hw *hw, dword reg, dword value))
 
     kx_lock_acquire(hw,&hw->hw_lock, &flags);
 
-    outpd_System(hw->port, HCFG_K2,reg);
+    outpd_System(hw, HCFG_K2,reg);
     hw->cb.usleep(10);
-    outpd_System(hw->port, HCFG_K2,reg | 0x80);  // High bit clocks the value into the fpga.
+    outpd_System(hw, HCFG_K2,reg | 0x80);  // High bit clocks the value into the fpga.
     hw->cb.usleep(10);
-    outpd_System(hw->port, HCFG_K2,value);
+    outpd_System(hw, HCFG_K2,value);
     hw->cb.usleep(10);
-    outpd_System(hw->port, HCFG_K2,value | 0x80);  // High bit clocks the value into the fpga
+    outpd_System(hw, HCFG_K2,value | 0x80);  // High bit clocks the value into the fpga
 
     kx_lock_release(hw,&hw->hw_lock, &flags);
 
@@ -468,11 +468,11 @@ KX_API(dword,kx_readfpga(kx_hw *hw, dword reg))
 
     kx_lock_acquire(hw,&hw->hw_lock, &flags);
 
-    outpd_System(hw->port,HCFG_K2,reg);
+    outpd_System(hw,HCFG_K2,reg);
     hw->cb.usleep(10);
-    outpd_System(hw->port,HCFG_K2,reg | 0x80);  // High bit clocks the value into the fpga
+    outpd_System(hw,HCFG_K2,reg | 0x80);  // High bit clocks the value into the fpga
     hw->cb.usleep(10);
-    dword ret = ((inpd_System(hw->port, HCFG_K2) >> 8) & 0x7f);
+    dword ret = ((inpd_System(hw, HCFG_K2) >> 8) & 0x7f);
     kx_lock_release(hw,&hw->hw_lock, &flags);
 
     return ret;
@@ -693,26 +693,26 @@ int kx_hal_init(kx_hw *hw,int fast)
                //io_port_t port=hw->port+TINA_POWER_CTRL;
                dword value;
 
-               value = inpd_System(hw->port, TINA_POWER_CTRL);
+               value = inpd_System(hw, TINA_POWER_CTRL);
 
                debug(DLIB,"pcmcia init [initial value: %08x]\n",value);
 
-               outpd_System(hw->port, TINA_POWER_CTRL,0x00d00000); // set gpo: 0xd0 (1101B)  --> creative pdf recommends 1111B
-               value = inpd_System(hw->port, TINA_POWER_CTRL);
-               outpd_System(hw->port, TINA_POWER_CTRL,0x00d00001); // set pll_enable
-               value = inpd_System(hw->port, TINA_POWER_CTRL);
+               outpd_System(hw, TINA_POWER_CTRL,0x00d00000); // set gpo: 0xd0 (1101B)  --> creative pdf recommends 1111B
+               value = inpd_System(hw, TINA_POWER_CTRL);
+               outpd_System(hw, TINA_POWER_CTRL,0x00d00001); // set pll_enable
+               value = inpd_System(hw, TINA_POWER_CTRL);
 
                // wait at least 8usec (4*2)
                hw->cb.usleep(8);
                // value = inpd(port); // wait more..
                // creative pdf recommends to poll power control [11:9]=100
 
-               outpd_System(hw->port, TINA_POWER_CTRL,0x00d0005f); // set buff_res=1, clk2048: p17, 10k2, common; set gated=1
-               value = inpd_System(hw->port, TINA_POWER_CTRL);
-               outpd_System(hw->port, TINA_POWER_CTRL,0x00d0007f); // set audio_reset=1
-               value = inpd_System(hw->port, TINA_POWER_CTRL);
-               outpd_System(hw->port, TINA_POWER_CTRL,0x0090007f); // set gpo: 0x90 (1001B)
-               value = inpd_System(hw->port, TINA_POWER_CTRL);
+               outpd_System(hw, TINA_POWER_CTRL,0x00d0005f); // set buff_res=1, clk2048: p17, 10k2, common; set gated=1
+               value = inpd_System(hw, TINA_POWER_CTRL);
+               outpd_System(hw, TINA_POWER_CTRL,0x00d0007f); // set audio_reset=1
+               value = inpd_System(hw, TINA_POWER_CTRL);
+               outpd_System(hw, TINA_POWER_CTRL,0x0090007f); // set gpo: 0x90 (1001B)
+               value = inpd_System(hw, TINA_POWER_CTRL);
 
                // sleep for 200ms
                // FIXME NOW !!
@@ -722,10 +722,10 @@ int kx_hal_init(kx_hw *hw,int fast)
         {
                // special sequence
                debug(DLIB,"hal: init e-dsp\n");
-            outpd_System(hw->port,HCFG_K1,0x0005a00c);
-            outpd_System(hw->port,HCFG_K1,0x0005a004);
-            outpd_System(hw->port,HCFG_K1,0x0005a000);
-            outpd_System(hw->port,HCFG_K1,0x0005a000);
+            outpd_System(hw,HCFG_K1,0x0005a00c);
+            outpd_System(hw,HCFG_K1,0x0005a004);
+            outpd_System(hw,HCFG_K1,0x0005a000);
+            outpd_System(hw,HCFG_K1,0x0005a000);
                debug(DLIB,"hal: need to upload E-DSP FPGA firmware and setup routing\n");
         }
 
@@ -2249,8 +2249,8 @@ KX_API(void, kx_writep16v(kx_hw *hw, dword reg, dword chn, dword data))
 {
     unsigned long flags;
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        outpd_System(hw->port, pPTR,pREG(reg)|chn);
-        outpd_System(hw->port, pDATA,data);
+        outpd_System(hw, pPTR,pREG(reg)|chn);
+        outpd_System(hw, pDATA,data);
         kx_lock_release(hw,&hw->hw_lock, &flags);
 }
 
@@ -2258,8 +2258,8 @@ KX_API(dword, kx_readp16v(kx_hw * hw, dword reg,dword chn))
 {
     unsigned long flags;
         kx_lock_acquire(hw,&hw->hw_lock, &flags);
-        outpd_System(hw->port, pPTR,pREG(reg)|chn);
-        dword val = inpd_System(hw->port, pDATA);
+        outpd_System(hw, pPTR,pREG(reg)|chn);
+        dword val = inpd_System(hw, pDATA);
         kx_lock_release(hw,&hw->hw_lock, &flags);
 
         return val;
@@ -2296,11 +2296,11 @@ KX_API(int,kx_upload_fpga_firmware(kx_hw *hw,byte *data,int size))
 
    dword tmp;
 
-   outpd_System(hw->port,HCFG_K2, 0x00); // Set PGMN low for 1uS
-   tmp = inpd_System(hw->port, HCFG_K2);
+   outpd_System(hw,HCFG_K2, 0x00); // Set PGMN low for 1uS
+   tmp = inpd_System(hw, HCFG_K2);
    hw->cb.usleep(100);
-   outpd_System(hw->port,HCFG_K2, 0x80); // Leave bit 7 set during netlist setup
-   tmp = inpd_System(hw->port, HCFG_K2);
+   outpd_System(hw,HCFG_K2, 0x80); // Leave bit 7 set during netlist setup
+   tmp = inpd_System(hw, HCFG_K2);
    hw->cb.usleep(100); // Allow FPGA memory to clean
 
    while(size--) 
@@ -2314,16 +2314,16 @@ KX_API(int,kx_upload_fpga_firmware(kx_hw *hw,byte *data,int size))
            reg|=0x20;
 
         value = value >> 1;   
-        outpd_System(hw->port,HCFG_K2, reg);
-        tmp = inpd_System(hw->port, HCFG_K2);
-        outpd_System(hw->port,HCFG_K2, reg | 0x40);
-        tmp = inpd_System(hw->port, HCFG_K2);
+        outpd_System(hw,HCFG_K2, reg);
+        tmp = inpd_System(hw, HCFG_K2);
+        outpd_System(hw,HCFG_K2, reg | 0x40);
+        tmp = inpd_System(hw, HCFG_K2);
      }
    }
 
    // After programming, set GPIO bit 4 high again
-   outpd_System(hw->port,HCFG_K2, 0x10);
-   tmp = inpd_System(hw->port, HCFG_K2);
+   outpd_System(hw,HCFG_K2, 0x10);
+   tmp = inpd_System(hw, HCFG_K2);
 
    kx_lock_release(hw,&hw->hw_lock, &flags);
 

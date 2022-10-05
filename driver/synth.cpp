@@ -1038,12 +1038,12 @@ KX_API(int,kx_synth_changes(kx_midi_state *midi,int chn,int note,int what))
 
         		 kx_lock_acquire(hw,&hw->hw_lock, &flags);
 
-                 outpd_System(hw->port, PTR,regptr);
+                 outpd_System(hw, PTR,regptr);
 
-        		 byte old=inp_System(hw->port, DATA + 3);
+        		 byte old=inp_System(hw, DATA + 3);
 
         		 old=(byte)((old&0x0f)|(hw->voicetable[i].param.filterQ<<4));
-                 outp_System(hw->port, DATA + 3,old);
+                 outp_System(hw, DATA + 3,old);
 
         		 kx_lock_release(hw,&hw->hw_lock, &flags);
         	  }

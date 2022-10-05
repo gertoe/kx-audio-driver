@@ -536,12 +536,12 @@ KX_API(int,kx_wave_set_parameter(kx_hw *hw,int num, int ch, int param,dword valu
 
                     kx_lock_acquire(hw,&hw->hw_lock, &flags);
 
-                     outpd_System(hw->port, PTR,regptr);
-                    dword val=inpd_System(hw->port,DATA);
+                     outpd_System(hw, PTR,regptr);
+                    dword val=inpd_System(hw,DATA);
                     val=(val&(~QKBCA_INTERPROMMASK))|(interpolation);
 
                     // outpd(hw->port + DATA,val);
-                    outp_System(hw->port, DATA + 3,(byte)(val>>24));
+                    outp_System(hw, DATA + 3,(byte)(val>>24));
 
                     kx_lock_release(hw,&hw->hw_lock, &flags);
 
