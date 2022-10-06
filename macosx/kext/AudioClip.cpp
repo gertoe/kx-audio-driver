@@ -101,7 +101,7 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
     
 #else
     
-    size_t startSampleIndex, maxSampleIndex;
+    UInt32 startSampleIndex, maxSampleIndex;
     
     maxSampleIndex = (firstSampleFrame + numSampleFrames) * streamFormat->fNumChannels;
     startSampleIndex = (firstSampleFrame * streamFormat->fNumChannels);

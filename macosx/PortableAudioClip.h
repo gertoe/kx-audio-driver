@@ -136,167 +136,68 @@ static inline double clamp(const register double val){
 }
 
 
-static void Float32ToSInt32_portable( const float* floatMixBuf, SInt32* destBuf, const size_t end, const size_t start){
+static void Float32ToSInt32_portable( const float* floatMixBuf, SInt32* destBuf, const UInt32 end, const UInt32 start){
     register double inSample;
-    register size_t sampleIndex = start, sampleDestinationMemoryIndex = (start * sizeof(*destBuf));
+    register UInt32 sampleIndex;
     
     // Loop through the mix/sample buffers one sample at a time and perform the clip and conversion operations
-    for (; sampleIndex < end; sampleIndex++, sampleDestinationMemoryIndex += sizeof(*destBuf)){
+    for (sampleIndex = start; sampleIndex < end; sampleIndex++){
         // Fetch the floating point mix sample
-        inSample = (
-						clamp(
-							floatMixBuf[sampleIndex]
-						) * clipPosMul32
-					) + 128.0f;
-        
+        inSample = (clamp(floatMixBuf[sampleIndex]) * clipPosMul32) + 128.0f;
+                
         // Scale the -1.0 to 1.0 range to the appropriate scale for signed 32-bit samples and then
         // convert to SInt32 and store in the hardware sample buffer
-		
-		/*
-		if ( ((uintptr_t)destBuf) + ((uintptr_t)sampleDestinationMemoryIndex) % 4 != 0 ){
-			IOLog("kXAudioDriver::Float32ToSInt32_portable misaligned memory operation, skipping it ...\n");
-			//continue;
-		}
-		*/
-		
-        OSWriteLittleInt32(destBuf, sampleDestinationMemoryIndex, FloatToInt32(inSample));
+        //destBuf[sampleIndex] = (SInt32)correctEndianess32( FloatToInt32( inSample ) ); //more lightweight
+        
+        //writeLE32((UInt32*)&(destBuf[sampleIndex]), FloatToInt32( inSample ));
+        OSWriteLittleInt32(destBuf, sampleIndex * sizeof(*destBuf), FloatToInt32(inSample)); //better performance since we avoid using the shifter this way
     }
     
 }
 
-static void Float32ToSInt16Aligned32_portable( const float* floatMixBuf, SInt32* destBuf, const size_t end, const size_t start){
-    register float inSample;
-    register size_t sampleIndex = start, sampleDestinationMemoryIndex = (start * sizeof(*destBuf));
+static void Float32ToSInt16Aligned32_portable( const float* floatMixBuf, SInt32* destBuf, const UInt32 end, const UInt32 start){
+    register double inSample;
+    register UInt32 sampleIndex;
     
     // Loop through the mix/sample buffers one sample at a time and perform the clip and conversion operations
-    for (; sampleIndex < end; sampleIndex++, sampleDestinationMemoryIndex += sizeof(*destBuf)){
+    for (sampleIndex = start; sampleIndex < end; sampleIndex++){
         // Fetch the floating point mix sample
         inSample = (clamp(floatMixBuf[sampleIndex]) * clipPosMul16);
         
         // Scale the -1.0 to 1.0 range to the appropriate scale for signed 16-bit samples and then
-        // convert to SInt16 and shit upwards of 16 bits (to have the correct volume) and store in the hardware sample buffer
+        // convert to SInt16, then shifts it up by 16 bits (to match the 32 bit range for the buffer) and store in the hardware sample buffer
         
-        OSWriteLittleInt32(destBuf, sampleDestinationMemoryIndex, ((SInt16)inSample) << 16);
+        //destBuf[sampleIndex] = (SInt32)correctEndianess32( ((SInt16)inSample) << 16 ); //no artifacts 16 bit aprrox.
+        
+        
+        //writeLE32((UInt32*)&(destBuf[sampleIndex]), ((SInt16)inSample) << 16 );
+        OSWriteLittleInt32(destBuf, sampleIndex * sizeof(*destBuf), ((SInt16)inSample) << 16);
     }
     
 }
 
-static void Float32ToSInt16_portable( const float* floatMixBuf, SInt16* destBuf, const size_t end, const size_t start){
-    register float inSample;
-    register size_t sampleIndex = start, sampleDestinationMemoryIndex = (start * sizeof(*destBuf));
+static void Float32ToSInt16_portable( const float* floatMixBuf, SInt16* destBuf, const UInt32 end, const UInt32 start){
+    
+    register double inSample;
+    register UInt32 sampleIndex;
+    //register UInt16* bufferPointer = (UInt16*)&(destBuf[start]);
     
     // Loop through the mix/sample buffers one sample at a time and perform the clip and conversion operations
-    for (; sampleIndex < end; sampleIndex++, sampleDestinationMemoryIndex += sizeof(*destBuf)){
+    for (sampleIndex = start; sampleIndex < end; sampleIndex++){
         // Fetch the floating point mix sample
         inSample = (clamp(floatMixBuf[sampleIndex]) * clipPosMul16);
         
         // Scale the -1.0 to 1.0 range to the appropriate scale for signed 16-bit samples and then
         // convert to SInt16 and store in the hardware sample buffer
+        //destBuf[sampleIndex] = (SInt16)correctEndianess16((UInt16)(inSample));
         
-        OSWriteLittleInt16(destBuf, sampleDestinationMemoryIndex, ((SInt16)inSample));
+        //writeLE16((UInt16*)&(destBuf[sampleIndex]), ((SInt16)inSample));
+        OSWriteLittleInt16(destBuf, sampleIndex * sizeof(*destBuf), (SInt16)inSample);
     }
 }
-
-static void Float32ToSInt32_no_array_little_endian( const float* mixBuf, SInt32* destBuf, const size_t end, const size_t start){
-    register uintptr_t inSample = (uintptr_t)&mixBuf[start];
-    register uintptr_t outSample = (uintptr_t)&destBuf[start];
-    
-    const uintptr_t endSample = (uintptr_t)&mixBuf[end - 1];
-    
-    for (;inSample <= endSample; inSample += sizeof(*mixBuf), outSample += sizeof(*destBuf)){
-        (*(volatile SInt32 *)outSample) = FloatToInt32((clamp(*(volatile float *)inSample) * clipPosMul32) + 128);
-    }
-    
-}
-
-static void Float32ToSInt16Aligned32_no_array_little_endian( const float* mixBuf, SInt32* destBuf, const size_t end, const size_t start){
-    register uintptr_t inSample = (uintptr_t)&mixBuf[start];
-    register uintptr_t outSample = (uintptr_t)&destBuf[start];
-    
-    const uintptr_t endSample = (uintptr_t)&mixBuf[end - 1];
-    
-    for (;inSample <= endSample; inSample += sizeof(*mixBuf), outSample += sizeof(*destBuf)){
-        (*(volatile SInt32 *)outSample) = ((SInt16)(clamp(*(volatile float *)inSample) * clipPosMul16)) << 16;
-    }
-}
-
-static void Float32ToSInt16_no_array_little_endian( const float* mixBuf, SInt16* destBuf, const size_t end, const size_t start){
-    register uintptr_t inSample = (uintptr_t)&mixBuf[start];
-    register uintptr_t outSample = (uintptr_t)&destBuf[start];
-    
-    const uintptr_t endSample = (uintptr_t)&mixBuf[end - 1];
-    
-    for (;inSample <= endSample; inSample += SInt16(*mixBuf), outSample += sizeof(*destBuf)){
-        (*(volatile SInt16 *)outSample) = (SInt16)(clamp(*(volatile float *)inSample) * clipPosMul16);
-    }
-}
-
-static void Float32ToSInt32_no_array_portable( const float* mixBuf, SInt32* destBuf, const size_t end, const size_t start){
-    register uintptr_t inSample = (uintptr_t)&mixBuf[start];
-    register size_t outSampleIndex = start * sizeof(*destBuf);
-    
-    const uintptr_t endSample = (uintptr_t)&mixBuf[end - 1];
-    
-    for (;inSample <= endSample; inSample += sizeof(*mixBuf), outSampleIndex += sizeof(*destBuf)){
-        OSWriteLittleInt32(destBuf, outSampleIndex, FloatToInt32((clamp(*(volatile float *)inSample) * clipPosMul32) + 128) );
-    }
-}
-
-static void Float32ToSInt16Aligned32_no_array_portable( const float* mixBuf, SInt32* destBuf, const size_t end, const size_t start){
-    register uintptr_t inSample = (uintptr_t)&mixBuf[start];
-    register size_t outSampleIndex = start * sizeof(*destBuf);
-    
-    const uintptr_t endSample = (uintptr_t)&mixBuf[end - 1];
-    
-    for (;inSample <= endSample; inSample += sizeof(*mixBuf), outSampleIndex += sizeof(*destBuf)){
-        OSWriteLittleInt32(destBuf, outSampleIndex ,((SInt16)(clamp(*(volatile float *)inSample) * clipPosMul16)) << 16);
-    }
-}
-
-static void Float32ToSInt16_no_array_portable( const float* mixBuf, SInt16* destBuf, const size_t end, const size_t start){
-    register uintptr_t inSample = (uintptr_t)&mixBuf[start];
-    register size_t outSampleIndex = start * sizeof(*destBuf);
-    
-    const uintptr_t endSample = (uintptr_t)&mixBuf[end - 1];
-    
-    for (;inSample <= endSample; inSample += sizeof(*mixBuf), outSampleIndex += sizeof(*destBuf)){
-        OSWriteLittleInt16(destBuf, outSampleIndex ,(SInt16)(clamp(*(volatile float *)inSample) * clipPosMul16));
-    }
-}
-
-
-//#if defined(PPC)
 
 #define Float32ToSInt16_optimized Float32ToSInt16_portable
 #define Float32ToSInt32_optimized Float32ToSInt32_portable
 #define Float32ToSInt16Aligned32_optimized Float32ToSInt16Aligned32_portable
-/*
-#elif defined(TARGET_RT_LITTLE_ENDIAN) || defined(X86)
-
-#ifndef TARGET_RT_LITTLE_ENDIAN
-#define TARGET_RT_LITTLE_ENDIAN 0
-#endif
-
-#if TARGET_RT_LITTLE_ENDIAN || defined(X86)
-
-#define Float32ToSInt16_optimized Float32ToSInt16_no_array_little_endian
-#define Float32ToSInt32_optimized Float32ToSInt32_no_array_little_endian
-#define Float32ToSInt16Aligned32_optimized Float32ToSInt16Aligned32_no_array_little_endian
-
-#else
-
-#define Float32ToSInt16_optimized Float32ToSInt16_portable
-#define Float32ToSInt32_optimized Float32ToSInt32_portable
-#define Float32ToSInt16Aligned32_optimized Float32ToSInt16Aligned32_portable
-
-#endif
-
-#else
-
-#define Float32ToSInt16_optimized Float32ToSInt16_portable
-#define Float32ToSInt32_optimized Float32ToSInt32_portable
-#define Float32ToSInt16Aligned32_optimized Float32ToSInt16Aligned32_portable
-
-#endif*/
 
 #endif
