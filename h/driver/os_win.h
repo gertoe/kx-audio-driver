@@ -69,7 +69,7 @@ struct memhandle
 	// note: this is for 32-bit OS only
 	size_t size;
 	void * addr;		// virtual
-    IOPhysicalAddress32 dma_handle;	// physical
+    dword dma_handle;	// physical
 };
 
 #endif

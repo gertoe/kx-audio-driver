@@ -437,7 +437,7 @@ struct memhandle *kXAudioEngine::my_alloc_contiguous(size_t size)
         if (pa & (~mask))
             debug("kXAudioEngine[%p]::my_alloc_contiguous() - memory misaligned or beyond 2GB limit (%p)\n", this, (void *)pa);
         
-        mem->dma_handle = (dword)pa; //pa is the address of the memory buffer, which must be in the 32 bit address space limit for the card to work
+        mem->dma_handle = (dword)(pa & 0xFFFFFFFF); //pa is the address of the memory buffer, which must be in the 32 bit address space limit for the card to work
         mem->addr = desc->getBytesNoCopy();
         
     }else{
@@ -658,7 +658,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 
                 //debug("createNewAudioStream FXBA:\n");
                 //kx_writeptr_prof(hw, FXBA, 0, hw->mtr_buffer.dma_handle);
-                kx_writeptr(hw, FXBA, 0, (dword)hw->mtr_buffer.dma_handle); //sets the appropriate dma reg in the card
+                kx_writeptr(hw, FXBA, 0, hw->mtr_buffer.dma_handle); //sets the appropriate dma reg in the card
                 
                 dword ch = (1 << (format.fNumChannels * 2)) - 1;    // 24bit needs 2 physical channels
                 debug("createNewAudioStream FXWCH/FXWC_K1: %x\n", (unsigned int)ch);
