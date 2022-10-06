@@ -33,7 +33,7 @@
 #include <libkern/OSTypes.h>
 #include <libkern/OSByteOrder.h>
 
-//#define NO_ASM
+#define NO_ASM
 
 static const double clipMax = 1.0f;
 static const double clipMin = -1.0f;
@@ -62,7 +62,7 @@ static const double clipNegMul32 = 2147483648.0f;
 static const double clipPosMulDiv32 = 1 / clipPosMul32;
 static const double clipNegMulDiv32 = 1 / clipNegMul32;
 
-static inline SInt32 FloatToInt32(const double val){
+static inline SInt32 FloatToInt32(const register double val){
     
 #if !defined(PPC) || defined(NO_ASM)
     static const double maxInt32 = 2147483648.0;    // 1 << 31
@@ -71,8 +71,8 @@ static inline SInt32 FloatToInt32(const double val){
 #endif
     
 #if defined(PPC) && !defined(NO_ASM)
-    SInt32 i;
-    union {
+    register SInt32 i;
+    register union {
         double    d;
         UInt32    i[2];
     } u;
@@ -86,28 +86,28 @@ static inline SInt32 FloatToInt32(const double val){
     return i;
     
 #elif defined(X86)
-    /*
+    
      if (val >= max32) return 0x7FFFFFFF;
      return (SInt32)val; //the compiler handles it better on x86, hence the missing check compared to the generic version
-     */
     
-    return ((val >= max32) * 0x7FFFFFFF) + ((val < max32) * ((SInt32)val)); //branchless, so the cpu is happy
+    
+    //return ((val >= max32) * 0x7FFFFFFF) + ((val < max32) * ((SInt32)val)); //branchless, so the cpu is happy
 #else
     //Generic slow version
     static const double min32 = -2147483648.0;
     
-    /*
+    
      if (val >= max32) return 0x7FFFFFFF;
      else if (val <= min32) return 0x80000000;
      return (SInt32)val;
-     */
-    return ((val >= max32) * 0x7FFFFFFF) + ((val <= min32) * 0x80000000) + ((val < max32 && val > min32) * (SInt32)val);
+     
+    //return ((val >= max32) * 0x7FFFFFFF) + ((val <= min32) * 0x80000000) + ((val < max32 && val > min32) * (SInt32)val);
     
 #endif
     
 }
 
-static inline double fabs(const double val){
+static inline double fabs(const register double val){
 	
 #if defined(PPC) && !defined(NO_ASM)
     double d;
@@ -123,15 +123,15 @@ static inline double fabs(const double val){
     
 }
 
-static inline double fmax(const double a, const double b){
+static inline double fmax(const register double a, const register double b){
     return (a + b + fabs(a - b)) / 2;
 }
 
-static inline double fmin(const double a, const double b){
+static inline double fmin(const register double a, const register double b){
     return (a + b - fabs(a - b)) / 2;
 }
 
-static inline double clamp(const double val){
+static inline double clamp(const register double val){
     return fmin(fmax(val, clipMin), clipMax);
 }
 
@@ -147,7 +147,7 @@ static void Float32ToSInt32_portable( const float* floatMixBuf, SInt32* destBuf,
 						clamp(
 							floatMixBuf[sampleIndex]
 						) * clipPosMul32
-					) + 128;
+					) + 128.0f;
         
         // Scale the -1.0 to 1.0 range to the appropriate scale for signed 32-bit samples and then
         // convert to SInt32 and store in the hardware sample buffer
@@ -165,7 +165,7 @@ static void Float32ToSInt32_portable( const float* floatMixBuf, SInt32* destBuf,
 }
 
 static void Float32ToSInt16Aligned32_portable( const float* floatMixBuf, SInt32* destBuf, const size_t end, const size_t start){
-    register double inSample;
+    register float inSample;
     register size_t sampleIndex = start, sampleDestinationMemoryIndex = (start * sizeof(*destBuf));
     
     // Loop through the mix/sample buffers one sample at a time and perform the clip and conversion operations
@@ -182,7 +182,7 @@ static void Float32ToSInt16Aligned32_portable( const float* floatMixBuf, SInt32*
 }
 
 static void Float32ToSInt16_portable( const float* floatMixBuf, SInt16* destBuf, const size_t end, const size_t start){
-    register double inSample;
+    register float inSample;
     register size_t sampleIndex = start, sampleDestinationMemoryIndex = (start * sizeof(*destBuf));
     
     // Loop through the mix/sample buffers one sample at a time and perform the clip and conversion operations

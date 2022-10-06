@@ -353,6 +353,7 @@ void kXAudioDevice::free()
     
     if(hw)
     {
+        /*
         if (hw->dev){
             hw->dev = NULL;
         }
@@ -360,6 +361,7 @@ void kXAudioDevice::free()
         if (hw->memMap){
             hw->memMap = NULL;
         }
+        */
         
         if((hw->initialized&KX_DEVICE_INITED) && !(hw->initialized&KX_ENGINE_INITED))
         {
