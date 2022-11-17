@@ -18,20 +18,24 @@
  *   along with this program; if not, write to the Free Software
  *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+ 
+#include <IOKit/IOLib.h>
+#include "AudioEngine.h"
+ 
+#if !defined(KX_LIBLESS)
+	#if defined(PPC)
+		#include "PCMBlitterLibPPC.h"
+	#elif defined(X86)
+		#include "IOAudioBlitterLib.h"
+		#include "IOAudioBlitterLibDispatch.h"
+	#else
+		#define KX_LIBLESS 1
+	#endif
+#endif
 
 #if defined(KX_LIBLESS)
 
-#include <IOKit/IOLib.h>
-//#include "AudioDevice.h"
-#include "AudioEngine.h"
 #include "PortableAudioClip.h"
-
-#else
-
-#include "IOAudioBlitterLib.h"
-#include "IOAudioBlitterLibDispatch.h"
-#include "AudioDevice.h"
-#include "AudioEngine.h"
 
 #endif
 
@@ -83,14 +87,14 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
 	
 #if !defined(KX_LIBLESS)
     
-	int frsamples=firstSampleFrame * streamFormat->fNumChannels;
+	UInt32 frsamples=firstSampleFrame * streamFormat->fNumChannels;
     UInt8 *outputBuf = &(((UInt8 *)sampleBuf)[frsamples * streamFormat->fBitWidth / 8]);
 	float *fMixBuf = ((float *)mixBuf) + frsamples;
     
     // Calculate the number of actual samples to convert
     int num_samples = numSampleFrames * streamFormat->fNumChannels;
 
-	
+	#if !defined(PPC)
     if(bps==32){
 		//Float32ToNativeInt32_X86(fMixBuf, (SInt32 *)outputBuf, num_samples);
         IOAF_Float32ToLEInt32(fMixBuf, (SInt32*)outputBuf, num_samples);
@@ -98,6 +102,13 @@ IOReturn kXAudioEngine::clipOutputSamples(const void *mixBuf, void *sampleBuf, U
         //Float32ToNativeInt16_X86(fMixBuf, (SInt16 *)outputBuf, num_samples);
         IOAF_Float32ToLEInt16(fMixBuf, (SInt16 *)outputBuf, num_samples);
     }
+    #else
+	if(bps==32){
+		Float32ToSwapInt32(fMixBuf, (SInt32*)outputBuf, num_samples);
+    }else if(bps==16){
+		Float32ToSwapInt16(fMixBuf, (SInt16*)outputBuf, num_samples);
+    }
+	#endif
     
 #else
     
@@ -183,6 +194,7 @@ IOReturn kXAudioEngine::convertInputSamples(const void *sampleBuf, void *destBuf
     int num_samples = numSampleFrames * streamFormat->fNumChannels;
     UInt8 *inputBuf = &(((UInt8 *)sampleBuf)[firstSampleFrame * streamFormat->fNumChannels * streamFormat->fBitWidth / 8]);
     
+	#if !defined(PPC)
     if(bps==32){
 		NativeInt32ToFloat32_X86((SInt32 *)inputBuf,(Float32 *)destBuf,num_samples);
         //IOAF_LEInt32ToFloat32((SInt32 *)inputBuf,(Float32 *)destBuf,num_samples);
@@ -190,6 +202,13 @@ IOReturn kXAudioEngine::convertInputSamples(const void *sampleBuf, void *destBuf
         NativeInt16ToFloat32_X86((SInt16 *)inputBuf,(Float32 *)destBuf,num_samples);
         //IOAF_LEInt16ToFloat32((SInt16 *)inputBuf,(Float32 *)destBuf,num_samples);
     }
+	#else
+	if(bps==32){
+		SwapInt32ToFloat32((SInt32 *)inputBuf,(float *)destBuf,num_samples, 32);
+    }else if(bps==16){
+        SwapInt16ToFloat32((SInt16 *)inputBuf,(float *)destBuf,num_samples, 16);
+    }
+	#endif
 #else
     
     UInt32 numSamplesLeft;
