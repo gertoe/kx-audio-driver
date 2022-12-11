@@ -42,7 +42,7 @@
 
 #include <TargetConditionals.h>
 
-#if __i386__ || __LP64__
+#if __i386__ || __LP64__ || TARGET_CPU_X86 || TARGET_CPU_X86_64
 #define _MM_MALLOC_H_INCLUDED 1	// we don't want this header
 #include <xmmintrin.h>
 #include "IOAudioBlitterLib.h"

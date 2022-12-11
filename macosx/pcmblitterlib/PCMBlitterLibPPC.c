@@ -41,7 +41,6 @@ LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUC
 */
 
 #include <TargetConditionals.h>
-
 #if TARGET_CPU_PPC
 #include "PCMBlitterLibPPC.h"
 

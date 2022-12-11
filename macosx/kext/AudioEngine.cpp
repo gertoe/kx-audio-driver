@@ -24,6 +24,8 @@
 #include "Utility.h"
 #include "emu.h"
 
+#include <libkern/version.h>
+
 #define DBGCLASS "kXAudioEngine"
 
 #undef debug
@@ -64,7 +66,7 @@ bool kXAudioEngine::init(kx_hw *hw_)
     
     hw->initialized|=KX_ENGINE_INITED;
     
-    setIndex(hw->actualPort);
+    //setIndex(hw->actualPort >> 12);
     
     //it's better to keep this as is, because the initialization code probably assumes it with this value, after the initialization you are free to change smapling rate
     sampling_rate=48000;
@@ -257,7 +259,12 @@ bool kXAudioEngine::initHardware(IOService *provider)
     
     setClockDomain(); // =kIOAudioNewClockDomain
     
-    setIndex(hw->actualPort);
+    //setIndex(hw->actualPort >> 12);
+    
+    if (version_major > 10)            /* newer than SnowLeopard */
+        setClockIsStable(false);
+    else
+        setProperty(kIOAudioEngineClockIsStableKey, 0ULL, 32U);
     
     // calculate kx_sample_offset
     
@@ -307,7 +314,7 @@ bool kXAudioEngine::initHardware(IOService *provider)
     // Set the number of sample frames in each buffer
     setNumSampleFramesPerBuffer(n_frames);
     
-    setIndex(hw->actualPort);
+    //setIndex(hw->actualPort >> 12);
     
     result = true;
     
@@ -316,6 +323,25 @@ Done:
         free_all();
     
     return result;
+}
+
+OSString* kXAudioEngine::getGlobalUniqueID(){
+    
+    //const OSMetaClass * const myMetaClass = getMetaClass();
+    
+    char uniqueIDStr[KX_MAX_STRING];
+    bzero(uniqueIDStr, KX_MAX_STRING);
+    
+    //const char* className = (myMetaClass) ? myMetaClass->getClassName() : NULL;
+    snprintf(uniqueIDStr, KX_MAX_STRING, "%s:%x:%x:%x:%x:%x", /*className,*/ hw->card_model_name, hw->pci_bus, hw->pci_dev, hw->pci_func, hw->actualPort >> 8, (const UInt32)this->index);
+    
+    //OSString* value = super::getGlobalUniqueID();
+    
+    OSString* value = OSString::withCString (uniqueIDStr);
+    
+    debug("kXAudioEngine[%p]::getGlobalUniqueID() -- Returned value: %s\n", this, value->getCStringNoCopy());
+    
+    return value;
 }
 
 void kXAudioEngine::free()
@@ -576,7 +602,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 kIOAudioStreamAlignmentHighByte,                // high byte aligned - unused because bit depth == bit width
                 kIOAudioStreamByteOrderLittleEndian,            // little endian
                 true,                                           // format is mixable
-                hw->actualPort + streamIndex++                    // driver-defined tag
+                (hw->actualPort >> 12) + streamIndex++          // driver-defined tag
             };
             
             //buffer allocation
@@ -820,6 +846,8 @@ IOReturn kXAudioEngine::performAudioEngineStart()
     hw->asio_notification_krnl.active=1;
     
     is_running=1;
+    
+    //setIndex(hw->actualPort >> 12);
     
     takeTimeStamp(false);
     

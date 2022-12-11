@@ -93,6 +93,8 @@ public:
 	void pci_free(struct memhandle *h);
 	void sync(sync_data*s);
 	void get_physical(kx_voice_buffer *buff, const dword offset, dword *physical);
+    
+    
 	    
 	static void malloc_func(void *call_with,int len,void **b,int where) { ((kXAudioDevice *)call_with)->malloc_func(len,b,where); };
     static void send_message(void *call_with,int len,const void *b) { ((kXAudioDevice *)call_with)->send_message(len,b); };

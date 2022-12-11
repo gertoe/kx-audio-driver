@@ -416,6 +416,7 @@ bool kXAudioDevice::createAudioEngine()
     
     create_audio_controls(audioEngine);
     
+    audioEngine->setAudioDevice(this);
     
     // Active the audio engine - this will cause the audio engine to have start() and initHardware() called on it
     // After this function returns, that audio engine should be ready to begin vending audio services to the system
@@ -423,9 +424,7 @@ bool kXAudioDevice::createAudioEngine()
     // Once the audio engine has been activated, release it so that when the driver gets terminated,
     // it gets freed
     
-    audioEngine->setIndex(hw->actualPort);
-    
-    audioEngine->release();
+    //audioEngine->setIndex(hw->actualPort >> 12);
     
     result = true;
     

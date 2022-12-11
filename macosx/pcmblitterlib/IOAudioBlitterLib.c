@@ -40,6 +40,10 @@
 	
 =============================================================================*/
 
+#include <TargetConditionals.h>
+
+#if TARGET_CPU_X86 || TARGET_CPU_X86_64
+
 #include "IOAudioBlitterLib.h"
 
 /*
@@ -240,3 +244,5 @@ void	SwapInt24ToFloat32_Portable( const UInt8 *vsrc, Float32 *dest, unsigned int
 		*dest++ = lv * scale;
 	}
 }
+
+#endif //TARGET_CPU_X86

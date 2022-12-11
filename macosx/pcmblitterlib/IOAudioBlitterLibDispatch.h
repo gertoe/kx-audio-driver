@@ -44,6 +44,10 @@
 #ifndef __IOAudioBlitterLibDispatch_h__
 #define __IOAudioBlitterLibDispatch_h__
 
+#include <TargetConditionals.h>
+
+#if TARGET_CPU_X86 || TARGET_CPU_X86_64
+
 #include <libkern/OSTypes.h>
 
 
@@ -209,5 +213,7 @@ extern void IOAF_Float32ToSwapInt32( const Float32 *src, SInt32 *dest, unsigned 
  * @param count The number of items to convert
  */
 extern void IOAF_bcopy_WriteCombine(const void *src, void *dest, unsigned int count );
+
+#endif //TARGET_CPU_X86
 
 #endif // __IOAudioBlitterLibDispatch_h__

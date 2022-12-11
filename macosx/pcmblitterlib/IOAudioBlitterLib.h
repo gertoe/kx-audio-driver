@@ -44,6 +44,9 @@
 #define __IOAudioBlitterLib_h__
 
 #include <TargetConditionals.h>
+
+#if TARGET_CPU_X86 || TARGET_CPU_X86_64
+
 #include <libkern/OSTypes.h>
 #include <libkern/OSByteOrder.h>
 
@@ -743,5 +746,7 @@ extern "C" {
 #ifdef __cplusplus
 };
 #endif
+
+#endif //!TARGET_CPU_X86
 
 #endif // __IOAudioBlitterLib_h__

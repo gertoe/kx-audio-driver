@@ -40,6 +40,10 @@
 	
 =============================================================================*/
 
+#include <TargetConditionals.h>
+
+#if TARGET_CPU_X86 || TARGET_CPU_X86_64
+
 #include "IOAudioBlitterLibDispatch.h"
 #include "IOAudioBlitterLib.h"
 #include <xmmintrin.h>
@@ -225,3 +229,5 @@ void IOAF_bcopy_WriteCombine(const void *pSrc, void *pDst, unsigned int count)
 	
 	_mm_mfence();
 }
+
+#endif //TARGET_CPU_X86
