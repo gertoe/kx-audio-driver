@@ -261,11 +261,15 @@ bool kXAudioEngine::initHardware(IOService *provider)
     
     //setIndex(hw->actualPort >> 12);
     
-    if (version_major > 10)            /* newer than SnowLeopard */
+#if !defined(PPC)
+    if (version_major > 10)   {         /* newer than SnowLeopard */
         setClockIsStable(false);
-    else
+    }else
+#else
+    {
         setProperty(kIOAudioEngineClockIsStableKey, 0ULL, 32U);
-    
+    }
+#endif
     // calculate kx_sample_offset
     
     //this new code fixes most of the cracks the old driver had, the commented lines are left just to keep track of what was there before, please don't touch
@@ -333,8 +337,11 @@ OSString* kXAudioEngine::getGlobalUniqueID(){
     bzero(uniqueIDStr, KX_MAX_STRING);
     
     //const char* className = (myMetaClass) ? myMetaClass->getClassName() : NULL;
-    snprintf(uniqueIDStr, KX_MAX_STRING, "%s:%x:%x:%x:%x:%x", /*className,*/ hw->card_model_name, hw->pci_bus, hw->pci_dev, hw->pci_func, hw->actualPort >> 8, (const UInt32)this->index);
-    
+	#if VERSION_MAJOR >= 10
+    snprintf(uniqueIDStr, KX_MAX_STRING, /*"%s:*/ "%s:%x:%x:%x:%x:%x", /*className,*/ hw->card_model_name, hw->pci_bus, hw->pci_dev, hw->pci_func, hw->actualPort >> 4, (const UInt32)this->index);
+    #else
+	sprintf(uniqueIDStr, /*"%s:*/ "%s:%x:%x:%x:%x:%x", /*className,*/ hw->card_model_name, hw->pci_bus, hw->pci_dev, hw->pci_func, hw->actualPort >> 4, (const UInt32)this->index);
+	#endif
     //OSString* value = super::getGlobalUniqueID();
     
     OSString* value = OSString::withCString (uniqueIDStr);

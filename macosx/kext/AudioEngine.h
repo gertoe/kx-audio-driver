@@ -97,7 +97,7 @@ public:
     virtual IOReturn clipOutputSamples(const void *mixBuf, void *sampleBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
     virtual IOReturn convertInputSamples(const void *sampleBuf, void *destBuf, UInt32 firstSampleFrame, UInt32 numSampleFrames, const IOAudioStreamFormat *streamFormat, IOAudioStream *audioStream);
     
-    virtual OSString * getGlobalUniqueID();
+    virtual OSString* getGlobalUniqueID();
     
 #if defined(ARM)
     virtual bool driverDesiresHiResSampleIntervals(void);
