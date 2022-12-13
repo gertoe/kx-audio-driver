@@ -239,30 +239,30 @@ KX_API(word,kx_ac97read(kx_hw *hw,byte index))
 
 KX_API(void,kx_ac97write(kx_hw *hw,byte index, word data))
 {
- unsigned long flags=0;
- dword timeout=0x10000;
-
- if(index&1)
- {
-  debug(DERR,"!!! AC97 reg is x1 (%d)\n",index);
-  return;
- }
-
- if(!hw->have_ac97)
- {
-  debug(DERR,"!!! AC97 access on non-ac97 card\n");
-  return;
- }
-
- kx_lock_acquire(hw,&hw->ac97_lock, &flags);
-
- outp_System(hw, AC97ADDRESS,index);
- while((!(inp_System(hw,AC97ADDRESS)&AC97ADDRESS_READY))&&(timeout))
-  timeout--;
- if(timeout)
-  outpw_System(hw,AC97DATA,data);
-
- kx_lock_release(hw,&hw->ac97_lock,&flags);
+    unsigned long flags=0;
+    dword timeout=0x10000;
+    
+    if(index&1)
+    {
+        debug(DERR,"!!! AC97 reg is x1 (%d)\n",index);
+        return;
+    }
+    
+    if(!hw->have_ac97)
+    {
+        debug(DERR,"!!! AC97 access on non-ac97 card\n");
+        return;
+    }
+    
+    kx_lock_acquire(hw,&hw->ac97_lock, &flags);
+    
+    outp_System(hw, AC97ADDRESS,index);
+    while((!(inp_System(hw,AC97ADDRESS)&AC97ADDRESS_READY))&&(timeout))
+        timeout--;
+    if(timeout)
+        outpw_System(hw,AC97DATA,data);
+    
+    kx_lock_release(hw,&hw->ac97_lock,&flags);
 }
 
 int kx_ac97_init(kx_hw *hw)

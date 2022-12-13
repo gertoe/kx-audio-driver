@@ -314,132 +314,132 @@ KX_API(int,kx_set_passthru(kx_hw *hw,void *instance,int onoff))
 
 KX_API(int,kx_init_passthru(kx_hw *hw,void *instance,int *method))
 {
- int ret=0;
-
- if(hw->ac3_pt_state.method==0)
- {
-  // choose the best method
-  if(hw->is_10k2)
-   hw->ac3_pt_state.method=KX_AC3_PASSTHRU_GENERIC;
-  else
-   hw->ac3_pt_state.method=KX_AC3_PASSTHRU_XTRAM;
-
-  // for debugging purposes:
-  if(hw->ext_flags&KX_HW_FORCE_XTRAM_PT) // force XTRAM method
-   hw->ac3_pt_state.method=KX_AC3_PASSTHRU_XTRAM;
-  
-  if(method)
-   *method=hw->ac3_pt_state.method;
-
-  switch(hw->ac3_pt_state.method)
-  {
-    case KX_AC3_PASSTHRU_XTRAM:
-          {
-           // perform additional initialization here...
-           // we may set ret to -1 and fail initialization!
-
-           // search for 'ac3passthru_x'
-           dsp_microcode *m=0;
-
-           struct list *item;
-           unsigned long flags=0;
-           kx_lock_acquire(hw,&hw->dsp_lock, &flags);
-
-           ret=-1;
-           for_each_list_entry(item, &hw->microcodes) 
-           {
-              m = list_item(item, dsp_microcode, list);
-              if(!m)
-                  continue;
-              if(strcmp(m->guid,"64824522-f847-4bca-ac45-7a58c321d4e3")==0)
-              {
-                 hw->ac3_pt_state.pgm_id=m->pgm;
-
-                 // found:
-                 dsp_register_info *bz=find_dsp_register_in_m(hw,m,"buf_size");
-                 if(bz)
-                 {
-                   hw->ac3_pt_state.buf_size=bz->p+1;
-
-                   bz=find_dsp_register_in_m(hw,m,"dbac_value");
-                   if(bz)
-                   {
-                    hw->ac3_pt_state.dbac_reg=bz->num;
-                    hw->ac3_pt_state.m=m;
-
-                    bz=find_dsp_register_in_m(hw,m,"counter");
-
-                    if(bz)
-                    {
-                         hw->ac3_pt_state.counter_reg=bz->num;
-
-                         // microcode is oK
-                         debug(DLIB,"ac3passthru_x ok: pgm_id: %d buf_size: %d(+) dbac_reg: %x counter: %x\n",
-                           hw->ac3_pt_state.pgm_id,
-                           hw->ac3_pt_state.buf_size,
-                           hw->ac3_pt_state.dbac_reg,
-                           hw->ac3_pt_state.counter_reg);
-                         ret=0;
-
-                         break;
-                    }
-                    else
-                    {
-                     debug(DLIB,"ac3passthru_x microcode invalid [no 'counter']\n");
-                     ret=-5;
-                    }
-                   }
-                   else
-                   {
-                    debug(DLIB,"ac3passthru_x microcode invalid [no 'dbac_value']\n");
-                    ret=-4;
-                   }
-                 }
-                 else
-                 {
-                  debug(DLIB,"ac3passthru_x microcode invalid [no 'buf_size']\n");                  
-                  ret=-3;
-                 }
-              }
-           }
-
-           if(ret)
-           {
-            debug(DLIB,"ac3passthru_x microcode not loaded. trying epilog...\n");
-            // FIXME
-            debug(DLIB,"epilog is not ac-3 xtram - capable\n");
-
-            ret=-1;
-           }
-
-           kx_lock_release(hw,&hw->dsp_lock,&flags);
-          }
-          break;
-    case KX_AC3_PASSTHRU_GENERIC:
-          {
-           // nothing
-          }
-          break;
-  }
-
-  if(ret==0)
-  {
-    hw->ac3_pt_state.prev_spdif_freq=0xffffffff;
+    int ret=0;
     
-    kx_get_hw_parameter(hw,KX_HW_SPDIF_FREQ,&hw->ac3_pt_state.prev_spdif_freq);
-    kx_set_hw_parameter(hw,KX_HW_SPDIF_FREQ,1); // 48000
-
-    // 'instance' should be set -after- spdif freq
-    hw->ac3_pt_state.instance=instance;
-  }
-  else
-   hw->ac3_pt_state.method=0;
-
-  return ret;
- }
-
- debug(DWDM,"ac-3 passthru is already activated\n");
- return -1;
+    if(hw->ac3_pt_state.method==0)
+    {
+        // choose the best method
+        if(hw->is_10k2)
+            hw->ac3_pt_state.method=KX_AC3_PASSTHRU_GENERIC;
+        else
+            hw->ac3_pt_state.method=KX_AC3_PASSTHRU_XTRAM;
+        
+        // for debugging purposes:
+        if(hw->ext_flags&KX_HW_FORCE_XTRAM_PT) // force XTRAM method
+            hw->ac3_pt_state.method=KX_AC3_PASSTHRU_XTRAM;
+        
+        if(method)
+            *method=hw->ac3_pt_state.method;
+        
+        switch(hw->ac3_pt_state.method)
+        {
+            case KX_AC3_PASSTHRU_XTRAM:
+            {
+                // perform additional initialization here...
+                // we may set ret to -1 and fail initialization!
+                
+                // search for 'ac3passthru_x'
+                dsp_microcode *m=0;
+                
+                struct list *item;
+                unsigned long flags=0;
+                kx_lock_acquire(hw,&hw->dsp_lock, &flags);
+                
+                ret=-1;
+                for_each_list_entry(item, &hw->microcodes)
+                {
+                    m = list_item(item, dsp_microcode, list);
+                    if(!m)
+                        continue;
+                    if(strcmp(m->guid,"64824522-f847-4bca-ac45-7a58c321d4e3")==0)
+                    {
+                        hw->ac3_pt_state.pgm_id=m->pgm;
+                        
+                        // found:
+                        dsp_register_info *bz=find_dsp_register_in_m(hw,m,"buf_size");
+                        if(bz)
+                        {
+                            hw->ac3_pt_state.buf_size=bz->p+1;
+                            
+                            bz=find_dsp_register_in_m(hw,m,"dbac_value");
+                            if(bz)
+                            {
+                                hw->ac3_pt_state.dbac_reg=bz->num;
+                                hw->ac3_pt_state.m=m;
+                                
+                                bz=find_dsp_register_in_m(hw,m,"counter");
+                                
+                                if(bz)
+                                {
+                                    hw->ac3_pt_state.counter_reg=bz->num;
+                                    
+                                    // microcode is oK
+                                    debug(DLIB,"ac3passthru_x ok: pgm_id: %d buf_size: %d(+) dbac_reg: %x counter: %x\n",
+                                          hw->ac3_pt_state.pgm_id,
+                                          hw->ac3_pt_state.buf_size,
+                                          hw->ac3_pt_state.dbac_reg,
+                                          hw->ac3_pt_state.counter_reg);
+                                    ret=0;
+                                    
+                                    break;
+                                }
+                                else
+                                {
+                                    debug(DLIB,"ac3passthru_x microcode invalid [no 'counter']\n");
+                                    ret=-5;
+                                }
+                            }
+                            else
+                            {
+                                debug(DLIB,"ac3passthru_x microcode invalid [no 'dbac_value']\n");
+                                ret=-4;
+                            }
+                        }
+                        else
+                        {
+                            debug(DLIB,"ac3passthru_x microcode invalid [no 'buf_size']\n");
+                            ret=-3;
+                        }
+                    }
+                }
+                
+                if(ret)
+                {
+                    debug(DLIB,"ac3passthru_x microcode not loaded. trying epilog...\n");
+                    // FIXME
+                    debug(DLIB,"epilog is not ac-3 xtram - capable\n");
+                    
+                    ret=-1;
+                }
+                
+                kx_lock_release(hw,&hw->dsp_lock,&flags);
+            }
+                break;
+            case KX_AC3_PASSTHRU_GENERIC:
+            {
+                // nothing
+            }
+                break;
+        }
+        
+        if(ret==0)
+        {
+            hw->ac3_pt_state.prev_spdif_freq=0xffffffff;
+            
+            kx_get_hw_parameter(hw,KX_HW_SPDIF_FREQ,&hw->ac3_pt_state.prev_spdif_freq);
+            kx_set_hw_parameter(hw,KX_HW_SPDIF_FREQ,1); // 48000
+            
+            // 'instance' should be set -after- spdif freq
+            hw->ac3_pt_state.instance=instance;
+        }
+        else
+            hw->ac3_pt_state.method=0;
+        
+        return ret;
+    }
+    
+    debug(DWDM,"ac-3 passthru is already activated\n");
+    return -1;
 }
 
 

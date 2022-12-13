@@ -1989,7 +1989,7 @@ int iKX::upload_fpga_firmware(byte *data,int size)
         
         while(size>0)
         {
-#define MAX_FPGA_BUFFER (PAGE_SIZE-128)
+            #define MAX_FPGA_BUFFER (PAGE_SIZE-128)
             
             int sz=(size>MAX_FPGA_BUFFER)?MAX_FPGA_BUFFER:size;
             int to_send=0;

@@ -315,53 +315,53 @@ static inline int kx_voice_irq_dispatch_handler(kx_hw *hw)
 void kx_mpuin_irq_handler(kx_hw *hw,int where);
 void kx_mpuin_irq_handler(kx_hw *hw,int where)
 {
- byte val;
- unsigned long flags=0;
- if(hw->have_mpu==0)
-  debug(DLIB,"!!! mpu=0, but MPU interrupt came!\n");
-
- // MPU interrupts disabled in adapter's KX_SYNC_IPR_IRQ handler
-
+    byte val;
+    unsigned long flags=0;
+    if(hw->have_mpu==0)
+        debug(DLIB,"!!! mpu=0, but MPU interrupt came!\n");
+    
+    // MPU interrupts disabled in adapter's KX_SYNC_IPR_IRQ handler
+    
     while(kx_mpu_read_data(hw,&val,where)!=-1)
     {
-//     debug(DNONE,"[%02d] ",val);
-
-     kx_lock_acquire(hw,&hw->mpu_lock[where], &flags);
-
-     struct list *item;
-
-     for_each_list_entry(item, &hw->mpu_buffers[where])
-     {
-        kx_mpu_buffer *b;
-           b = list_item(item, kx_mpu_buffer, list);
-           if(!b)
-            continue;
-
-           if((b->mpu_head==b->mpu_tail+1)||(b->mpu_tail+1-MAX_MPU_BUFFER == b->mpu_head))
-           {
-               // buffer overflow: nothing to do :(
-               debug(DLIB,"!!! mpu-in buffer overflow!\n");
-               break;
-           }
-           else
-           {
-            b->mpu_buffer[b->mpu_tail]=val;
-            b->mpu_tail++;
-            if(b->mpu_tail>=MAX_MPU_BUFFER)
-             b->mpu_tail=0;
-           }
-     }
-
-     kx_lock_release(hw,&hw->mpu_lock[where], &flags);
+        //     debug(DNONE,"[%02d] ",val);
+        
+        kx_lock_acquire(hw,&hw->mpu_lock[where], &flags);
+        
+        struct list *item;
+        
+        for_each_list_entry(item, &hw->mpu_buffers[where])
+        {
+            kx_mpu_buffer *b;
+            b = list_item(item, kx_mpu_buffer, list);
+            if(!b)
+                continue;
+            
+            if((b->mpu_head==b->mpu_tail+1)||(b->mpu_tail+1-MAX_MPU_BUFFER == b->mpu_head))
+            {
+                // buffer overflow: nothing to do :(
+                debug(DLIB,"!!! mpu-in buffer overflow!\n");
+                break;
+            }
+            else
+            {
+                b->mpu_buffer[b->mpu_tail]=val;
+                b->mpu_tail++;
+                if(b->mpu_tail>=MAX_MPU_BUFFER)
+                    b->mpu_tail=0;
+            }
+        }
+        
+        kx_lock_release(hw,&hw->mpu_lock[where], &flags);
     }
-//    debug(DLIB,"\n");
-
+    //    debug(DLIB,"\n");
+    
     // re-enable MPUIN interrupt (INTE)
     sync_data s;
     s.hw=hw;
     s.what=KX_SYNC_MPUIN;
     s.ret=where;
-
+    
     hw->cb.sync(hw->cb.call_with,&s);
 }
 

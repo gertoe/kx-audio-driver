@@ -229,43 +229,43 @@ dsp_register_info *find_dsp_register(kx_hw *hw,int pgm_id,word id,dsp_microcode 
 
 dsp_register_info *find_dsp_register(kx_hw *hw,int pgm_id,const char *name,dsp_microcode **out_m)
 {
-  struct list *item;
-
-  if(!(hw->initialized&KX_DSP_INITED))
-  {
-   debug(DLIB,"EFX find_dsp() w/o being initialized\n");
-   return NULL;
-  }
-
-  unsigned long flags=0;
-  kx_lock_acquire(hw,&hw->dsp_lock, &flags);
-
- int pgm=pgm_id;
-
-  for_each_list_entry(item, &hw->microcodes) 
-  {
-  	dsp_microcode *m;
+    struct list *item;
+    
+    if(!(hw->initialized&KX_DSP_INITED))
+    {
+        debug(DLIB,"EFX find_dsp() w/o being initialized\n");
+        return NULL;
+    }
+    
+    unsigned long flags=0;
+    kx_lock_acquire(hw,&hw->dsp_lock, &flags);
+    
+    int pgm=pgm_id;
+    
+    for_each_list_entry(item, &hw->microcodes)
+    {
+        dsp_microcode *m;
         m = list_item(item, dsp_microcode, list);
         if(!m)
-         continue;
+            continue;
         if(m->pgm!=pgm)
-         continue;
+            continue;
         // found pgm; search through info
         dsp_register_info *ret;
         ret=find_dsp_register_in_m(hw,m,name);
         if(ret)
         {
-      		kx_lock_release(hw,&hw->dsp_lock,&flags);
-                if(out_m)
-                   *out_m=m;
-       		return ret;
+            kx_lock_release(hw,&hw->dsp_lock,&flags);
+            if(out_m)
+                *out_m=m;
+            return ret;
         }
         break;
-  }
-
-  kx_lock_release(hw,&hw->dsp_lock,&flags);
-
-  return 0;
+    }
+    
+    kx_lock_release(hw,&hw->dsp_lock,&flags);
+    
+    return 0;
 }
 
 
@@ -2173,7 +2173,9 @@ KX_API(int,kx_set_microcode_bypass(kx_hw *hw,int pgm,int state))
                              upload_instruction(hw,m,i);
                     	}
             }
+            
             kx_lock_release(hw,&hw->dsp_lock,&flags);
+            
             if(state)
              return (m->flag&MICROCODE_BYPASS)?0:-20;
             else
@@ -3126,31 +3128,31 @@ KX_API(int,kx_get_connections(kx_hw *hw,int pgm,kxconnections *out,int size))
        out[cnt].num=C_0;
        if(is_valid_gpr(m->info[i].translated))
        {
-          kx_lock_acquire(hw,&hw->dsp_lock, &flags);
-
-          dsp_microcode *m2=0;
-
-          for_each_list_entry(item, &hw->microcodes) 
-          {
-             m2 = list_item(item, dsp_microcode, list);
-             if(!m2)
-                 continue;
-             if(m2->flag&MICROCODE_TRANSLATED)
-             {
-              for(dword j=0;j<m2->info_size/sizeof(dsp_register_info);j++)
-              {
-               if((m2->info[j].translated==m->info[i].translated)&&((m2->info[j].type&GPR_MASK)==GPR_OUTPUT))
+           kx_lock_acquire(hw,&hw->dsp_lock, &flags);
+           
+           dsp_microcode *m2=0;
+           
+           for_each_list_entry(item, &hw->microcodes)
+           {
+               m2 = list_item(item, dsp_microcode, list);
+               if(!m2)
+                   continue;
+               if(m2->flag&MICROCODE_TRANSLATED)
                {
-                out[cnt].pgm_id=m2->pgm;
-                out[cnt].num=m2->info[j].num;
+                   for(dword j=0;j<m2->info_size/sizeof(dsp_register_info);j++)
+                   {
+                       if((m2->info[j].translated==m->info[i].translated)&&((m2->info[j].type&GPR_MASK)==GPR_OUTPUT))
+                       {
+                           out[cnt].pgm_id=m2->pgm;
+                           out[cnt].num=m2->info[j].num;
+                       }
+                   }
                }
-              }
-             }
-          }
-          if(out[cnt].pgm_id==-1)
-           debug(DLIB,"!! get_connections(): incorrect connection (%x; %x = %x)\n",pgm,m->info[i].num,m->info[i].translated);
-
-          kx_lock_release(hw,&hw->dsp_lock,&flags);
+           }
+           if(out[cnt].pgm_id==-1)
+               debug(DLIB,"!! get_connections(): incorrect connection (%x; %x = %x)\n",pgm,m->info[i].num,m->info[i].translated);
+           
+           kx_lock_release(hw,&hw->dsp_lock,&flags);
        }
        else
        {
@@ -3310,34 +3312,36 @@ KX_API(int,kx_translate_text2id(kx_hw *hw,kx_text2id *ti))
 }
 
 KX_API(int,kx_update_microcode(kx_hw *hw,int pgm_id,const char *name,dsp_code *code,int code_size,
-   		dsp_register_info *info,int info_size,int itramsize,int xtramsize,
-   		const char *copyright,
-   		const char *engine,
-   		const char *created,
-   		const char *comment,
-   		const char *guid,
-   		unsigned int flag))
+                               dsp_register_info *info,int info_size,int itramsize,int xtramsize,
+                               const char *copyright,
+                               const char *engine,
+                               const char *created,
+                               const char *comment,
+                               const char *guid,
+                               unsigned int flag))
 {
- debug(DLIB,"update microcode: pgm: %d; name: '%s'; code/info: %d/%d; flag: %x\n",
-  pgm_id,name,code_size,info_size,flag);
-
-  if(!(hw->initialized&KX_DSP_INITED))
-  {
-   debug(DLIB,"EFX update w/o being initialized\n");
-   return -1;
-  }
-
-  struct list *item;
-
-  unsigned long flags=0;
-  kx_lock_acquire(hw,&hw->dsp_lock, &flags);
-
-  for_each_list_entry(item, &hw->microcodes) 
-  {
-  	dsp_microcode *m;
+    debug(DLIB,"update microcode: pgm: %d; name: '%s'; code/info: %d/%d; flag: %x\n",
+          pgm_id,name,code_size,info_size,flag);
+    
+    if(!(hw->initialized&KX_DSP_INITED))
+    {
+        debug(DLIB,"EFX update w/o being initialized\n");
+        return -1;
+    }
+    
+    struct list *item;
+    
+    unsigned long flags=0;
+    kx_lock_acquire(hw,&hw->dsp_lock, &flags);
+    
+    bool locked = true;
+    
+    for_each_list_entry(item, &hw->microcodes)
+    {
+        dsp_microcode *m;
         m = list_item(item, dsp_microcode, list);
         if(!m)
-         continue;
+            continue;
         if(m->pgm==pgm_id)
         {
             // UPDATE HERE
@@ -3347,97 +3351,112 @@ KX_API(int,kx_update_microcode(kx_hw *hw,int pgm_id,const char *name,dsp_code *c
             if((flag&IKX_UPDATE_CREATED) && created) _kx_strcpy(m->created,created,KX_MAX_STRING);
             if((flag&IKX_UPDATE_COMMENT) && comment) _kx_strcpy(m->comment,comment,KX_MAX_STRING);
             if((flag&IKX_UPDATE_GUID) && guid) _kx_strcpy(m->guid,guid,KX_MAX_STRING);
-
-            kx_lock_release(hw,&hw->dsp_lock,&flags);
-
+            
+            if (locked){
+                locked = false;
+                kx_lock_release(hw,&hw->dsp_lock,&flags);
+            }
+            
             // FIXME: this is incorrect kx_lock_release
-
+            
             // save 'ins' the connections:
             kxconnections ins[64];
             int size=kx_get_connections(hw,pgm_id,NULL,0);
-
+            
             if(flag&IKX_UPDATE_DSP)
             {
                 if(size>=0 && (size_t)size<sizeof(ins) && (kx_get_connections(hw,pgm_id,ins,size)==0))
                 {
-                 // get 'outs' connections
-                 // ... FIXME
-
-                 // save stats
-                 dword old_flag=m->flag;
-
-                 kx_untranslate_microcode(hw,pgm_id);
-
-                 if((flag&IKX_UPDATE_CODE) && code)
-                 {
-                    if(m->code)
-                     (hw->cb.free_func)(hw->cb.call_with,m->code);
-                    m->code=0;
-                    m->code_size=code_size;
-                    if(code_size)
-                      (hw->cb.malloc_func)(hw->cb.call_with,code_size,(void **)&m->code,KX_NONPAGED);
-                    if(m->code)
-                     memcpy(m->code,code,code_size);
-                 }
-                 if((flag&IKX_UPDATE_REGS) && info)
-                 {
-                    m->info=0;
-                    m->info_size=info_size;
-                    if(m->info)
-                     (hw->cb.free_func)(hw->cb.call_with,m->info);
-                    if(info_size)
-                      (hw->cb.malloc_func)(hw->cb.call_with,info_size,(void **)&m->info,KX_NONPAGED);
-                    if(m->info)
-                     memcpy(m->info,info,info_size);
-                 }
-
-                 if(flag&IKX_UPDATE_RESOURCES)
-                 {
-                   m->itramsize=itramsize;
-                   m->xtramsize=xtramsize;
-                 }
-
-                 if((!(old_flag&MICROCODE_TRANSLATED)) || (kx_translate_microcode(hw,m,KX_MICROCODE_ANY,0)==0) )
-                 {
-                    // restore connections
-                    if(old_flag&MICROCODE_TRANSLATED)
-                     for(unsigned int i=0;i<size/sizeof(kxconnections);i++)
-                     {
-                      kx_connect_microcode(hw,pgm_id,ins[i].this_num,
-                      		ins[i].pgm_id,ins[i].num);
-                     }
-
-                    if(old_flag&MICROCODE_ENABLED)
-                     kx_enable_microcode(hw,pgm_id);
-
-                    if(old_flag&MICROCODE_BYPASS)
-                     kx_set_microcode_bypass(hw,pgm_id,1);
-
-                    // kx_lock_release(hw,&hw->dsp_lock,&flags);
-
-                    return 0; // ok
-
-                 } else debug(DLIB,"error re-translating microcode\n");
+                    // get 'outs' connections
+                    // ... FIXME
+                    
+                    // save stats
+                    dword old_flag=m->flag;
+                    
+                    kx_untranslate_microcode(hw,pgm_id);
+                    
+                    if((flag&IKX_UPDATE_CODE) && code)
+                    {
+                        if(m->code)
+                            (hw->cb.free_func)(hw->cb.call_with,m->code);
+                        m->code=0;
+                        m->code_size=code_size;
+                        if(code_size)
+                            (hw->cb.malloc_func)(hw->cb.call_with,code_size,(void **)&m->code,KX_NONPAGED);
+                        if(m->code)
+                            memcpy(m->code,code,code_size);
+                    }
+                    if((flag&IKX_UPDATE_REGS) && info)
+                    {
+                        m->info=0;
+                        m->info_size=info_size;
+                        if(m->info)
+                            (hw->cb.free_func)(hw->cb.call_with,m->info);
+                        if(info_size)
+                            (hw->cb.malloc_func)(hw->cb.call_with,info_size,(void **)&m->info,KX_NONPAGED);
+                        if(m->info)
+                            memcpy(m->info,info,info_size);
+                    }
+                    
+                    if(flag&IKX_UPDATE_RESOURCES)
+                    {
+                        m->itramsize=itramsize;
+                        m->xtramsize=xtramsize;
+                    }
+                    
+                    if((!(old_flag&MICROCODE_TRANSLATED)) || (kx_translate_microcode(hw,m,KX_MICROCODE_ANY,0)==0) )
+                    {
+                        // restore connections
+                        if(old_flag&MICROCODE_TRANSLATED)
+                            for(unsigned int i=0;i<size/sizeof(kxconnections);i++)
+                            {
+                                kx_connect_microcode(hw,pgm_id,ins[i].this_num,
+                                                     ins[i].pgm_id,ins[i].num);
+                            }
+                        
+                        if(old_flag&MICROCODE_ENABLED)
+                            kx_enable_microcode(hw,pgm_id);
+                        
+                        if(old_flag&MICROCODE_BYPASS)
+                            kx_set_microcode_bypass(hw,pgm_id,1);
+                        
+                        if (locked){
+                            locked = false;
+                            kx_lock_release(hw,&hw->dsp_lock,&flags);
+                        }
+                        
+                        return 0; // ok
+                        
+                    } else debug(DLIB,"error re-translating microcode\n");
                 }
-                 else debug(DLIB,"error saving microcode connections\n");
-
-                 // kx_lock_release(hw,&hw->dsp_lock,&flags);
-                 // FIXME (see above -- invalid spinlock)
-
-                 return -1; // failure
+                else debug(DLIB,"error saving microcode connections\n");
+                
+                if (locked){
+                    locked = false;
+                    kx_lock_release(hw,&hw->dsp_lock,&flags);
+                }
+                // FIXME (see above -- invalid spinlock)
+                
+                return -1; // failure
             } // IKX_UPDATE_DSP?
-
-            // kx_lock_release(hw,&hw->dsp_lock,&flags);
-
+            
+            if (locked){
+                locked = false;
+                kx_lock_release(hw,&hw->dsp_lock,&flags);
+            }
+            
             return 0; // ok -- no need to update the DSP
         }
-  }
-
-  debug(DLIB,"invalid microcode # to update (%d)\n",pgm_id);
-
-  kx_lock_release(hw,&hw->dsp_lock,&flags);
-
-  return -2; // not found
+    }
+    
+    debug(DLIB,"invalid microcode # to update (%d)\n",pgm_id);
+    
+    if (locked){
+        locked = false;
+        kx_lock_release(hw,&hw->dsp_lock,&flags);
+    }
+    
+    return -2; // not found
 }
 
 // cannot use separate source, since ac3pt.cpp uses certain 'inlines'...

@@ -468,6 +468,8 @@ void kXAudioDevice::rest_fpu_state(kx_fpu_state *state)
 	// fixme !!
 }
 
+static unsigned int retainedLocks = 0;
+
 #undef kx_spin_lock_init
 KX_API(void,kx_spin_lock_init(kx_hw *hw,spinlock_t *lock,const char *name))
 {
@@ -486,6 +488,13 @@ KX_API(void,kx_lock_acquire(kx_hw *hw, spinlock_t *lock, unsigned long *,const c
 	lock->kx_lock++;
 	lock->file=file;
 	lock->line=line;
+    
+    retainedLocks++;
+    
+    /*
+    if (retainedLocks > 1)
+        IOLog("kXAudioDriver kx_lock_acquire: More than 1 currently acquired locks. Total: %x\n", retainedLocks);
+     */
 }
 
 #undef kx_lock_release
@@ -495,6 +504,17 @@ KX_API(void,kx_lock_release(kx_hw *hw, spinlock_t *lock, unsigned long *,const c
 	lock->file=file;
 	lock->line=line;
 	IORecursiveLockUnlock(lock->lock);
+    
+    if (retainedLocks > 0){
+        retainedLocks--;
+        
+        /*
+        if (retainedLocks > 0)
+            IOLog("kXAudioDriver kx_lock_release: More than 1 acquired locks left. Total: %x\n", retainedLocks);
+         */
+    }else{
+        IOLog("kXAudioDriver: Releasing more locks than acquired!\n");
+    }
 }
 
 double kx_log2(register double _x_)

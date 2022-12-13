@@ -116,48 +116,51 @@ KX_API(int,kx_mpu_write_data(kx_hw *hw, byte data,int offset))
 
 KX_API(int,kx_mpu_write_buffer(kx_hw *hw,int offset,byte *data,int len,int *actual_len))
 {
-		int need_init=0;
-		int done=0;
-
-		unsigned long flags;
-		kx_lock_acquire(hw,&hw->uartout_lock, &flags);
-
-		if(hw->uart_out_head[offset]==hw->uart_out_tail[offset])
-		{
-		 need_init=1;
-		}
-
-		while(done<len)
-		{
-        		if((hw->uart_out_head[offset]==hw->uart_out_tail[offset]+1) || 
-        		   (hw->uart_out_tail[offset]+1-MAX_UART_BUFFER == hw->uart_out_head[offset]))
-                        {
-                         break;
-                        }
-                        hw->uart_out_buffer[offset][hw->uart_out_tail[offset]]=*data;
-                        data++;
-                        done++;
-                        hw->uart_out_tail[offset]++;
-                        if(hw->uart_out_tail[offset]>=MAX_UART_BUFFER)
-                         hw->uart_out_tail[offset]=0;
-                }
-                kx_lock_release(hw,&hw->uartout_lock, &flags);
-
-		if(need_init) // create a IRQ handler
-		{
-			if(offset)
-			 kx_irq_enable(hw,INTE_K2_MIDITXENABLE);
-			else
-			 kx_irq_enable(hw,INTE_MIDITXENABLE);
-		}
-
-		if(actual_len)
-		 *actual_len=done;
-
-		if(done==len)
-		 return 0;
-		else
-		 return -1;
+    int need_init=0;
+    int done=0;
+    
+    unsigned long flags;
+    kx_lock_acquire(hw,&hw->uartout_lock, &flags);
+    
+    if(hw->uart_out_head[offset]==hw->uart_out_tail[offset])
+    {
+        need_init=1;
+    }
+    
+    while(done<len)
+    {
+        if((hw->uart_out_head[offset]==hw->uart_out_tail[offset]+1) ||
+           (hw->uart_out_tail[offset]+1-MAX_UART_BUFFER == hw->uart_out_head[offset]))
+        {
+            break;
+        }
+        
+        hw->uart_out_buffer[offset][hw->uart_out_tail[offset]]=*data;
+        data++;
+        done++;
+        hw->uart_out_tail[offset]++;
+        
+        if(hw->uart_out_tail[offset]>=MAX_UART_BUFFER)
+            hw->uart_out_tail[offset]=0;
+    }
+    
+    kx_lock_release(hw,&hw->uartout_lock, &flags);
+    
+    if(need_init) // create a IRQ handler
+    {
+        if(offset)
+            kx_irq_enable(hw,INTE_K2_MIDITXENABLE);
+        else
+            kx_irq_enable(hw,INTE_MIDITXENABLE);
+    }
+    
+    if(actual_len)
+        *actual_len=done;
+    
+    if(done==len)
+        return 0;
+    else
+        return -1;
 }
 
 KX_API(int,kx_mpu_read_data(kx_hw *hw, byte *data,int offset))
