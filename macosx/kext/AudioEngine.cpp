@@ -1034,7 +1034,7 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
     
     hw->card_frequency = ((clockChip == EMU_HANA_DEFCLOCK_48K) ? 48000 : 44100);
     
-    if (newSampleRate->whole != 192000){
+    if (newSampleRate->whole != 192000 || newSampleRate->whole == 176400){
         const dword initial_pitch = (word)kx_srToPitch(kx_sr_coeff(hw,newSampleRate->whole) >> 8);
         const dword pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw, newSampleRate->whole));
         

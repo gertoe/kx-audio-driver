@@ -43,12 +43,13 @@
 #undef kx_lock_acquire
 #undef kx_lock_release
 
+#include <libkern/version.h>
 #include <string.h>
 
 void _kx_strcpy(char* destination, const char* source, const unsigned long len)
 {
     
-#if defined(ARM)
+#if defined(ARM) || (VERSION_MAJOR >= 20)
     strlcpy(destination, source, len);
 #else
     strncpy(destination, source, len);
@@ -57,7 +58,7 @@ void _kx_strcpy(char* destination, const char* source, const unsigned long len)
 }
 
 void _kx_strcat(char* destination, const char* source, const unsigned long len){
-#if defined(ARM)
+#if defined(ARM)  || (VERSION_MAJOR >= 20)
     strlcat(destination, source, len);
 #else
     strncat(destination, source, len);
