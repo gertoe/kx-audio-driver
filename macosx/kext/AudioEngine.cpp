@@ -174,8 +174,6 @@ bool kXAudioEngine::init(kx_hw *hw_)
     //the buffer size is n_channels*n_frames*bps/8
     
     //about the multiplyer, it turns out some users have problems with it and some other users have problems without it, so it's better to have it changable via boot arg, and so users can just use whatever value in the supported range to try to fix their issues and all without having to touch the code
-    
-    //hw->mtr_buffer is already allocated here, so why allocating it again later?
     n_frames = (int)((hw->mtr_buffer.size * 8 / bps / n_channels));
     
 	#if !defined(USE_TIGER_IPC)
@@ -319,8 +317,6 @@ bool kXAudioEngine::initHardware(IOService *provider)
     in_streams[0]=audioStream;
     
     dump_addr();
-    
-    //setIndex(hw->actualPort >> 12);
     
     result = true;
     
@@ -611,7 +607,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 kIOAudioStreamAlignmentHighByte,                // high byte aligned - unused because bit depth == bit width
                 kIOAudioStreamByteOrderLittleEndian,            // little endian
                 true,                                           // format is mixable
-                (hw->actualPort >> 12) + streamIndex++          // driver-defined tag
+                streamIndex++                                   // driver-defined tag
             };
             
             //buffer allocation

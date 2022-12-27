@@ -416,7 +416,7 @@ bool kXAudioDevice::createAudioEngine()
     
     create_audio_controls(audioEngine);
     
-    audioEngine->setAudioDevice(this);
+    //audioEngine->setAudioDevice(this);
     
     // Active the audio engine - this will cause the audio engine to have start() and initHardware() called on it
     // After this function returns, that audio engine should be ready to begin vending audio services to the system
