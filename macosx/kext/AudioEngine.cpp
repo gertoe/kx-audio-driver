@@ -257,7 +257,7 @@ bool kXAudioEngine::initHardware(IOService *provider)
     
     setSampleRate(&initialSampleRate);
     
-    //setClockDomain(); // =kIOAudioNewClockDomain
+    setClockDomain(); // =kIOAudioNewClockDomain
     
     //setIndex(hw->actualPort >> 12);
     
@@ -856,8 +856,6 @@ IOReturn kXAudioEngine::performAudioEngineStart()
     
     is_running=1;
     
-    //setIndex(hw->actualPort >> 12);
-    
     takeTimeStamp(false);
     
     return kIOReturnSuccess;
@@ -1021,10 +1019,7 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
     kx_set_hw_parameter(hw,KX_HW_AC3_PASSTHROUGH, clockChip == EMU_HANA_DEFCLOCK_48K );
     
     //turn off the leds
-    kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_44K | EMU_HANA_DOCK_LEDS_2_EXT);
-    kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_48K | EMU_HANA_DOCK_LEDS_2_EXT);
-    kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_96K | EMU_HANA_DOCK_LEDS_2_EXT);
-    kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_192K | EMU_HANA_DOCK_LEDS_2_EXT);
+    kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_LOCK);
     
     IOSleep(100);
     

@@ -426,6 +426,8 @@ bool kXAudioDevice::createAudioEngine()
     
     //audioEngine->setIndex(hw->actualPort >> 12);
     
+    audioEngine->release();
+    
     result = true;
     
 Done:
@@ -445,18 +447,18 @@ void kXAudioDevice::interruptHandler(OSObject *owner, IOInterruptEventSource *so
     kXAudioDevice *that = OSDynamicCast(kXAudioDevice, owner);
     // If the filter returned true, this function would be called on the IOWorkLoop
     
-    if(that && that->hw)
-    {
-        while(1)
-        {
-            int ret=kx_interrupt_deferred(that->hw); // this calls indirectly kXAudioDevice::notify_func()
-            
-            if(ret==KX_IRQ_NONE)
-                return;
-            
-            // NOP
-        }
+    if (!(that && that->hw)){
+        return;
     }
+    
+    int ret = 0;
+    
+    do{
+        
+        ret=kx_interrupt_deferred(that->hw); // this calls indirectly kXAudioDevice::notify_func()
+        
+        // NOP
+    }while(ret != KX_IRQ_NONE);
 }
 
 bool kXAudioDevice::interruptFilter(OSObject *owner, IOFilterInterruptEventSource *source)
@@ -465,46 +467,49 @@ bool kXAudioDevice::interruptFilter(OSObject *owner, IOFilterInterruptEventSourc
     
     // We've cast the audio engine from the owner which we passed in when we created the interrupt
     // event source
-    if (that && that->hw)
-    {
-        dword ipr=inpd_System(that->hw, IPR);
-        if(ipr==0)
-            return false; // not our IRQ, no need to queue interruptHandler
-        
-        sync_data dta;
-        dta.what=KX_SYNC_IPR_IRQ;
-        dta.hw=that->hw;
-        that->sync(&dta); // this calls kx_sync() -> kx_critical_handler()
-        
-        if(dta.ret==0 && dta.irq_mask) // our IRQ and have something to process in DPC?
-        {
-            if(dta.irq_mask&IRQ_VOICE)
-            {
-                // check for voice interrupt. if yes, call kXAudioEngine::takeTimeStamp();
-                // otherwise this is queued in DPC
-                // event from ASIO ('buffer switch')
-                
-                if(that->engine)
-                {
-                    if(that->hw && (that->hw->asio_notification_krnl.pb_buf==0))
-                    {
-                        that->engine->takeTimeStamp();
-                        
-                        // need to reset 'toggle', because for 10k1 cards it is always 1
-                        that->hw->asio_notification_krnl.toggle=-1;
-                        
-                    } // pb_buf==0?
-                } // engine
-                
-                dta.irq_mask&=(~IRQ_VOICE);
-            }
-            
-            if(dta.irq_mask)
-            {
-                return true; // still need to queue interruptHandler
-            }
-        }
+    if (!(that && that->hw)){
         return false;
+    }
+    
+    dword ipr=inpd_System(that->hw, IPR);
+    
+    if(ipr==0)
+        return false; // not our IRQ, no need to queue interruptHandler
+    
+    sync_data dta;
+    dta.what=KX_SYNC_IPR_IRQ;
+    dta.hw=that->hw;
+    that->sync(&dta); // this calls kx_sync() -> kx_critical_handler()
+    
+    if (!(dta.ret==0 && dta.irq_mask)) // our IRQ and have something to process in DPC?
+    {
+        return false;
+    }
+    
+    if(dta.irq_mask&IRQ_VOICE)
+    {
+        // check for voice interrupt. if yes, call kXAudioEngine::takeTimeStamp();
+        // otherwise this is queued in DPC
+        // event from ASIO ('buffer switch')
+        
+        if(that->engine)
+        {
+            if(that->hw && (that->hw->asio_notification_krnl.pb_buf==0))
+            {
+                that->engine->takeTimeStamp();
+                
+                // need to reset 'toggle', because for 10k1 cards it is always 1
+                that->hw->asio_notification_krnl.toggle=-1;
+                
+            } // pb_buf==0?
+        } // engine
+        
+        dta.irq_mask&=(~IRQ_VOICE);
+    }
+    
+    if(dta.irq_mask)
+    {
+        return true; // still need to queue interruptHandler
     }
     
     return false;
