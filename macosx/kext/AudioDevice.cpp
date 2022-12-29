@@ -663,8 +663,8 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
                 kIOAudioControlChannelNameLeftRear,
                 kIOAudioControlChannelNameRightRear,
                 kIOAudioControlChannelNameSub,
-                "BackLeft",
-                "BackRight" };
+                kIOAudioControlChannelNameFrontLeftCenter,
+                kIOAudioControlChannelNameFrontRightCenter };
             
             int ids[]=
             {
@@ -674,8 +674,8 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
                 kIOAudioControlChannelIDDefaultLeftRear,
                 kIOAudioControlChannelIDDefaultRightRear,
                 kIOAudioControlChannelIDDefaultSub,
-                kIOAudioControlChannelIDDefaultSub+1,
-                kIOAudioControlChannelIDDefaultSub+2
+                kIOAudioControlChannelIDDefaultFrontLeftCenter,
+                kIOAudioControlChannelIDDefaultFrontRightCenter
             };
             control = IOAudioLevelControl::createVolumeControl(65535,   // Initial value
                                                                0,       // min value
@@ -694,6 +694,11 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
             audioEngine->addDefaultAudioControl(control);
             control->release();
         }
+    }
+    
+    //clock source control
+    {
+        
     }
 Done:
     return 0;
