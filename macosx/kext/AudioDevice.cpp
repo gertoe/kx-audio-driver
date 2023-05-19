@@ -28,6 +28,7 @@
 
 #undef debug
 #include "cedebug.h"
+#include "emu.h"
 
 /*
 #include <IOKit/IOLib.h>
@@ -597,8 +598,15 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
                 kIOAudioControlChannelNameLeftRear,
                 kIOAudioControlChannelNameRightRear,
                 kIOAudioControlChannelNameSub,
+            #if VERSION_MAJOR >= 10
+                kIOAudioControlChannelNameFrontLeftCenter,
+                kIOAudioControlChannelNameFrontRightCenter
+            #else
                 "BackLeft",
-                "BackRight" };
+                "BackRight"
+            #endif
+                
+            };
             
             int ids[]=
             {
@@ -608,8 +616,14 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
                 kIOAudioControlChannelIDDefaultLeftRear,
                 kIOAudioControlChannelIDDefaultRightRear,
                 kIOAudioControlChannelIDDefaultSub,
-                kIOAudioControlChannelIDDefaultSub+1,
-                kIOAudioControlChannelIDDefaultSub+2
+                
+#if VERSION_MAJOR >= 10
+                kIOAudioControlChannelIDDefaultFrontLeftCenter,
+                kIOAudioControlChannelIDDefaultFrontRightCenter
+#else
+                kIOAudioControlChannelIDDefaultSub + 1,
+                kIOAudioControlChannelIDDefaultSub + 2
+#endif
             };
             
             control = IOAudioLevelControl::createVolumeControl(65535,   // Initial value
@@ -709,6 +723,55 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
         }
     }
     
+    //Monitor
+#if 0
+    {
+        IOAudioToggleControl *control=NULL;
+        
+        // Create an output mute control
+        /*control = IOAudioToggleControl::createMuteControl(false,    // initial state - unmuted
+                                                          kIOAudioControlChannelIDAll,  // Affects all channels
+                                                          kIOAudioControlChannelNameAll,
+                                                          0,        // control ID - driver-defined
+                                                          kIOAudioControlUsageOutput);
+        */
+        
+        control = IOAudioToggleControl::createPassThruMuteControl(
+                                                                  false,
+                                                                  kIOAudioControlChannelIDAll,
+                                                                  kIOAudioControlChannelNameAll,
+                                                                  0
+                                                                  );
+        
+        if (!control) {
+            goto Done;
+        }
+        
+        control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)monitorChangeHandler, this);
+        audioEngine->addDefaultAudioControl(control);
+        control->release();
+    }
+#endif
+    
+    //Clock source
+    
+#if 0
+    {
+        IOAudioSelectorControl *control=NULL;
+        
+        control = IOAudioSelectorControl::createOutputClockSelector(0, kIOAudioControlChannelIDAll, 0);
+        
+        if (!control){
+            goto Done;
+        }
+        
+        control->addAvailableSelection(0, "44.1 kHz Clock Source");
+        control->addAvailableSelection(1, "48.0 kHz Clock Source");
+        
+        control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)clockSourceChangeHandler, this);
+        control->release();
+    }
+#endif
 Done:
     return 0;
 }
@@ -839,6 +902,34 @@ IOReturn kXAudioDevice::outputMuteChangeHandler(IOService *target, IOAudioContro
     return result;
 }
 
+IOReturn kXAudioDevice::monitorChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue){
+    
+    IOReturn result = kIOReturnBadArgument;
+    kXAudioDevice *audioDevice;
+    
+    audioDevice = (kXAudioDevice *)target;
+    if (audioDevice)
+    {
+        result = audioDevice->monitorChanged(muteControl, oldValue, newValue);
+    }
+    
+    return result;
+    
+}
+
+IOReturn kXAudioDevice::clockSourceChangeHandler(IOService *target, IOAudioControl *control, SInt32 oldValue, SInt32 newValue){
+    IOReturn result = kIOReturnBadArgument;
+    kXAudioDevice *audioDevice;
+    
+    audioDevice = (kXAudioDevice *)target;
+    if (audioDevice)
+    {
+        result = audioDevice->clockSourceChanged(control, oldValue, newValue);
+    }
+    
+    return result;
+}
+
 IOReturn kXAudioDevice::outputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue)
 {
     debug(DBGCLASS"[%p]::outputMuteChanged(%p, %d, %d)\n", this, muteControl, (int)oldValue, (int)newValue);
@@ -854,6 +945,82 @@ IOReturn kXAudioDevice::outputMuteChanged(IOAudioControl *muteControl, SInt32 ol
         kx_set_dsp_register(hw,epilog_pgm,"MasterL",is_muted?0x0:master_volume[0]);
         kx_set_dsp_register(hw,epilog_pgm,"MasterR",is_muted?0x0:master_volume[1]);
     }
+    
+    return kIOReturnSuccess;
+}
+
+IOReturn kXAudioDevice::monitorChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue){
+    
+    if (!muteControl || !hw){
+        return kIOReturnSuccess;
+    }
+    
+    //TODO: Figure out monitor muting
+    
+    
+    
+    return kIOReturnSuccess;
+}
+
+IOReturn kXAudioDevice::clockSourceChanged(IOAudioControl *control, SInt32 oldValue, SInt32 newValue){
+    if (!control || !hw || !engine){
+        return kIOReturnSuccess;
+    }
+    
+    //if (!hw->is_edsp)
+    //    return kIOReturnSuccess;
+    
+    dword config_val = kx_readfn0(hw,HCFG_K1);
+    dword clockChip = EMU_HANA_DEFCLOCK_48K;
+    dword clockVal  = EMU_HANA_WCLOCK_INT_48K | EMU_HANA_WCLOCK_1X;
+    
+    if (newValue == 0){
+        clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
+        clockChip = EMU_HANA_DEFCLOCK_44_1K;
+    }
+    
+    hw->card_frequency = ((clockChip == EMU_HANA_DEFCLOCK_48K) ? 48000 : 44100);
+    
+    if (isFPGAProgrammed(hw)){
+        
+        //mute the fpga
+        kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
+        
+        kx_set_hw_parameter(hw,KX_HW_AC3_PASSTHROUGH, clockChip == EMU_HANA_DEFCLOCK_48K );
+        
+        //turn off the leds
+        kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_LOCK);
+        
+        IOSleep(50);
+        
+        //set defclock and wclock
+        kx_writefpga(hw,EMU_HANA_DEFCLOCK, clockChip);
+        kx_writefpga(hw,EMU_HANA_WCLOCK, clockVal);
+        
+        //unmute and update leds
+        IOSleep(50);
+        
+        kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
+    }
+    
+    if ( clockChip == EMU_HANA_DEFCLOCK_48K ){
+        config_val |= HCFG_44K_K2;
+    }else{
+        config_val &= ( ~HCFG_44K_K2 );
+    }
+    
+    kx_writefn0(hw,HCFG_K1,config_val);
+    
+    for (int i = 0; i < engine->n_channels; i++){
+        IOAudioStream* out = engine->out_streams[i];
+        
+        if (out)
+            out->setFormat(out->getFormat(), true);
+    }
+    
+    IOAudioStream* in = engine->in_streams[0];
+    
+    in->setFormat(in->getFormat(), true);
     
     return kIOReturnSuccess;
 }

@@ -724,10 +724,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 if (hw->is_edsp){
                     debug("kXAudioEngine[%p] The current sound card in an E-MU e-dsp or similar (using the same architecture), using hardware support for sampling rathes rather than the software resampler\n",this);
                     
-                    if (isInput)
-                        length = 2;
-                    else
-                        length = 11;
+                    length = 2;
                     
                 }else{
                     //support for custom sampling rates for the software resampler
@@ -974,9 +971,8 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
     
     
     dword config_val = kx_readfn0(hw,HCFG_K1);
-    
-    dword clockVal  = EMU_HANA_WCLOCK_INT_48K | EMU_HANA_WCLOCK_1X;
     dword clockChip = EMU_HANA_DEFCLOCK_48K;
+    dword clockVal  = EMU_HANA_WCLOCK_INT_48K | EMU_HANA_WCLOCK_1X;
     
     switch (newSampleRate->whole) {
         case 11025:
@@ -991,65 +987,67 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
             break;
     }
     
-    dword led = 0;
-    switch (newSampleRate->whole) {
-        case 44100:
-            led = EMU_HANA_DOCK_LEDS_2_44K;
-            break;
-        case 48000:
-            led = EMU_HANA_DOCK_LEDS_2_48K;
-            break;
-        case 96000:
-            led = EMU_HANA_DOCK_LEDS_2_96K;
-            break;
-        case 192000:
-            led = EMU_HANA_DOCK_LEDS_2_192K;
-            break;
-        default:
-            break;
-    }
-    
-    //mute the fpga
-    kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
-    
-    kx_set_hw_parameter(hw,KX_HW_AC3_PASSTHROUGH, clockChip == EMU_HANA_DEFCLOCK_48K );
-    
-    //turn off the leds
-    kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_LOCK);
-    
-    IOSleep(100);
-    
-    //set defclock and wclock
-    kx_writefpga(hw,EMU_HANA_DEFCLOCK, clockChip);
-    kx_writefpga(hw,EMU_HANA_WCLOCK, clockVal);
-    
-    hw->card_frequency = ((clockChip == EMU_HANA_DEFCLOCK_48K) ? 48000 : 44100);
-    
-    if (newSampleRate->whole != 192000 || newSampleRate->whole == 176400){
-        const dword initial_pitch = (word)kx_srToPitch(kx_sr_coeff(hw,newSampleRate->whole) >> 8);
-        const dword pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw, newSampleRate->whole));
+    if (isFPGAProgrammed(hw)){
         
-        for(int i=0; i<n_channels;i++){
-            hw->voicetable[i].param.initial_pitch = initial_pitch;
-            hw->voicetable[i].param.pitch_target = pitch_target;
-            hw->voicetable[i].sampling_rate = newSampleRate->whole;
+        dword led = 0;
+        switch (newSampleRate->whole) {
+            case 44100:
+                led = EMU_HANA_DOCK_LEDS_2_44K;
+                break;
+            case 48000:
+                led = EMU_HANA_DOCK_LEDS_2_48K;
+                break;
+            case 96000:
+                led = EMU_HANA_DOCK_LEDS_2_96K;
+                break;
+            case 192000:
+                led = EMU_HANA_DOCK_LEDS_2_192K;
+                break;
+            default:
+                break;
         }
-    }else{
-        for(int i=0; i<n_channels;i++)
-        {
-            hw->voicetable[i].param.pitch_target = 0xffff;
+        
+        //mute the fpga
+        kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
+        
+        kx_set_hw_parameter(hw,KX_HW_AC3_PASSTHROUGH, clockChip == EMU_HANA_DEFCLOCK_48K );
+        
+        //turn off the leds
+        kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_LOCK);
+        
+        IOSleep(50);
+        
+        //set defclock and wclock
+        kx_writefpga(hw,EMU_HANA_DEFCLOCK, clockChip);
+        kx_writefpga(hw,EMU_HANA_WCLOCK, clockVal);
+        
+        hw->card_frequency = ((clockChip == EMU_HANA_DEFCLOCK_48K) ? 48000 : 44100);
+        
+        if (newSampleRate->whole != 192000 || newSampleRate->whole == 176400){
+            const dword initial_pitch = (word)kx_srToPitch(kx_sr_coeff(hw,newSampleRate->whole) >> 8);
+            const dword pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw, newSampleRate->whole));
+            
+            for(int i=0; i<n_channels;i++){
+                hw->voicetable[i].param.initial_pitch = initial_pitch;
+                hw->voicetable[i].param.pitch_target = pitch_target;
+                hw->voicetable[i].sampling_rate = newSampleRate->whole;
+            }
+        }else{
+            for(int i=0; i<n_channels;i++)
+            {
+                hw->voicetable[i].param.pitch_target = 0xffff;
+            }
         }
+        
+        //unmute and update leds
+        IOSleep(50);
+        
+        //if (led)
+            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, led | EMU_HANA_DOCK_LEDS_2_LOCK);
+        
+        kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
     }
     
-    //unmute and update leds
-    IOSleep(200);
-    
-    if (led)
-        kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, led | EMU_HANA_DOCK_LEDS_2_LOCK);
-    
-    kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
-    
-    /*
     if ( clockChip == EMU_HANA_DEFCLOCK_48K ){
         config_val |= HCFG_44K_K2;
     }else{
@@ -1057,11 +1055,12 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
     }
     
     kx_writefn0(hw,HCFG_K1,config_val);
-    */
+    
     
     //dump_addr();
     
     return kIOReturnSuccess;
+     
 }
 
 

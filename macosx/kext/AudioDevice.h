@@ -28,6 +28,7 @@
 #include <IOKit/audio/IOAudioControl.h>
 #include <IOKit/audio/IOAudioLevelControl.h>
 #include <IOKit/audio/IOAudioToggleControl.h>
+#include <IOKit/audio/IOAudioSelectorControl.h>
 #include <IOKit/audio/IOAudioDefines.h>
 #include <IOKit/IOLib.h>
 #include <IOKit/pci/IOPCIDevice.h>
@@ -46,6 +47,8 @@
 // additional flags for hw->initialized
 #define KX_DEVICE_INITED	0x1000
 #define KX_ENGINE_INITED	0x2000
+
+#define MAX_CHANNELS_    16
 
 #ifndef KX_INTERNAL
 	#error invalid configuration
@@ -75,12 +78,15 @@ private:
     IOMemoryMap						*deviceMap;
 	kx_hw							*hw;
 	IOFilterInterruptEventSource	*interruptEventSource;
+    
+    kXAudioEngine                    *engine;
+    
+    //Volume
 	int								epilog_pgm;
     int                             prolog_pgm;
 	int								is_muted;
 	dword							master_volume[2];
-	kXAudioEngine					*engine;
- 
+    
 public:
 	// ---- HAL functions [OS-specific]
     void malloc_func(int len,void **b,int where);
@@ -126,6 +132,10 @@ protected:
     
     static IOReturn outputMuteChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
     
+    static IOReturn monitorChangeHandler(IOService *target, IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
+    
+    static IOReturn clockSourceChangeHandler(IOService *target, IOAudioControl *control, SInt32 oldValue, SInt32 newValue);
+    
 	int create_audio_controls(IOAudioEngine *audioEngine);
     
     static void interruptHandler(OSObject *owner, IOInterruptEventSource *source, int count);
@@ -144,6 +154,10 @@ public:
     virtual IOReturn volumeChanged(IOAudioControl *volumeControl, SInt32 oldValue, SInt32 newValue);
     
     virtual IOReturn outputMuteChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
+    
+    virtual IOReturn monitorChanged(IOAudioControl *muteControl, SInt32 oldValue, SInt32 newValue);
+    
+    virtual IOReturn clockSourceChanged(IOAudioControl *control, SInt32 oldValue, SInt32 newValue);
     
 	virtual IOReturn user_request(const void* inStruct, void* outStruct,uint32_t inStructSize, const uint32_t* outStructSize);
 

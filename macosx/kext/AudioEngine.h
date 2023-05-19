@@ -25,8 +25,6 @@
 #ifndef _KXAUDIOENGINE_H
 #define _KXAUDIOENGINE_H
 
-#define MAX_CHANNELS_	16
-
 #define MAPPING_NUM_CHANNELS 8
 
 #ifndef KX_INTERNAL
@@ -35,8 +33,11 @@
 
 class kXAudioEngine : public IOAudioEngine
 {
+    friend class kXAudioDevice;
+    
 public:
     OSDeclareDefaultStructors(kXAudioEngine)
+    
 private:
     kx_hw	*hw;
 	int		n_frames;

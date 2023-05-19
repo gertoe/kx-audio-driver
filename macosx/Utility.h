@@ -10,6 +10,8 @@
 #define Utility_h
 
 #include "defs.h"
+#include "kx.h"
+#include "emu.h"
 
 //just to make syntax a little bit better
 static inline bool inRange(const long n, const long min, const long max){
@@ -69,6 +71,10 @@ static dword stringToNumber(const char *str){
     
     return ret;
         
+}
+
+static bool isFPGAProgrammed(kx_hw* hw){
+    return ((kx_readfpga(hw, EMU_HANA_ID) & 0x3f) == 0x15);
 }
 
 #endif /* Utility_h */
