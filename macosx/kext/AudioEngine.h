@@ -68,7 +68,7 @@ private:
 		//kx_voice_buffer *in_buffers_[MAX_CHANNELS_];
 		//kx_voice_buffer *out_buffers_[MAX_CHANNELS_];
     
-	IOAudioStream *in_streams[MAX_CHANNELS_];
+	IOAudioStream *in_stream;
 	IOAudioStream *out_streams[MAX_CHANNELS_];
     
     void dump_addr(void);
@@ -104,6 +104,7 @@ public:
     virtual bool driverDesiresHiResSampleIntervals(void);
 #endif
     
+	bool setFallbackSamplerate(const UInt32 rate, const bool uses48KHzClocSource);
 };
 
 

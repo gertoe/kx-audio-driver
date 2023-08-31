@@ -199,7 +199,8 @@ bool kXAudioEngine::init(kx_hw *hw_)
     is_running=0;
     
     bzero(out_streams, sizeof(out_streams));
-    bzero(in_streams, sizeof(in_streams));
+    //bzero(in_streams, sizeof(in_streams));
+    in_stream = NULL;
     
     // configure kX to ASIO-style I/O
     if(hw)
@@ -314,7 +315,7 @@ bool kXAudioEngine::initHardware(IOService *provider)
     }
     
     addAudioStream(audioStream);
-    in_streams[0]=audioStream;
+    in_stream=audioStream;
     
     dump_addr();
     
@@ -388,11 +389,11 @@ void kXAudioEngine::free_all()
             out_streams[i]->release();
             out_streams[i]=NULL;
         }
-        if(in_streams[i])
+        if(in_stream)
         {
-            in_streams[i]->setSampleBuffer (NULL, 0);
-            in_streams[i]->release();
-            in_streams[i]=NULL;
+            in_stream->setSampleBuffer (NULL, 0);
+            in_stream->release();
+            in_stream=NULL;
         }
         
         if(hw)
@@ -589,8 +590,6 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
     
     if (audioStream){
         
-        static UInt32 streamIndex = 0;
-        
         if (!audioStream->initWithAudioEngine(this, direction, 1)){
             
             audioStream->release();
@@ -607,7 +606,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 kIOAudioStreamAlignmentHighByte,                // high byte aligned - unused because bit depth == bit width
                 kIOAudioStreamByteOrderLittleEndian,            // little endian
                 true,                                           // format is mixable
-                streamIndex++                                   // driver-defined tag
+                chn                                             // driver-defined tag
             };
             
             //buffer allocation
@@ -669,6 +668,8 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                         hw->asio_notification_krnl.semi_buff=(hw->voicetable[i].param.endloop-hw->voicetable[i].param.startloop)/2;
                     }
                 }
+                
+                format.fDriverTag = i;
             }
             else if(direction==kIOAudioStreamDirectionInput)
             {
@@ -722,9 +723,9 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 UInt8 length = isInput ? 1 : (sizeof(supportedFreqs) / sizeof(*supportedFreqs));
                 
                 if (hw->is_edsp){
-                    debug("kXAudioEngine[%p] The current sound card in an E-MU e-dsp or similar (using the same architecture), using hardware support for sampling rathes rather than the software resampler\n",this);
+                    debug("kXAudioEngine[%p] The current sound card in an E-MU e-dsp or similar (using the same architecture), limiting sample rate support\n",this);
                     
-                    length = 2;
+                    length = 6;
                     
                 }else{
                     //support for custom sampling rates for the software resampler
@@ -750,7 +751,7 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 
 			}
             // Finally, the IOAudioStream's current format needs to be indicated
-            audioStream->setFormat(&format);
+            audioStream->setFormat(&format, true);
             
             delete mem;
         }
@@ -803,7 +804,6 @@ IOReturn kXAudioEngine::performAudioEngineStart()
     }
     
     // recording
-    //BTW it loooks fancy
     dword sz;
     switch(hw->mtr_buffer.size)
     {
@@ -936,40 +936,130 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
 {
     debug("kXAudioEngine[%p]::peformFormatChange(%p, %p, %p)\n", this, audioStream, newFormat, newSampleRate);
     
-    //WARNING: This function assumes newSampleRate->whole is a positive number despite being a signed type
+    //if (!newSampleRate){
+    //    return kIOReturnSuccess;
+    //}
     
-    if (!newSampleRate){
-        return kIOReturnSuccess;
-    }
+    const IOAudioSampleRate* destRate = (newSampleRate) ? (newSampleRate) : (getSampleRate());
     
-    if(!hw->is_edsp){
+    dword clockChipcurrent = EMU_HANA_DEFCLOCK_48K;
+    
+    if (hw->is_edsp){
+        dword led = EMU_HANA_DOCK_LEDS_2_48K;
+        dword clockMult = EMU_HANA_WCLOCK_1X;
         
-        
-        //not a real sampling rate support, but rather a pitch adjustment to sound right, this can work for the professional cards as well, but there is a better implementation for professional cards using the hana fpga, so it just uses that (BTW how does the creative windows driver for some cards support 192 khz?)
-        //if (audioStream->direction == kIOAudioStreamDirectionOutput){
-        if(newSampleRate->whole == 192000){
-            for(int i=0; i<n_channels;i++)
-            {
-                hw->voicetable[i].param.pitch_target  = 0xffff;
-            }
-        }else{
-            for(int i=0; i<n_channels;i++)
-            {
-                hw->voicetable[i].param.initial_pitch =(word)  kx_srToPitch(kx_sr_coeff(hw,newSampleRate->whole) >> 8);
-                hw->voicetable[i].param.pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,newSampleRate->whole));
-                hw->voicetable[i].sampling_rate = newSampleRate->whole;
-            }
+        switch (destRate->whole) {
+            case 11025:
+                led = 0;//EMU_HANA_DOCK_LEDS_2_44K;
+                break;
+            case 22050:
+                led = 0;//EMU_HANA_DOCK_LEDS_2_44K;
+                break;
+            case 88200:
+                led = 0;//EMU_HANA_DOCK_LEDS_2_44K;
+                //clockMult = EMU_HANA_WCLOCK_2X;
+                break;
+            case 176400:
+                led = 0;//EMU_HANA_DOCK_LEDS_2_44K;
+                //clockMult = EMU_HANA_WCLOCK_4X;
+                break;
+            case 44100:
+                led = EMU_HANA_DOCK_LEDS_2_44K;
+                break;
+            case 96000:
+                led = EMU_HANA_DOCK_LEDS_2_96K;
+                //clockMult = EMU_HANA_WCLOCK_2X;
+                break;
+            case 192000:
+                led = EMU_HANA_DOCK_LEDS_2_192K;
+                //clockMult = EMU_HANA_WCLOCK_4X;
+                break;
+            default:
+                break;
         }
-        //}else{
         
-        //}
-        
-        //TODO: input sample rates switching
-        
-        return kIOReturnSuccess;
+        if (isFPGAProgrammed(hw)){
+            
+            //mute the fpga
+            kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
+            
+            clockChipcurrent = kx_readfpga(hw,EMU_HANA_DEFCLOCK);
+            
+            const dword ledOriginal = (kx_readfpga(hw, EMU_HANA_DOCK_LEDS_2) & (~(EMU_HANA_DOCK_LEDS_2_FREQ_MASK))) | led;
+            
+            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, ledOriginal);
+            
+            const dword clockSrc = (kx_readfpga(hw, EMU_HANA_WCLOCK) & (EMU_HANA_WCLOCK_SRC_MASK)) | clockMult;
+            
+            kx_writefpga(hw, EMU_HANA_WCLOCK, clockSrc);
+            
+            IOSleep(50);
+            
+            kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
+        }
+    }else{
+        hw->card_frequency = 48000;
     }
     
+    //if(!hw->is_edsp){
+        
+        
+        //not a real sampling rate support, but rather a pitch adjustment to sound right
+        //if (audioStream->direction == kIOAudioStreamDirectionOutput){
     
+    if (audioStream->getDirection() == kIOAudioStreamDirectionOutput){
+        for(int i=0; i<n_channels;i++)
+            if(destRate->whole == 192000 || (hw->is_edsp && destRate->whole == 176400 && clockChipcurrent != EMU_HANA_DEFCLOCK_48K)){
+                hw->voicetable[i].param.pitch_target  = 0xffff;
+            }else{
+                hw->voicetable[i].param.initial_pitch =(word)  kx_srToPitch(kx_sr_coeff(hw,destRate->whole) >> 8);
+                hw->voicetable[i].param.pitch_target = kx_samplerate_to_linearpitch(kx_sr_coeff(hw,destRate->whole));
+                hw->voicetable[i].sampling_rate = destRate->whole;
+            }
+    }else{
+        
+        //if (!(destRate->whole == 48000 && clockChipcurrent == EMU_HANA_DEFCLOCK_48K) && !(destRate->whole == 44100 && clockChipcurrent == EMU_HANA_DEFCLOCK_44_1K))
+        /*
+        dword rec_set = ADCSR_SAMPLERATE_48;
+        
+        switch(sampling_rate)
+        {
+            //case 48000:
+            //    rec_set = ADCSR_SAMPLERATE_48;
+            //    break;
+            case 44100:
+                rec_set = ADCSR_SAMPLERATE_44;
+                break;
+            case 32000:
+                rec_set = ADCSR_SAMPLERATE_32;
+                break;
+            case 24000:
+                rec_set = ADCSR_SAMPLERATE_24;
+                break;
+            case 22050:
+                rec_set = ADCSR_SAMPLERATE_22;
+                break;
+            case 16000:
+                rec_set = ADCSR_SAMPLERATE_16;
+                break;
+            case 11025:
+                rec_set = (hw->is_10k2?ADCSR_SAMPLERATE_11_K2:ADCSR_SAMPLERATE_11_K1);
+                break;
+            case 8000:
+                rec_set = (hw->is_10k2?ADCSR_SAMPLERATE_8_K2:ADCSR_SAMPLERATE_8_K1);
+                break;
+            default:
+                break;
+        }
+        
+        kx_writeptr(hw, ADCSR, 0, rec_set);
+         */
+    }
+    
+    //    return kIOReturnSuccess;
+    //}
+    
+    /*
     dword config_val = kx_readfn0(hw,HCFG_K1);
     dword clockChip = EMU_HANA_DEFCLOCK_48K;
     dword clockVal  = EMU_HANA_WCLOCK_INT_48K | EMU_HANA_WCLOCK_1X;
@@ -1043,7 +1133,7 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
         IOSleep(50);
         
         //if (led)
-            kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, led | EMU_HANA_DOCK_LEDS_2_LOCK);
+        kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, led | EMU_HANA_DOCK_LEDS_2_LOCK);
         
         kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
     }
@@ -1058,9 +1148,9 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
     
     
     //dump_addr();
+     */
     
     return kIOReturnSuccess;
-     
 }
 
 
@@ -1117,3 +1207,31 @@ bool kXAudioEngine::driverDesiresHiResSampleIntervals(){
     return TRUE; //to be changed probably, idk
 }
 #endif
+
+bool kXAudioEngine::setFallbackSamplerate(const UInt32 rate,const bool uses48KHzClocSource){
+    
+    bool ret = false;
+    
+    if ((rate == 192000 || rate == 96000) && !uses48KHzClocSource){
+        
+        IOAudioSampleRate* nrate = &sampleRate;
+        
+        nrate->whole = 44100;
+        
+        setSampleRate(nrate);
+        
+        ret = true;
+    }
+    
+    for (int i = 0; i < n_channels; i++){
+        IOAudioStream* out = out_streams[i];
+        
+        if (out)
+            out->setFormat(out->getFormat(), out->getFormatExtension(), true);
+    }
+    
+    if (in_stream)
+        in_stream->setFormat(in_stream->getFormat(), in_stream->getFormatExtension(), true);
+    
+    return ret;
+}

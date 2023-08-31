@@ -510,6 +510,9 @@ bool kXAudioDevice::interruptFilter(OSObject *owner, IOFilterInterruptEventSourc
     
     if(dta.irq_mask)
     {
+        
+        debug(DBGCLASS"::interruptFilter() Non-voice interrupt bit/s %x\n", dta.irq_mask);
+        
         return true; // still need to queue interruptHandler
     }
     
@@ -755,8 +758,8 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
     
     //Clock source
     
-#if 0
-    {
+#if 1
+    if (hw->is_edsp){
         IOAudioSelectorControl *control=NULL;
         
         control = IOAudioSelectorControl::createOutputClockSelector(0, kIOAudioControlChannelIDAll, 0);
@@ -765,13 +768,31 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
             goto Done;
         }
         
-        control->addAvailableSelection(0, "44.1 kHz Clock Source");
-        control->addAvailableSelection(1, "48.0 kHz Clock Source");
+        control->addAvailableSelection(EMU_HANA_WCLOCK_INT_48K, "48.0 kHz Clock Source");
+        control->addAvailableSelection(EMU_HANA_WCLOCK_INT_44_1K, "44.1 kHz Clock Source");
+        
+        #if 1
+        {
+            /*
+             #define EMU_HANA_WCLOCK_HANA_SPDIF_IN    0x02
+             #define EMU_HANA_WCLOCK_HANA_ADAT_IN    0x03
+             #define EMU_HANA_WCLOCK_SYNC_BNCN    0x04
+             #define EMU_HANA_WCLOCK_2ND_HANA    0x05
+             */
+            
+            control->addAvailableSelection(EMU_HANA_WCLOCK_HANA_SPDIF_IN, "SPDF in Clock Source");
+            control->addAvailableSelection(EMU_HANA_WCLOCK_HANA_ADAT_IN, "ADAT in Clock Source");
+            //control->addAvailableSelection(EMU_HANA_WCLOCK_SYNC_BNCN, "BNCN Clock Source");
+            //control->addAvailableSelection(EMU_HANA_WCLOCK_2ND_HANA, "X-Card In Clock Source");
+        }
+        #endif
         
         control->setValueChangeHandler((IOAudioControl::IntValueChangeHandler)clockSourceChangeHandler, this);
+        audioEngine->addDefaultAudioControl(control);
         control->release();
     }
 #endif
+    
 Done:
     return 0;
 }
@@ -963,35 +984,45 @@ IOReturn kXAudioDevice::monitorChanged(IOAudioControl *muteControl, SInt32 oldVa
 }
 
 IOReturn kXAudioDevice::clockSourceChanged(IOAudioControl *control, SInt32 oldValue, SInt32 newValue){
+    
     if (!control || !hw || !engine){
         return kIOReturnSuccess;
     }
     
-    //if (!hw->is_edsp)
-    //    return kIOReturnSuccess;
+    if (!hw->is_edsp)
+        return kIOReturnSuccess;
+    
+    const dword clockChip  = (newValue == EMU_HANA_WCLOCK_INT_44_1K) ? EMU_HANA_DEFCLOCK_44_1K : EMU_HANA_DEFCLOCK_48K ;
+    const bool  willUse48k = clockChip == EMU_HANA_DEFCLOCK_48K;
     
     dword config_val = kx_readfn0(hw,HCFG_K1);
-    dword clockChip = EMU_HANA_DEFCLOCK_48K;
-    dword clockVal  = EMU_HANA_WCLOCK_INT_48K | EMU_HANA_WCLOCK_1X;
+
+    dword led = 0;
     
-    if (newValue == 0){
-        clockVal = EMU_HANA_WCLOCK_INT_44_1K | EMU_HANA_WCLOCK_1X;
-        clockChip = EMU_HANA_DEFCLOCK_44_1K;
+    switch (newValue) {
+        case EMU_HANA_WCLOCK_HANA_SPDIF_IN:
+        case EMU_HANA_WCLOCK_HANA_ADAT_IN:
+        case EMU_HANA_WCLOCK_SYNC_BNCN:
+        case EMU_HANA_WCLOCK_2ND_HANA:
+            led = EMU_HANA_DOCK_LEDS_2_EXT;
+            break;
+        default:
+            led = EMU_HANA_DOCK_LEDS_2_LOCK;
+            break;
     }
     
-    hw->card_frequency = ((clockChip == EMU_HANA_DEFCLOCK_48K) ? 48000 : 44100);
+    hw->card_frequency = (willUse48k ? 48000 : 44100);
     
     if (isFPGAProgrammed(hw)){
+        
+        //const dword clockVal = EMU_HANA_WCLOCK_1X | newValue;
+        const dword clockVal = (kx_readfpga(hw, EMU_HANA_WCLOCK) & ( EMU_HANA_WCLOCK_MULT_MASK )) | newValue;
         
         //mute the fpga
         kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
         
-        kx_set_hw_parameter(hw,KX_HW_AC3_PASSTHROUGH, clockChip == EMU_HANA_DEFCLOCK_48K );
-        
-        //turn off the leds
-        kx_writefpga(hw,EMU_HANA_DOCK_LEDS_2, EMU_HANA_DOCK_LEDS_2_LOCK);
-        
-        IOSleep(50);
+        //read led freq value
+        const dword currentFreqLeds = kx_readfpga(hw, EMU_HANA_DOCK_LEDS_2) & EMU_HANA_DOCK_LEDS_2_FREQ_MASK;
         
         //set defclock and wclock
         kx_writefpga(hw,EMU_HANA_DEFCLOCK, clockChip);
@@ -1000,27 +1031,24 @@ IOReturn kXAudioDevice::clockSourceChanged(IOAudioControl *control, SInt32 oldVa
         //unmute and update leds
         IOSleep(50);
         
+        kx_writefpga(hw, EMU_HANA_DOCK_LEDS_2, currentFreqLeds | led);
+        
         kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_UNMUTE);
     }
     
-    if ( clockChip == EMU_HANA_DEFCLOCK_48K ){
-        config_val |= HCFG_44K_K2;
+    kx_set_hw_parameter(hw,KX_HW_AC3_PASSTHROUGH, willUse48k );
+    
+    if ( willUse48k ){
+        config_val |= (  HCFG_44K_K2 );
     }else{
         config_val &= ( ~HCFG_44K_K2 );
     }
     
     kx_writefn0(hw,HCFG_K1,config_val);
     
-    for (int i = 0; i < engine->n_channels; i++){
-        IOAudioStream* out = engine->out_streams[i];
-        
-        if (out)
-            out->setFormat(out->getFormat(), true);
+    if (engine){
+        engine->setFallbackSamplerate(engine->getSampleRate()->whole, willUse48k);
     }
-    
-    IOAudioStream* in = engine->in_streams[0];
-    
-    in->setFormat(in->getFormat(), true);
     
     return kIOReturnSuccess;
 }
