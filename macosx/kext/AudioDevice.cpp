@@ -758,7 +758,7 @@ int kXAudioDevice::create_audio_controls(IOAudioEngine *audioEngine)
     
     //Clock source
     
-#if 1
+#if 0
     if (hw->is_edsp){
         IOAudioSelectorControl *control=NULL;
         
@@ -985,7 +985,7 @@ IOReturn kXAudioDevice::monitorChanged(IOAudioControl *muteControl, SInt32 oldVa
 
 IOReturn kXAudioDevice::clockSourceChanged(IOAudioControl *control, SInt32 oldValue, SInt32 newValue){
     
-    if (!control || !hw || !engine){
+    if (!hw || !engine){
         return kIOReturnSuccess;
     }
     

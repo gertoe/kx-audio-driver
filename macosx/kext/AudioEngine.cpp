@@ -724,9 +724,11 @@ IOAudioStream *kXAudioEngine::createNewAudioStream(int chn, IOAudioStreamDirecti
                 
                 if (hw->is_edsp){
                     debug("kXAudioEngine[%p] The current sound card in an E-MU e-dsp or similar (using the same architecture), limiting sample rate support\n",this);
-                    
+#if 0
                     length = 6;
-                    
+#else
+                    length = 2;
+#endif
                 }else{
                     //support for custom sampling rates for the software resampler
                     if (custom_sampling_rate != sampling_rate)
@@ -943,6 +945,7 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
     const IOAudioSampleRate* destRate = (newSampleRate) ? (newSampleRate) : (getSampleRate());
     
     dword clockChipcurrent = EMU_HANA_DEFCLOCK_48K;
+    dword clockChipToSet = clockChipcurrent;
     
     if (hw->is_edsp){
         dword led = EMU_HANA_DOCK_LEDS_2_48K;
@@ -951,20 +954,25 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
         switch (destRate->whole) {
             case 11025:
                 led = 0;//EMU_HANA_DOCK_LEDS_2_44K;
+                clockChipToSet = EMU_HANA_DEFCLOCK_44_1K;
                 break;
             case 22050:
                 led = 0;//EMU_HANA_DOCK_LEDS_2_44K;
+                clockChipToSet = EMU_HANA_DEFCLOCK_44_1K;
                 break;
             case 88200:
                 led = 0;//EMU_HANA_DOCK_LEDS_2_44K;
+                clockChipToSet = EMU_HANA_DEFCLOCK_44_1K;
                 //clockMult = EMU_HANA_WCLOCK_2X;
                 break;
             case 176400:
                 led = 0;//EMU_HANA_DOCK_LEDS_2_44K;
+                clockChipToSet = EMU_HANA_DEFCLOCK_44_1K;
                 //clockMult = EMU_HANA_WCLOCK_4X;
                 break;
             case 44100:
                 led = EMU_HANA_DOCK_LEDS_2_44K;
+                clockChipToSet = EMU_HANA_DEFCLOCK_44_1K;
                 break;
             case 96000:
                 led = EMU_HANA_DOCK_LEDS_2_96K;
@@ -980,10 +988,14 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
         
         if (isFPGAProgrammed(hw)){
             
+            clockChipcurrent = kx_readfpga(hw,EMU_HANA_DEFCLOCK);
+            
+#if 1
+            if (clockChipcurrent != clockChipToSet)
+                ((kXAudioDevice*)(this->audioDevice))->clockSourceChanged(NULL, clockChipcurrent == EMU_HANA_DEFCLOCK_48K ? EMU_HANA_WCLOCK_INT_48K : EMU_HANA_WCLOCK_INT_44_1K, clockChipToSet == EMU_HANA_DEFCLOCK_48K ? EMU_HANA_WCLOCK_INT_48K : EMU_HANA_WCLOCK_INT_44_1K);
+#endif
             //mute the fpga
             kx_writefpga(hw,EMU_HANA_UNMUTE,EMU_MUTE);
-            
-            clockChipcurrent = kx_readfpga(hw,EMU_HANA_DEFCLOCK);
             
             const dword ledOriginal = (kx_readfpga(hw, EMU_HANA_DOCK_LEDS_2) & (~(EMU_HANA_DOCK_LEDS_2_FREQ_MASK))) | led;
             
@@ -999,6 +1011,9 @@ IOReturn kXAudioEngine::performFormatChange(IOAudioStream *audioStream, const IO
         }
     }else{
         hw->card_frequency = 48000;
+        //TODO: check is this is ok for 10k1
+        const dword config_val = kx_readfn0(hw,HCFG_K1) | ( HCFG_44K_K2 ); //makes sure the 44k flag is set for 48k base clock
+        kx_writefn0(hw,HCFG_K1,config_val);
     }
     
     //if(!hw->is_edsp){
