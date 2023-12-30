@@ -75,9 +75,8 @@ switch (ndx)
     sn    = sin(omega);
     cs    = cos(omega);
 
-	//beta = sqrt(TMP*TMP+1)/(eqband/10.)-((TMP-1)*(TMP-1));
-    beta = sqrt((TMP*TMP+1)/(eqband/10.)-((TMP-1)*(TMP-1)));
-            
+	beta = sqrt(TMP*TMP+1)/(eqband/10.)-((TMP-1)*(TMP-1));
+
 	dumm = 2.;
 				a0 =   ((TMP+1.)+((TMP-1.)*cs)+(beta*sn));
 				scal = dumm*a0;
